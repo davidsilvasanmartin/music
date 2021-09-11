@@ -16,12 +16,13 @@ class Employee implements Serializable {
     private String imageUrl;
     @Column(nullable = false, updatable = false)
     private String employeeCode;
+    private String keySkills;
 
     public Employee() {
     }
 
     public Employee(Long id, String name, String email, String jobTitle, String phone,
-                    String imageUrl, String employeeCode) {
+                    String imageUrl, String employeeCode, String keySkills) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -29,15 +30,17 @@ class Employee implements Serializable {
         this.phone = phone;
         this.imageUrl = imageUrl;
         this.employeeCode = employeeCode;
+        this.keySkills = keySkills;
     }
 
     public Employee(String name, String email, String jobTitle, String phone,
-                    String imageUrl) {
+                    String imageUrl, String keySkills) {
         this.name = name;
         this.email = email;
         this.jobTitle = jobTitle;
         this.phone = phone;
         this.imageUrl = imageUrl;
+        this.keySkills = keySkills;
     }
 
     public Long getId() {
@@ -94,5 +97,13 @@ class Employee implements Serializable {
 
     public void setEmployeeCode(String employeeCode) {
         this.employeeCode = employeeCode;
+    }
+
+    public String getKeySkills() {
+        return keySkills;
+    }
+
+    public void setKeySkills(String keySkills) {
+        this.keySkills = keySkills;
     }
 }
