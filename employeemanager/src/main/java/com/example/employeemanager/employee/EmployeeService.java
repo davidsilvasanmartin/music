@@ -8,33 +8,33 @@ import java.util.UUID;
 
 @Service
 public class EmployeeService {
-    private final EmployeeRepo employeeRepo;
+    private final EmployeeRepository employeeRepository;
 
     @Autowired
-    public EmployeeService(EmployeeRepo employeeRepo) {
-        this.employeeRepo = employeeRepo;
+    public EmployeeService(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
     }
 
     public Employee addEmployee(Employee employee) {
         employee.setEmployeeCode(UUID.randomUUID().toString());
-        return employeeRepo.save(employee);
+        return employeeRepository.save(employee);
     }
 
     public List<Employee> findAllEmployees() {
-        return employeeRepo.findAll();
+        return employeeRepository.findAll();
     }
 
     public Employee updateEmployee(Employee employee) {
-        return employeeRepo.save(employee);
+        return employeeRepository.save(employee);
     }
 
     public Employee findEmployeeById(Long id) {
-        return employeeRepo.findById(id).orElseThrow(() ->
+        return employeeRepository.findById(id).orElseThrow(() ->
                 new EmployeeNotFoundException("Employee with id " + id + "was not found")
         );
     }
 
     public void deleteEmployee(Long id) {
-        employeeRepo.deleteById(id);
+        employeeRepository.deleteById(id);
     }
 }

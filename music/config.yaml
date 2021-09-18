@@ -1,0 +1,12 @@
+directory: ./library
+library: ./music_library.db
+import:
+  move: no
+plugins: fetchart lyrics lastgenre scrub discogs inline web
+per_disc_numbering: yes
+paths:
+    default: $albumartist/[$year] $album%aunique{}/%if{$multidisc,$disc-}$track $title
+    singleton: Non-Album/$artist/$title
+    comp: Compilations/[$year] $album%aunique{}/%if{$multidisc,$disc-}$track $title
+item_fields:
+  multidisc: 1 if disctotal > 1 else 0
