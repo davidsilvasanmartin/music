@@ -1,10 +1,15 @@
 package com.example.music.album;
 
+import com.example.music.song.Song;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "albums")
+public
 class Album implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +22,9 @@ class Album implements Serializable {
     private String album;
     private String genre;
     private int year;
+    @OneToMany(mappedBy = "album")
+    @JsonManagedReference
+    private List<Song> songs;
 
     public int getId() {
         return id;
@@ -64,5 +72,13 @@ class Album implements Serializable {
 
     public void setYear(int year) {
         this.year = year;
+    }
+
+    public List<Song> getSongs() {
+        return songs;
+    }
+
+    public void setSongs(List<Song> songs) {
+        this.songs = songs;
     }
 }

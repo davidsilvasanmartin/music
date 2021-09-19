@@ -14,7 +14,8 @@ public class AlbumService {
         this.albumRepository = albumRepository;
     }
 
-    public List<Album> findAllAlbums() {
+    public List<Album> findFirst2Albums() {
+//        return albumRepository.findAll(PageRequest.of(1, 2)).toList();
         return albumRepository.findAll();
     }
 

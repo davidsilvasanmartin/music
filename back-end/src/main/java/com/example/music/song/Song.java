@@ -1,26 +1,33 @@
 package com.example.music.song;
 
+import com.example.music.album.Album;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "items")
+public
 class Song implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private int id;
     private String path;
-    @Column(name = "album_id")
-    private int albumId;
+    @ManyToOne()
+    @JoinColumn(
+            name = "album_id",
+            referencedColumnName = "id",
+            insertable = false,
+            updatable = false
+    )
+    // https://stackoverflow.com/questions/3325387/infinite-recursion-with-jackson-json-and-hibernate-jpa-issue
+    @JsonBackReference
+    private Album album;
     private String title;
     private String lyrics;
-    // TODO: use join and remove these
-    private String artist;
-    private String album;
-    private String genre;
-    private int year;
-    
+
     public int getId() {
         return id;
     }
@@ -35,14 +42,6 @@ class Song implements Serializable {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public int getAlbumId() {
-        return albumId;
-    }
-
-    public void setAlbumId(int albumId) {
-        this.albumId = albumId;
     }
 
     public String getTitle() {
@@ -61,35 +60,11 @@ class Song implements Serializable {
         this.lyrics = lyrics;
     }
 
-    public String getArtist() {
-        return artist;
-    }
-
-    public void setArtist(String artist) {
-        this.artist = artist;
-    }
-
-    public String getAlbum() {
+    public Album getAlbum() {
         return album;
     }
 
-    public void setAlbum(String album) {
+    public void setAlbum(Album album) {
         this.album = album;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
     }
 }
