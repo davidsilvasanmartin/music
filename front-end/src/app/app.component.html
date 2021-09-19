@@ -1,0 +1,50 @@
+<mat-toolbar color="primary">
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with menu icon"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>My App</span>
+  <span class="example-spacer"></span>
+  <button
+    mat-icon-button
+    class="example-icon favorite-icon"
+    aria-label="Example icon-button with heart icon"
+  >
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="example-icon"
+    aria-label="Example icon-button with share icon"
+  >
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
+
+<div [style.padding]="'40px'">
+  <div
+    fxLayout="row wrap"
+    fxLayoutAlign="space-around center"
+    [style.gap]="'20px'"
+  >
+    <mat-card *ngFor="let song of songs$ | async" class="example-card">
+      <mat-card-header>
+        <mat-card-title>{{ song.title }}</mat-card-title>
+        <mat-card-subtitle>{{ song.artist }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ song.album }}, {{ song.year }}</p>
+        <p>{{ song.genre }}</p>
+      </mat-card-content>
+      <mat-card-footer>
+        <audio controls [src]="apiUrl + '/songs/play/' + song.id">
+          Your browser does not support the
+          <code>audio</code> element.
+        </audio>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>
