@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
-@RequestMapping("api/v1/albums")
+@RequestMapping("albums")
 public class AlbumController {
     private final AlbumService albumService;
 

@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Song } from '../../songs/song';
-import { PlayerRootState } from '../store/state';
+import { PlaylistRootState } from '../store/state';
 import * as playerActions from '../store/actions';
 
 @Component({
@@ -13,7 +13,7 @@ import * as playerActions from '../store/actions';
 export class AddToPlaylistButtonComponent implements OnInit {
   @Input() song: Song;
 
-  constructor(private readonly _store: Store<PlayerRootState>) {}
+  constructor(private readonly _store: Store<PlaylistRootState>) {}
 
   ngOnInit(): void {}
 

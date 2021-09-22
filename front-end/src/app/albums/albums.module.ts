@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { AlbumsComponent } from './albums.component';
 import { UiModule } from '../ui/ui.module';
-import { PlayerModule } from '../player/player.module';
+import { PlaylistModule } from '../playlist';
 
 @NgModule({
   declarations: [AlbumsComponent],
-  imports: [CommonModule, UiModule, PlayerModule],
+  imports: [CommonModule, UiModule, PlaylistModule],
   exports: [AlbumsComponent],
 })
 export class AlbumsModule {}

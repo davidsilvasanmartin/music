@@ -4,22 +4,28 @@ import { CommonModule } from '@angular/common';
 import { StoreModule } from '@ngrx/store';
 
 import { UiModule } from '../ui/ui.module';
-import { playerReducer } from './store/reducers';
+import { playlistReducer } from './store/reducers';
 import { AddToPlaylistButtonComponent } from './add-to-playlist-button/add-to-playlist-button.component';
-import { PlayerComponent } from './player.component';
+import { PlaylistComponent } from './playlist.component';
 import { PlaylistSongComponent } from './playlist-song/playlist-song.component';
+import { RemoveFromPlaylistButtonComponent } from './remove-from-playlist-button/remove-from-playlist-button.component';
 
 @NgModule({
   declarations: [
     AddToPlaylistButtonComponent,
-    PlayerComponent,
+    PlaylistComponent,
     PlaylistSongComponent,
+    RemoveFromPlaylistButtonComponent,
   ],
   imports: [
     CommonModule,
     UiModule,
-    StoreModule.forFeature('player', playerReducer),
+    StoreModule.forFeature('player', playlistReducer),
   ],
-  exports: [AddToPlaylistButtonComponent, PlayerComponent],
+  exports: [
+    AddToPlaylistButtonComponent,
+    RemoveFromPlaylistButtonComponent,
+    PlaylistComponent,
+  ],
 })
-export class PlayerModule {}
+export class PlaylistModule {}

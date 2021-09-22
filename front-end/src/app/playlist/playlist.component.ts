@@ -7,22 +7,21 @@ import { filter, map } from 'rxjs/operators';
 import * as playerSelectors from './store/selectors';
 import * as playerActions from './store/actions';
 import { Song } from '../songs/song';
-import { PlayerRootState } from './store/state';
+import { PlaylistRootState } from './store/state';
 import { ApiService } from '../api.service';
 
 @Component({
-  selector: 'app-player',
-  templateUrl: './player.component.html',
-  styleUrls: ['./player.component.scss'],
+  selector: 'app-playlist',
+  templateUrl: './playlist.component.html',
 })
-export class PlayerComponent implements OnInit {
+export class PlaylistComponent implements OnInit {
   currentSong$: Observable<Song>;
   currentSongImgUrl$: Observable<string>;
   currentSongAudioUrl$: Observable<string>;
   nextSongs$: Observable<Song[]>;
 
   constructor(
-    private readonly _store: Store<PlayerRootState>,
+    private readonly _store: Store<PlaylistRootState>,
     private readonly _apiService: ApiService
   ) {
     this.currentSong$ = this._store.pipe(

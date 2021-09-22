@@ -11,7 +11,7 @@ import { AppComponent } from './app.component';
 import { AlbumsModule } from './albums/albums.module';
 import { UiModule } from './ui/ui.module';
 import { reducers } from './store/reducers';
-import { PlayerModule } from './player/player.module';
+import { PlaylistModule } from './playlist';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +22,7 @@ import { PlayerModule } from './player/player.module';
     BrowserAnimationsModule,
     UiModule,
     AlbumsModule,
-    PlayerModule,
+    PlaylistModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
   ],
