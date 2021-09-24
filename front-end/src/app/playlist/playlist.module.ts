@@ -5,17 +5,21 @@ import { StoreModule } from '@ngrx/store';
 
 import { UiModule } from '../ui/ui.module';
 import { playlistReducer } from './store/reducers';
-import { AddToPlaylistButtonComponent } from './add-to-playlist-button/add-to-playlist-button.component';
 import { PlaylistComponent } from './playlist.component';
-import { PlaylistSongComponent } from './playlist-song/playlist-song.component';
-import { RemoveFromPlaylistButtonComponent } from './remove-from-playlist-button/remove-from-playlist-button.component';
+import { PlaylistRemoveComponent } from './song/controls/playlist-remove/playlist-remove.component';
+import { PlaylistPlayComponent } from './song/controls/playlist-play/playlist-play.component';
+import { SongComponent } from './song/song.component';
+import { AlbumComponent } from './album/album.component';
+import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playlist-play-album.component';
 
 @NgModule({
   declarations: [
-    AddToPlaylistButtonComponent,
     PlaylistComponent,
-    PlaylistSongComponent,
-    RemoveFromPlaylistButtonComponent,
+    PlaylistRemoveComponent,
+    PlaylistPlayComponent,
+    SongComponent,
+    AlbumComponent,
+    PlaylistPlayAlbumComponent,
   ],
   imports: [
     CommonModule,
@@ -23,9 +27,13 @@ import { RemoveFromPlaylistButtonComponent } from './remove-from-playlist-button
     StoreModule.forFeature('playlist', playlistReducer),
   ],
   exports: [
-    AddToPlaylistButtonComponent,
-    RemoveFromPlaylistButtonComponent,
+    PlaylistRemoveComponent,
     PlaylistComponent,
+    SongComponent,
+    PlaylistPlayComponent,
+    PlaylistRemoveComponent,
+    AlbumComponent,
+    PlaylistPlayAlbumComponent,
   ],
 })
 export class PlaylistModule {}

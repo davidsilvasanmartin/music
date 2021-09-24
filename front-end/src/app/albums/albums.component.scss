@@ -1,0 +1,13 @@
+.album {
+  margin: 16px;
+
+  &__properties {
+    display: flex;
+    flex-flow: row wrap;
+    color: rgba(0, 0, 0, 0.54);
+  }
+
+  &__year {
+    flex: 1 0 auto;
+  }
+}

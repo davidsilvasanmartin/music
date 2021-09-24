@@ -1,17 +1,16 @@
-<mat-card *ngFor="let album of albums$ | async" class="example-card">
+<mat-card *ngFor="let album of albums$ | async" class="album">
   <mat-card-header>
     <mat-card-title>{{ album.album }}</mat-card-title>
     <mat-card-subtitle>{{ album.albumArtist }}</mat-card-subtitle>
   </mat-card-header>
-  <img
-    mat-card-image
-    [src]="album.artPathUrl"
-    alt="Album photo"
-    style="max-width: 200px"
-  />
+  <app-album [album]="album">
+    <app-playlist-play-album></app-playlist-play-album>
+  </app-album>
   <mat-card-content>
-    <p>{{ album.year }}</p>
-    <p>{{ album.genre }}</p>
+    <div class="album__properties">
+      <div class="album__year">{{ album.year }}</div>
+      <div class="album__genre">{{ album.genre }}</div>
+    </div>
   </mat-card-content>
   <mat-card-footer>
     <div
@@ -19,16 +18,7 @@
       [style.gap]="'20px'"
       *ngFor="let song of album.songs"
     >
-      <div fxLayout="row nowrap">
-        <div fxFlex="1 0">
-          {{ song.title }}
-        </div>
-        <div fxFlex="0 0">
-          <app-add-to-playlist-button
-            [song]="song"
-          ></app-add-to-playlist-button>
-        </div>
-      </div>
+      <app-albums-song [song]="song"> </app-albums-song>
     </div>
   </mat-card-footer>
 </mat-card>

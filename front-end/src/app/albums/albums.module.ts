@@ -9,9 +9,10 @@ import { UiModule } from '../ui/ui.module';
 import { PlaylistModule } from '../playlist';
 import { albumsReducer } from './store/reducers';
 import { AlbumsEffects } from './store/effects';
+import { AlbumsSongComponent } from './albums-song/albums-song.component';
 
 @NgModule({
-  declarations: [AlbumsComponent],
+  declarations: [AlbumsComponent, AlbumsSongComponent],
   imports: [
     CommonModule,
     UiModule,
