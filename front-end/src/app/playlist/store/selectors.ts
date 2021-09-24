@@ -3,7 +3,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { Song } from '../../songs/song';
 import { PlaylistState } from './state';
 
-export const getPlaylistState = createFeatureSelector<PlaylistState>('player');
+export const getPlaylistState =
+  createFeatureSelector<PlaylistState>('playlist');
 
 export const getPlaylist = createSelector(
   getPlaylistState,

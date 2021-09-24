@@ -20,7 +20,7 @@ import { RemoveFromPlaylistButtonComponent } from './remove-from-playlist-button
   imports: [
     CommonModule,
     UiModule,
-    StoreModule.forFeature('player', playlistReducer),
+    StoreModule.forFeature('playlist', playlistReducer),
   ],
   exports: [
     AddToPlaylistButtonComponent,

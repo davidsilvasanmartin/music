@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { Song } from '../../songs/song';
 import { PlaylistRootState } from '../store/state';
-import * as playerActions from '../store/actions';
+import * as playlistActions from '../store/actions';
 
 @Component({
   selector: 'app-add-to-playlist-button',
@@ -18,6 +18,6 @@ export class AddToPlaylistButtonComponent implements OnInit {
   ngOnInit(): void {}
 
   addToPlaylist() {
-    this._store.dispatch(playerActions.addToPlaylist({ songs: [this.song] }));
+    this._store.dispatch(playlistActions.addToPlaylist({ songs: [this.song] }));
   }
 }

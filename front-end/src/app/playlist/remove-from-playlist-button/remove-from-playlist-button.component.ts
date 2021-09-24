@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 
 import { Song } from '../../songs/song';
 import { PlaylistRootState } from '../store/state';
-import * as playerActions from '../store/actions';
+import * as playlistActions from '../store/actions';
 
 @Component({
   selector: 'app-remove-from-playlist-button',
@@ -17,6 +17,8 @@ export class RemoveFromPlaylistButtonComponent implements OnInit {
   ngOnInit(): void {}
 
   removeFromPlaylist() {
-    this._store.dispatch(playerActions.removeFromPlaylist({ song: this.song }));
+    this._store.dispatch(
+      playlistActions.removeFromPlaylist({ song: this.song })
+    );
   }
 }

@@ -2,13 +2,13 @@ import { Song } from '../../songs/song';
 import { AppState } from '../../store/state';
 
 export interface PlaylistRootState extends AppState {
-  player: PlaylistState;
+  playlist: PlaylistState;
 }
 
 export interface PlaylistState {
   playlist: Song[];
 }
 
-export const playerInitialState: PlaylistState = {
+export const playlistInitialState: PlaylistState = {
   playlist: [],
 };

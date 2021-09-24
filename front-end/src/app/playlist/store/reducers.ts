@@ -1,20 +1,21 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { Song } from 'src/app/songs/song';
 
-import * as playerActions from './actions';
-import { playerInitialState, PlaylistState } from './state';
+import { Song } from '../../songs/song';
+import * as playlistActions from './actions';
+import { playlistInitialState, PlaylistState } from './state';
 
 const reducer = createReducer(
-  playerInitialState,
-  on(playerActions.addToPlaylist, (state, { songs }) => ({
+  playlistInitialState,
+  on(playlistActions.addToPlaylist, (state, { songs }) => ({
     playlist: [...state.playlist, ...songs],
   })),
-  on(playerActions.removeFromPlaylist, (state, { song }) => ({
+  on(playlistActions.removeFromPlaylist, (state, { song }) => ({
     playlist: state.playlist.filter((s: Song) => s !== song),
   })),
-  on(playerActions.next, (state) => ({
+  on(playlistActions.next, (state) => ({
     playlist: state.playlist.slice(1),
-  }))
+  })),
+  on(playlistActions.reset, () => playlistInitialState)
 );
 
 export const playlistReducer = (state: PlaylistState, action: Action) =>

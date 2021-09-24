@@ -1,11 +1,12 @@
 import { Song } from '../songs/song';
 
-export interface Album {
+export interface AlbumDto {
   id: number;
-  artPathUrl: string;
+  artPath: string;
   albumArtist: string;
   album: string;
   genre: string;
   year: number;
+  // TODO
   songs: Song[];
 }
