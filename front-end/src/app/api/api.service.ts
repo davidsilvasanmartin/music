@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 
 import { environment } from '../../environments/environment';
 

@@ -1,9 +1,9 @@
 package com.example.music.album;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AlbumService {
@@ -14,9 +14,12 @@ public class AlbumService {
         this.albumRepository = albumRepository;
     }
 
-    public List<Album> findFirst2Albums() {
-//        return albumRepository.findAll(PageRequest.of(1, 2)).toList();
-        return albumRepository.findAll();
+    public Page<Album> findAll(AlbumSpecification specification, Pageable pageable) {
+        return albumRepository.findAll(specification, pageable);
+    }
+    
+    public Page<Album> findAll(Pageable pageable) {
+        return albumRepository.findAll(pageable);
     }
 
     public Album findAlbumById(int id) {

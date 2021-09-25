@@ -1,7 +1,9 @@
 <div fxLayout="column nowrap">
   <ng-container *ngIf="currentSong$ | async; let song">
     <img [src]="currentSongImgUrl$ | async" />
-    <div>{{ song.title }}</div>
+    <app-song [song]="song">
+      <app-playlist-remove></app-playlist-remove>
+    </app-song>
     <audio
       controls
       [src]="currentSongAudioUrl$ | async"

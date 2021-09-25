@@ -1,24 +1,16 @@
 <mat-card *ngFor="let album of albums$ | async" class="album">
-  <mat-card-header>
-    <mat-card-title>{{ album.album }}</mat-card-title>
-    <mat-card-subtitle>{{ album.albumArtist }}</mat-card-subtitle>
-  </mat-card-header>
   <app-album [album]="album">
+    <app-album-peek></app-album-peek>
+    <app-playlist-replace></app-playlist-replace>
     <app-playlist-play-album></app-playlist-play-album>
   </app-album>
-  <mat-card-content>
-    <div class="album__properties">
-      <div class="album__year">{{ album.year }}</div>
-      <div class="album__genre">{{ album.genre }}</div>
-    </div>
-  </mat-card-content>
-  <mat-card-footer>
-    <div
-      fxLayout="column nowrap"
-      [style.gap]="'20px'"
-      *ngFor="let song of album.songs"
-    >
-      <app-albums-song [song]="song"> </app-albums-song>
-    </div>
-  </mat-card-footer>
 </mat-card>
+
+<mat-paginator
+  [pageIndex]="pageIndex$ | async"
+  [pageSize]="size$ | async"
+  [length]="totalElements$ | async"
+  [showFirstLastButtons]="true"
+  (page)="paginateList($event)"
+>
+</mat-paginator>

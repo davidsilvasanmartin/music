@@ -1,2 +1,14 @@
-<img mat-card-image [src]="album.artPathUrl" alt="Album photo" />
-<ng-content></ng-content>
+<div class="album">
+  <img class="album__image" [src]="album.artPathUrl" alt="Album art" />
+  <div class="album__description">
+    <h2 class="album__description-item">
+      {{ album.albumArtist }} - {{ album.album }}
+    </h2>
+    <h5 class="album__description-item">
+      [{{ album.year }}] {{ album.genre }}
+    </h5>
+  </div>
+  <div class="album__controls">
+    <ng-content></ng-content>
+  </div>
+</div>

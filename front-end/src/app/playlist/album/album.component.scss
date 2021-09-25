@@ -1,0 +1,36 @@
+.album {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+
+  &__image {
+    height: 50px;
+    width: 50px;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    object-fit: contain;
+    flex: 0 0 50px;
+  }
+
+  &__description {
+    display: flex;
+    flex-flow: column nowrap;
+    flex: 1 1 auto;
+    padding: 0 8px;
+  }
+
+  &__description-item {
+    margin: 0;
+  }
+
+  &__controls {
+    flex: 1 0 auto;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    padding: 8px;
+    gap: 8px;
+  }
+}

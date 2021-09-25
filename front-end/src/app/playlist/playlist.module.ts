@@ -11,6 +11,9 @@ import { PlaylistPlayComponent } from './song/controls/playlist-play/playlist-pl
 import { SongComponent } from './song/song.component';
 import { AlbumComponent } from './album/album.component';
 import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playlist-play-album.component';
+import { PlaylistReplaceComponent } from './album/controls/playlist-replace/playlist-replace.component';
+import { AlbumPeekComponent } from './album/controls/album-peek/album-peek.component';
+import { AlbumDialogComponent } from './album-dialog/album-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +23,9 @@ import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playl
     SongComponent,
     AlbumComponent,
     PlaylistPlayAlbumComponent,
+    PlaylistReplaceComponent,
+    AlbumPeekComponent,
+    AlbumDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -34,6 +40,8 @@ import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playl
     PlaylistRemoveComponent,
     AlbumComponent,
     PlaylistPlayAlbumComponent,
+    PlaylistReplaceComponent,
+    AlbumPeekComponent,
   ],
 })
 export class PlaylistModule {}

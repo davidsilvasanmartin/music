@@ -1,5 +1,7 @@
+import { PageEvent } from '@angular/material/paginator';
 import { createAction, props } from '@ngrx/store';
 
+import { PageableResource } from '../../api/api-pageable-resource-request';
 import { Album } from '../album';
 
 export enum AlbumsActionTypes {
@@ -9,12 +11,14 @@ export enum AlbumsActionTypes {
   reset = '[Albums] Reset',
 }
 
-// TODO pagination
-export const loadAlbums = createAction(AlbumsActionTypes.loadAlbums);
+export const loadAlbums = createAction(
+  AlbumsActionTypes.loadAlbums,
+  props<{ pageEvent?: PageEvent }>()
+);
 
 export const loadAlbumsSuccess = createAction(
   AlbumsActionTypes.loadAlbumsSuccess,
-  props<{ albums: Album[] }>()
+  props<{ albums: PageableResource<Album[]> }>()
 );
 
 export const loadAlbumsFail = createAction(

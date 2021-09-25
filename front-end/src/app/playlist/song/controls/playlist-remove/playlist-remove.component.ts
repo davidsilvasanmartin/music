@@ -10,7 +10,11 @@ import { SongComponent } from '../../song.component';
 
 @Component({
   selector: 'app-playlist-remove',
-  templateUrl: './playlist-remove.component.html',
+  template: `
+    <button mat-icon-button color="primary" aria-label="Remove from playlist">
+      <mat-icon>close</mat-icon>
+    </button>
+  `,
 })
 export class PlaylistRemoveComponent extends SongControl {
   constructor(

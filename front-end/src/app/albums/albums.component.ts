@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import * as albumsSelectors from './store/selectors';
 import * as albumsActions from './store/actions';
 import { Album } from './album';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-albums',
@@ -15,17 +16,30 @@ import { Album } from './album';
 })
 export class AlbumsComponent implements OnInit, OnDestroy {
   albums$: Observable<Album[]>;
+  pageIndex$: Observable<number>;
+  size$: Observable<number>;
+  totalElements$: Observable<number>;
+
   apiUrl = environment.apiUrl;
 
   constructor(private readonly _store: Store) {
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
+    this.pageIndex$ = this._store.pipe(select(albumsSelectors.getPageIndex));
+    this.size$ = this._store.pipe(select(albumsSelectors.getSize));
+    this.totalElements$ = this._store.pipe(
+      select(albumsSelectors.getTotalElements)
+    );
   }
 
   ngOnInit() {
-    this._store.dispatch(albumsActions.loadAlbums());
+    this._store.dispatch(albumsActions.loadAlbums({}));
   }
 
   ngOnDestroy() {
     this._store.dispatch(albumsActions.reset());
+  }
+
+  paginateList(pageEvent: PageEvent) {
+    this._store.dispatch(albumsActions.loadAlbums({ pageEvent }));
   }
 }

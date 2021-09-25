@@ -9,7 +9,11 @@ import { SongComponent } from '../../song.component';
 
 @Component({
   selector: 'app-playlist-play',
-  templateUrl: './playlist-play.component.html',
+  template: `
+    <button mat-icon-button color="primary" aria-label="Add to playlist">
+      <mat-icon>playlist_play</mat-icon>
+    </button>
+  `,
 })
 export class PlaylistPlayComponent extends SongControl {
   constructor(

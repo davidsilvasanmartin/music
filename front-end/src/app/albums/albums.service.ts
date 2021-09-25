@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import { PageableResource } from '../api/api-pageable-resource-request';
 import { ApiService } from '../api/api.service';
 import { Album } from './album';
 import { AlbumDto } from './album-dto';
@@ -19,13 +21,26 @@ export class AlbumsService {
     private readonly _apiService: ApiService
   ) {}
 
-  getAlbums(): Observable<Album[]> {
+  getAlbums(pageEvent: PageEvent): Observable<PageableResource<Album[]>> {
     return this._http
-      .get<AlbumDto[]>(this._apiService.createApiUrl('albums'))
+      .get<PageableResource<AlbumDto[]>>(
+        this._apiService.createApiUrl('albums'),
+        {
+          params: new HttpParams({
+            fromObject: {
+              page: pageEvent?.pageIndex,
+              size: pageEvent?.pageSize,
+            },
+          }),
+        }
+      )
       .pipe(
-        map((albums: AlbumDto[]) =>
-          albums.map((a: AlbumDto) => this._albumsMapper.fromDto(a))
-        )
+        map((albumsResource: PageableResource<AlbumDto[]>) => ({
+          ...albumsResource,
+          content: albumsResource.content.map((a: AlbumDto) =>
+            this._albumsMapper.fromDto(a)
+          ),
+        }))
       );
   }
 }

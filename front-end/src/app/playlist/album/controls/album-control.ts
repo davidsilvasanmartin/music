@@ -16,7 +16,6 @@ export abstract class AlbumControl {
   }
 
   @HostListener('click') controlClick() {
-    console.log('clicked');
     this.clicked$.next();
   }
 

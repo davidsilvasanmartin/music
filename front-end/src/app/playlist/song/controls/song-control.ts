@@ -16,7 +16,6 @@ export abstract class SongControl {
   }
 
   @HostListener('click') controlClick() {
-    console.log('clicked');
     this.clicked$.next();
   }
 
