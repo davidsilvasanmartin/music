@@ -76,7 +76,8 @@
               "browserTarget": "musicapp:build:production"
             },
             "development": {
-              "browserTarget": "musicapp:build:development"
+              "browserTarget": "musicapp:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
