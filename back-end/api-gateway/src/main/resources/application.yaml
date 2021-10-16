@@ -1,0 +1,23 @@
+server:
+  port: 8000
+  error:
+    include-message: always
+  servlet:
+    context-path: /api/v1
+
+logging:
+  level:
+    root: DEBUG
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+
+spring:
+  application:
+    name: api-gateway

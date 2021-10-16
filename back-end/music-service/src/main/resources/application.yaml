@@ -1,0 +1,38 @@
+server:
+  port: 8200
+  error:
+    include-message: always
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8100/eureka
+
+spring:
+  application:
+    name: music-service
+  jpa:
+    # Shows queries in console while running the app
+    show-sql: false
+    database-platform: blog.cybertricks.music.musicservice.utils.SqliteDialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format-sql: true
+  datasource:
+    url: jdbc:sqlite:D:/dev/music/music/music_library.db
+    driver-class-name: org.sqlite.JDBC
+  data:
+    web:
+      # https://reflectoring.io/spring-boot-paging/
+      pageable:
+        size-parameter: size
+        page-parameter: page
+        default-page-size: 10
+        one-indexed-parameters: false
+        max-page-size: 100
