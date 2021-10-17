@@ -2,8 +2,6 @@ server:
   port: 8000
   error:
     include-message: always
-  servlet:
-    context-path: /api/v1
 
 logging:
   level:
@@ -21,3 +19,12 @@ eureka:
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # https://medium.com/swlh/using-correlation-ids-with-spring-cloud-gateway-and-eureka-f00145c579ab
+          enabled: true
+
+##### Custom properties
+base-path: /api/v1

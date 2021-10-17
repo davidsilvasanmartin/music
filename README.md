@@ -2,6 +2,10 @@
 
 This project is a Plex-like website that works with Beets
 
+## Music
+
+Folder that contains a Beets library. This would be somewhere else in our filesystem.
+
 ## Back-end
 
 ### Architecture

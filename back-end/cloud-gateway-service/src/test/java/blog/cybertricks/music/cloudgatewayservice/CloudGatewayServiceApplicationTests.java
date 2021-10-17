@@ -1,10 +1,10 @@
-package blog.cybertricks.music.apigateway;
+package blog.cybertricks.music.cloudgatewayservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiGatewayApplicationTests {
+class CloudGatewayServiceApplicationTests {
 
     @Test
     void contextLoads() {
