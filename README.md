@@ -25,3 +25,20 @@ Using microservices
 ## Front-end
 
 Angular app
+
+## TODO
+
+- Add a unique id for songs in the playlist. Now when you remove one, all will be removed
+- Custom playlists (requires users service)
+- Deploy!
+- Log everything
+
+### TODO - Long term
+
+- Replace search for ElasticSearch https://reflectoring.io/hibernate-search/
+- Redis cache
+
+### DONE
+
+- Pagination for albums (also back-end)
+- Peek into an album: see songs one by one
