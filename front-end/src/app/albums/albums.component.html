@@ -1,16 +1,18 @@
-<mat-card *ngFor="let album of albums$ | async" class="album">
-  <app-album [album]="album">
-    <app-album-peek></app-album-peek>
-    <app-playlist-replace></app-playlist-replace>
-    <app-playlist-play-album></app-playlist-play-album>
-  </app-album>
-</mat-card>
+<div class="flex flex-col flex-nowrap gap-4">
+  <app-card *ngFor="let album of albums$ | async" class="album">
+    <app-album [album]="album">
+      <app-album-peek></app-album-peek>
+      <app-playlist-replace></app-playlist-replace>
+      <app-playlist-play-album></app-playlist-play-album>
+    </app-album>
+  </app-card>
 
-<mat-paginator
-  [pageIndex]="pageIndex$ | async"
-  [pageSize]="size$ | async"
-  [length]="totalElements$ | async"
-  [showFirstLastButtons]="true"
-  (page)="paginateList($event)"
->
-</mat-paginator>
+  <mat-paginator
+    (page)="paginateList($event)"
+    [length]="totalElements$ | async"
+    [pageIndex]="pageIndex$ | async"
+    [pageSize]="size$ | async"
+    [showFirstLastButtons]="true"
+  >
+  </mat-paginator>
+</div>

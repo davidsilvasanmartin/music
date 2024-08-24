@@ -11,8 +11,11 @@ import { SongComponent } from '../../song.component';
 @Component({
   selector: 'app-playlist-remove',
   template: `
-    <button mat-icon-button color="primary" aria-label="Remove from playlist">
-      <app-icon-cancel />
+    <button
+      class="btn rounded-full bg-gray-300 p-1 font-bold text-gray-800 hover:bg-gray-400"
+      aria-label="Remove from playlist"
+    >
+      <app-icon-cancel [size]="4" />
     </button>
   `,
 })

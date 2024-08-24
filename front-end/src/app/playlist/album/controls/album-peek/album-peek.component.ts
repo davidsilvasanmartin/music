@@ -9,8 +9,11 @@ import { AlbumDialogComponent } from '../../../album-dialog/album-dialog.compone
 @Component({
   selector: 'app-album-peek',
   template: `
-    <button mat-mini-fab color="primary" aria-label="Add to playlist">
-      <app-icon-eye />
+    <button
+      class="btn rounded-full bg-blue-500 p-1 font-bold text-white hover:bg-blue-700"
+      aria-label="Add to playlist"
+    >
+      <app-icon-eye [size]="4" />
     </button>
   `,
 })

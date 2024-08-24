@@ -3,6 +3,7 @@ import { IconEyeComponent } from './icon-eye/icon-eye.component';
 import { IconPlayComponent } from './icon-play/icon-play.component';
 import { IconAddToPlayListComponent } from './icon-add-to-playlist/icon-add-to-playlist.component';
 import { IconCancelComponent } from './icon-cancel/icon-cancel.component';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -11,6 +12,7 @@ import { IconCancelComponent } from './icon-cancel/icon-cancel.component';
     IconAddToPlayListComponent,
     IconCancelComponent,
   ],
+  imports: [CommonModule],
   exports: [
     IconEyeComponent,
     IconPlayComponent,
