@@ -13,9 +13,12 @@ import { UiModule } from './ui/ui.module';
 import { reducers } from './store/reducers';
 import { PlaylistModule } from './playlist';
 
+
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
+  declarations: [
+    AppComponent
+  ],
+imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -27,6 +30,6 @@ import { PlaylistModule } from './playlist';
     EffectsModule.forRoot([]),
   ],
   providers: [],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

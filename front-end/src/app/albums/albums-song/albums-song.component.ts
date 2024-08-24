@@ -7,7 +7,7 @@ import { Song } from '../../songs/song';
   styleUrls: ['./albums-song.component.scss'],
 })
 export class AlbumsSongComponent implements OnInit {
-  @Input() song: Song;
+  @Input() song: Song = null as any;
 
   constructor() {}
 

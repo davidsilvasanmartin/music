@@ -11,7 +11,7 @@ import { AlbumControl } from './controls/album-control';
   styleUrls: ['./album.component.scss'],
 })
 export class AlbumComponent {
-  @Input() album: Album;
+  @Input() album: Album = null as any;
 
   registerControl(control: AlbumControl) {
     control.clicked$

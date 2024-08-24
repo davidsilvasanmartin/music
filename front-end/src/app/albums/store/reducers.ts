@@ -8,7 +8,7 @@ const reducer = createReducer(
   on(albumsActions.loadAlbums, (state) => ({
     ...state,
     albums: {
-      data: null,
+      data: null as any,
       loading: true,
       error: null,
     },
@@ -24,7 +24,7 @@ const reducer = createReducer(
   on(albumsActions.loadAlbumsFail, (state, { error }) => ({
     ...state,
     albums: {
-      data: null,
+      data: null as any,
       loading: false,
       error,
     },

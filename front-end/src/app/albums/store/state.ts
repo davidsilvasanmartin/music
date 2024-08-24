@@ -1,4 +1,4 @@
-import { ApiPageableResourceRequest } from 'src/app/api/api-pageable-resource-request';
+import { ApiPageableResourceRequest } from '../../api/api-pageable-resource-request';
 import { AppState } from '../../store/state';
 import { Album } from '../album';
 
@@ -11,5 +11,5 @@ export interface AlbumsState {
 }
 
 export const albumsInitialState: AlbumsState = {
-  albums: { data: null, loading: false, error: null },
+  albums: { data: null as any, loading: false, error: null },
 };

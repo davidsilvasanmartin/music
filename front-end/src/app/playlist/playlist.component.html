@@ -14,7 +14,7 @@
       <code>audio</code> element.
     </audio>
   </ng-container>
-  <ng-container *ngIf="(nextSongs$ | async).length > 0; else noSongsInPlaylist">
+  <ng-container *ngIf="$any(nextSongs$ | async)?.length > 0; else noSongsInPlaylist">
     <app-song *ngFor="let song of nextSongs$ | async" [song]="song">
       <app-playlist-remove></app-playlist-remove>
     </app-song>

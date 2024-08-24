@@ -12,7 +12,7 @@ import { SongControl } from './controls/song-control';
   styleUrls: ['./song.component.scss'],
 })
 export class SongComponent {
-  @Input() song: Song;
+  @Input() song: Song = null as any;
 
   registerControl(control: SongControl) {
     control.clicked$
