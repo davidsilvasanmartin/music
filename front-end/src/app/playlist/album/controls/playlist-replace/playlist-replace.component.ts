@@ -11,14 +11,14 @@ import { AlbumControl } from '../album-control';
   selector: 'app-playlist-replace',
   template: `
     <button mat-mini-fab color="primary" aria-label="Add to playlist">
-      <mat-icon>play_arrow</mat-icon>
+      <app-icon-play />
     </button>
   `,
 })
 export class PlaylistReplaceComponent extends AlbumControl {
   constructor(
     albumComponent: AlbumComponent,
-    private readonly _store: Store<PlaylistRootState>
+    private readonly _store: Store<PlaylistRootState>,
   ) {
     super(albumComponent);
   }

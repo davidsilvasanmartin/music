@@ -12,14 +12,14 @@ import { SongComponent } from '../../song.component';
   selector: 'app-playlist-remove',
   template: `
     <button mat-icon-button color="primary" aria-label="Remove from playlist">
-      <mat-icon>close</mat-icon>
+      <app-icon-cancel />
     </button>
   `,
 })
 export class PlaylistRemoveComponent extends SongControl {
   constructor(
     songComponent: SongComponent,
-    private readonly _store: Store<PlaylistRootState>
+    private readonly _store: Store<PlaylistRootState>,
   ) {
     super(songComponent);
   }

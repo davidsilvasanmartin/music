@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
 
 import { Album } from '../../../../albums/album';
 import { AlbumComponent } from '../../album.component';
@@ -11,14 +10,14 @@ import { AlbumDialogComponent } from '../../../album-dialog/album-dialog.compone
   selector: 'app-album-peek',
   template: `
     <button mat-mini-fab color="primary" aria-label="Add to playlist">
-      <mat-icon>visibility</mat-icon>
+      <app-icon-eye />
     </button>
   `,
 })
 export class AlbumPeekComponent extends AlbumControl {
   constructor(
     albumComponent: AlbumComponent,
-    private readonly _dialog: MatDialog
+    private readonly _dialog: MatDialog,
   ) {
     super(albumComponent);
   }

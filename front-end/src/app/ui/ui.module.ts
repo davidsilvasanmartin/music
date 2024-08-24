@@ -8,9 +8,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
+import { TopbarComponent } from './topbar/topbar.component';
+import { RouterModule } from '@angular/router';
+import { IconsModule } from './icons/icons.module';
 
 @NgModule({
-  imports: [CommonModule],
+  declarations: [TopbarComponent],
+  imports: [CommonModule, RouterModule],
   exports: [
     // FlexLayoutModule,
     MatToolbarModule,
@@ -20,6 +24,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatExpansionModule,
     MatPaginatorModule,
     MatDialogModule,
+    TopbarComponent,
+    IconsModule,
   ],
 })
 export class UiModule {}

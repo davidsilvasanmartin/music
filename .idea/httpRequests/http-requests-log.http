@@ -1,0 +1,10 @@
+GET http://localhost:8080/api/songs/1/play
+User-Agent: IntelliJ HTTP Client/IntelliJ IDEA 2024.2.0.2
+Accept-Encoding: br, deflate, gzip, x-gzip
+Accept: */*
+content-length: 0
+
+<> 2024-08-24T160611.200.json
+
+###
+

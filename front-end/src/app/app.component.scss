@@ -1,12 +1,15 @@
-.example-spacer {
-  flex: 1 1 auto;
-}
-
-.example-card {
-  width: 400px;
-  margin: 0;
+.wrapper {
+  display: flex;
+  flex-flow: column nowrap;
+  min-height: 100vh;
+  align-items: center;
+  background-color: var(--bg-color);
 }
 
 .page-container {
+  padding: 16px;
   min-height: 0px;
+  display: flex;
+  flex: 1 1;
+  flex-flow: row nowrap;
 }

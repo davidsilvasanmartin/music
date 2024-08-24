@@ -10,17 +10,7 @@ Folder that contains a Beets library. This would be somewhere else in our filesy
 
 ### Architecture
 
-Using microservices
-
-- Music service: uses Beets db.
-- Users service: uses a postgres db.
-
-### Port assignment
-
-- Api gateway: 8000
-- Discovery server: 8100
-- Music service: 8200
-- Users service: 8300
+Spring application running on port 8080.
 
 ## Front-end
 
@@ -28,8 +18,9 @@ Angular app
 
 ## TODO
 
+- Fix front-end styling and get rid of Angular Material.
 - Add a unique id for songs in the playlist. Now when you remove one, all will be removed
-- Custom playlists (requires users service)
+- Custom playlists (requires users)
 - Deploy!
 - Log everything
 

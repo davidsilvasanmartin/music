@@ -8,7 +8,9 @@ pip install beets[fetchart,lyrics,lastgenre,scrub] discogs-client flask
 
 Or, alternatively, install requirements.txt.
 
-Set env var for config EVERYTIME A NEW CONSOLE IS OPENED. An ACTIVATE VENV
+Set env var for config EVERYTIME A NEW CONSOLE IS OPENED. AND ACTIVATE VENV
+
+UPDATE: setting the env variable was only needed to apply config file, now I'm passing it via -c option (see section on running beets below).
 
 ```
 .\.venv\Scripts\activate

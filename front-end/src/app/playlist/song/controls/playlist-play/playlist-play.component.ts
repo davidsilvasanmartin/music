@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Song } from '../../../../songs/song';
@@ -11,14 +11,14 @@ import { SongComponent } from '../../song.component';
   selector: 'app-playlist-play',
   template: `
     <button mat-icon-button color="primary" aria-label="Add to playlist">
-      <mat-icon>playlist_play</mat-icon>
+      <app-icon-add-to-playlist />
     </button>
   `,
 })
 export class PlaylistPlayComponent extends SongControl {
   constructor(
     songComponent: SongComponent,
-    private readonly _store: Store<PlaylistRootState>
+    private readonly _store: Store<PlaylistRootState>,
   ) {
     super(songComponent);
   }

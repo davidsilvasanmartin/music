@@ -12,14 +12,14 @@ import { AlbumControl } from '../album-control';
   selector: 'app-playlist-play-album',
   template: `
     <button mat-mini-fab color="primary" aria-label="Add to playlist">
-      <mat-icon>playlist_play</mat-icon>
+      <app-icon-add-to-playlist />
     </button>
   `,
 })
 export class PlaylistPlayAlbumComponent extends AlbumControl {
   constructor(
     albumComponent: AlbumComponent,
-    private readonly _store: Store<PlaylistRootState>
+    private readonly _store: Store<PlaylistRootState>,
   ) {
     super(albumComponent);
   }
