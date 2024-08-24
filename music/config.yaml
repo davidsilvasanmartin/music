@@ -1,8 +1,10 @@
-directory: ./library
-library: ./music_library.db
+# Please modify the following 2 properties as required
+directory: /media/dev/Data/music
+library: /media/dev/Data/music/music_library.db
 import:
   move: no
-plugins: fetchart lyrics lastgenre scrub discogs inline web
+  copy: yes
+plugins: fetchart lyrics lastgenre scrub inline web
 per_disc_numbering: yes
 paths:
     default: $albumartist/[$year] $album%aunique{}/%if{$multidisc,$disc-}$track $title
@@ -10,3 +12,5 @@ paths:
     comp: Compilations/[$year] $album%aunique{}/%if{$multidisc,$disc-}$track $title
 item_fields:
   multidisc: 1 if disctotal > 1 else 0
+lastgenre:
+  count: 5

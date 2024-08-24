@@ -24,3 +24,9 @@ beet import ./export
 - Lyrics error fix: https://github.com/beetbox/beets/issues/2805
 
 - Put single tracks/albums in SEPARATE FOLDERS
+
+## Running beets
+Please modify the directories and config file as required.
+```bash
+ beet -c ~/dev/music/music/config.yaml import /media/dev/Data/export/
+```
