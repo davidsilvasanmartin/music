@@ -17,14 +17,14 @@ public class AlbumService {
     public Page<Album> findAll(AlbumSpecification specification, Pageable pageable) {
         return albumRepository.findAll(specification, pageable);
     }
-    
+
     public Page<Album> findAll(Pageable pageable) {
         return albumRepository.findAll(pageable);
     }
 
     public Album findAlbumById(int id) {
         return albumRepository.findById(id).orElseThrow(() ->
-                new AlbumNotFoundException("Album with id " + id + "was not found")
+                new AlbumNotFoundException("Album with id " + id + " was not found")
         );
     }
 }

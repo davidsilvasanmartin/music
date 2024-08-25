@@ -20,7 +20,7 @@ public class SongService {
 
     public Song findSongById(int id) {
         return songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException("Album with id " + id + "was not found")
+                new SongNotFoundException("Album with id " + id + " was not found")
         );
     }
 }

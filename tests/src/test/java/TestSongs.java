@@ -1,9 +1,11 @@
+import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 
 public class TestSongs {
-    static int songId = 1;
+    final int songId = 1;
+    final int nonExistingSongId = 99999999;
 
     @Test
     public void getSong() {
@@ -11,32 +13,41 @@ public class TestSongs {
                 .statusCode(200).and().contentType("application/json");
     }
 
+    @Test
     public void getNonExistingSong() {
-        // TODO
+        given().when().get("songs/" + nonExistingSongId).then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
 
+    @Test
     public void getSongAlbumArt() {
-        // TODO
+        given().when().get("songs/" + songId + "/albumArt").then()
+                .statusCode(200).and().contentType("application/json");
     }
 
+    @Test
     public void getNonExistingSongAlbumArt() {
-        // TODO
+        given().when().get("songs/" + nonExistingSongId + "/albumArt").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
 
     @Test
     public void playSongWithAcceptAudio() {
+        // Below is the Accept header that Firefox uses for <audio> elements
         given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
                 .when().get("songs/" + songId + "/play").then()
-                .statusCode(200).and().contentType("audio/webm");
+                .statusCode(HttpStatus.SC_OK).and().contentType("audio/webm");
     }
 
     @Test
     public void playSongWithAcceptJson() {
         given().accept("application/json").when().get("songs/" + songId + "/play").then()
-                .statusCode(406).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_NOT_ACCEPTABLE).and().contentType("application/json");
     }
 
+    @Test
     public void playNonExistingSong() {
-        // TODO
+        given().when().get("songs/" + nonExistingSongId + "/play").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
 }

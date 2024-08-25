@@ -19,6 +19,8 @@ Angular app
 ## TODO
 
 - Fix front-end styling and get rid of Angular Material.
+- Read about content negotiation for the /play
+  endpoint (https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc)
 - Add a unique id for songs in the playlist. Now when you remove one, all will be removed
 - Custom playlists (requires users)
 - Deploy!
