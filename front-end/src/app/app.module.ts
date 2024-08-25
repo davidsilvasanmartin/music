@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -12,13 +12,12 @@ import { AlbumsModule } from './albums/albums.module';
 import { UiModule } from './ui/ui.module';
 import { reducers } from './store/reducers';
 import { PlaylistModule } from './playlist';
-
+import { ErrorHandlerService } from './error-handler.service';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-imports: [
+  declarations: [AppComponent],
+  imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -28,8 +27,10 @@ imports: [
     PlaylistModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
+    // TODO this should not be here in production
+    StoreDevtoolsModule.instrument(),
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [{ provide: ErrorHandler, useClass: ErrorHandlerService }],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -19,13 +19,19 @@ class Album implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private int id;
+
     @Column(name = "artpath")
     private String artPath;
+
     @Column(name = "albumartist")
     private String albumArtist;
+
     private String album;
+
     private String genre;
+
     private int year;
+
     @OneToMany(mappedBy = "album")
     @JsonManagedReference
     private List<Song> songs;
