@@ -1,6 +1,7 @@
 database/
 node_modules/
 target/
+test-output/
 
 #####
 ##### INTELLIJ GITIGNORE. From :https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
