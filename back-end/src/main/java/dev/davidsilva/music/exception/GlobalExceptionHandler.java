@@ -1,6 +1,8 @@
 package dev.davidsilva.music.exception;
 
 import dev.davidsilva.music.album.AlbumNotFoundException;
+import dev.davidsilva.music.search.InvalidSearchException;
+import dev.davidsilva.music.search.InvalidSearchFormatException;
 import dev.davidsilva.music.song.SongNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,18 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiErrorDto> handleSongNotFoundException(SongNotFoundException exception, WebRequest webRequest) {
         ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(apiErrorDto, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidSearchFormatException.class)
+    public ResponseEntity<ApiErrorDto> handleInvalidSearchFormatException(InvalidSearchFormatException exception, WebRequest webRequest) {
+        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidSearchException.class)
+    public ResponseEntity<ApiErrorDto> handleInvalidSearchException(InvalidSearchException exception, WebRequest webRequest) {
+        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
     }
 
     // TODO: this is not working at the moment

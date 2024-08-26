@@ -5,7 +5,7 @@ import static io.restassured.RestAssured.given;
 
 public class TestSongs {
     final int songId = 1;
-    final int nonExistingSongId = 99999999;
+    final int nonExistentSongId = 99999999;
 
     @Test
     public void getSong() {
@@ -14,8 +14,8 @@ public class TestSongs {
     }
 
     @Test
-    public void getNonExistingSong() {
-        given().when().get("songs/" + nonExistingSongId).then()
+    public void getNonExistentSong() {
+        given().when().get("songs/" + nonExistentSongId).then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
 
@@ -26,8 +26,8 @@ public class TestSongs {
     }
 
     @Test
-    public void getNonExistingSongAlbumArt() {
-        given().when().get("songs/" + nonExistingSongId + "/albumArt").then()
+    public void getNonExistentSongAlbumArt() {
+        given().when().get("songs/" + nonExistentSongId + "/albumArt").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
 
@@ -46,8 +46,14 @@ public class TestSongs {
     }
 
     @Test
-    public void playNonExistingSong() {
-        given().when().get("songs/" + nonExistingSongId + "/play").then()
+    public void playNonExistentSong() {
+        given().when().get("songs/" + nonExistentSongId + "/play").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
     }
+
+//    @Test
+//    public void searchByNonExistentSongField() {
+//        given().when().get("songs?search=NON_EXISTENT_FIELD:eq:value").then()
+//                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json");
+//    }
 }

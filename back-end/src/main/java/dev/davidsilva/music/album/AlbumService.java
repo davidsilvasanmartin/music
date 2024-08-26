@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class AlbumService {
     private final AlbumRepository albumRepository;
+    private final AlbumDtoMapper albumDtoMapper;
 
     @Autowired
-    public AlbumService(AlbumRepository albumRepository) {
+    public AlbumService(AlbumRepository albumRepository, AlbumDtoMapper albumDtoMapper) {
         this.albumRepository = albumRepository;
+        this.albumDtoMapper = albumDtoMapper;
     }
 
     public Page<Album> findAll(AlbumSpecification specification, Pageable pageable) {
@@ -22,9 +24,17 @@ public class AlbumService {
         return albumRepository.findAll(pageable);
     }
 
-    public Album findAlbumById(int id) {
-        return albumRepository.findById(id).orElseThrow(() ->
+    public AlbumDto findAlbumById(int id) {
+        Album album = albumRepository.findById(id).orElseThrow(() ->
                 new AlbumNotFoundException("Album with id " + id + " was not found")
         );
+        return albumDtoMapper.toDto(album);
+    }
+
+    public String findAlbumArtPathById(int id) {
+        Album album = albumRepository.findById(id).orElseThrow(() ->
+                new AlbumNotFoundException("Album with id " + id + " was not found")
+        );
+        return album.getArtPath();
     }
 }

@@ -8,8 +8,6 @@ Folder that contains a Beets library. This would be somewhere else in our filesy
 
 ## Back-end
 
-### Architecture
-
 Spring application running on port 8080.
 
 ## Front-end
@@ -34,4 +32,5 @@ Angular app
 ### DONE
 
 - Pagination for albums (also back-end)
-- Peek into an album: see songs one by one
+- Specification for searching albums, inspired on https://attacomsian.com/blog/spring-data-jpa-specifications.
+- Peek into an albumDto: see songs one by one
