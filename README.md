@@ -10,6 +10,14 @@ Folder that contains a Beets library. This would be somewhere else in our filesy
 
 Spring application running on port 8080.
 
+Selected topics:
+
+- JPA Criteria queries
+    - https://www.baeldung.com/jpa-and-or-criteria-predicates
+    - https://www.baeldung.com/spring-data-criteria-queries
+    - https://www.baeldung.com/hibernate-criteria-queries
+    - https://www.baeldung.com/rest-api-search-language-spring-data-specifications
+
 ## Front-end
 
 Angular app

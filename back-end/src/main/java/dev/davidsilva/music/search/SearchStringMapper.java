@@ -16,8 +16,14 @@ public class SearchStringMapper {
             if (searchParts.length != 3) {
                 throw new InvalidSearchFormatException(searchString);
             }
-            // TODO validation here
-            searchCriteria.add(new SearchCriteria(searchParts[0], SearchOperation.fromString(searchParts[1]), searchParts[2]));
+
+            String searchOperationString = searchParts[1];
+            SearchOperation searchOperation = SearchOperation.fromString(searchOperationString);
+            if (searchOperation == null) {
+                throw new InvalidSearchOperationException(searchOperationString);
+            }
+
+            searchCriteria.add(new SearchCriteria(searchParts[0], searchOperation, searchParts[2]));
         }
         return searchCriteria;
     }
