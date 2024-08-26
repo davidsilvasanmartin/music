@@ -1,9 +1,9 @@
 package dev.davidsilva.music.album;
 
 import dev.davidsilva.music.search.SearchStringMapper;
+import dev.davidsilva.music.utils.PaginatedResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -21,7 +21,7 @@ public class AlbumController {
     private final SearchStringMapper searchStringMapper;
 
     @GetMapping
-    public ResponseEntity<Page<Album>> getAlbums(
+    public ResponseEntity<PaginatedResponse<AlbumDto>> getAlbums(
             @PageableDefault(page = 0, size = 10)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "albumArtist", direction = Sort.Direction.ASC),
@@ -30,7 +30,7 @@ public class AlbumController {
             Pageable pageable,
             @RequestParam(value = "search", required = false) String search
     ) {
-        Page<Album> paginatedAlbums;
+        PaginatedResponse<AlbumDto> paginatedAlbums;
         if (search != null) {
             AlbumSpecification albumSpecification = new AlbumSpecification(searchStringMapper.toSearchCriteria(search));
             paginatedAlbums = albumService.findAll(albumSpecification, pageable);

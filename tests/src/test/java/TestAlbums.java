@@ -18,14 +18,14 @@ public class TestAlbums {
     @Test
     void getAlbums() {
         given().when().get("albums").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("number", equalTo(0))
+                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(0))
                 .body("size", equalTo(10)).body("content.size()", greaterThan(0));
     }
 
     @Test
     void getAlbumsWithPage() {
         given().when().get("albums?page=2").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("number", equalTo(2))
+                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(2))
                 .body("size", equalTo(10)).body("content.size()", greaterThan(0));
     }
 
@@ -99,8 +99,8 @@ public class TestAlbums {
 
     @Test
     void searchAlbumsByGenre() {
-        given().when().get("albums?search=genre:eq:" + albumGenre).then()
+        given().when().get("albums?search=genre:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
-                .body("content.size()", greaterThan(0)).body("content[0].genre", equalTo(albumGenre));
+                .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
     }
 }

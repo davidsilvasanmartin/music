@@ -1,6 +1,7 @@
 package dev.davidsilva.music.album;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import dev.davidsilva.music.utils.ListMapper;
+import dev.davidsilva.music.utils.PaginatedResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -9,19 +10,22 @@ import org.springframework.stereotype.Service;
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumDtoMapper albumDtoMapper;
+    private final ListMapper<Album, AlbumDto> listMapper;
 
-    @Autowired
     public AlbumService(AlbumRepository albumRepository, AlbumDtoMapper albumDtoMapper) {
         this.albumRepository = albumRepository;
         this.albumDtoMapper = albumDtoMapper;
+        this.listMapper = (albums) -> albums.stream().map(albumDtoMapper::toDto).toList();
     }
 
-    public Page<Album> findAll(AlbumSpecification specification, Pageable pageable) {
-        return albumRepository.findAll(specification, pageable);
+    public PaginatedResponse<AlbumDto> findAll(AlbumSpecification specification, Pageable pageable) {
+        Page<Album> albumsPage = albumRepository.findAll(specification, pageable);
+        return PaginatedResponse.fromPage(albumsPage, listMapper);
     }
 
-    public Page<Album> findAll(Pageable pageable) {
-        return albumRepository.findAll(pageable);
+    public PaginatedResponse<AlbumDto> findAll(Pageable pageable) {
+        Page<Album> albumsPage = albumRepository.findAll(pageable);
+        return PaginatedResponse.fromPage(albumsPage, listMapper);
     }
 
     public AlbumDto findAlbumById(int id) {
