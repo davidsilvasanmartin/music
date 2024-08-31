@@ -1,6 +1,7 @@
 # Please modify the following 2 properties as required
-directory: /media/dev/Data/music
-library: /media/dev/Data/music/music_library.db
+# TODO pass values from environment variables
+directory: ~/music
+library: ~/music/music_library.db
 import:
   move: no
   copy: yes

@@ -1,6 +1,4 @@
 .venv/
-export/
-library/
 discogs_token.json
 state.pickle
-music_library.db
+.idea

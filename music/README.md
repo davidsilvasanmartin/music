@@ -1,34 +1,35 @@
 https://beets.readthedocs.io/en/stable/reference/config.html
 
-Install (after creating venv: `py -m venv ./.venv`):
+## How to run beets to create a music library
 
-```
-pip install beets[fetchart,lyrics,lastgenre,scrub] discogs-client flask
-```
+1. Open `config.yaml`. Change the following variables:
+    - `directory`: this is the directory where the actual music collection will be stored.
+This directory needs to  be specified in the back-end project too.
+    - `library`: this is the sqlite database file that beets will create and use for
+keeping track of all the music.
 
-Or, alternatively, install requirements.txt.
-
-Set env var for config EVERYTIME A NEW CONSOLE IS OPENED. AND ACTIVATE VENV
-
-UPDATE: setting the env variable was only needed to apply config file, now I'm passing it via -c option (see section on running beets below).
-
-```
-.\.venv\Scripts\activate
-set BEETSDIR=.
+2. (Optional but highly recommended). Create a Python virtual environment and activate it:
+```shell
+python3 -m venv ./.venv
+source ./.venv/bin/activate
 ```
 
-Import all
+3. Install the required libraries
 
+```shell
+pip install -r requirements.txt
 ```
-beet import ./export
-```
 
-- Lyrics error fix: https://github.com/beetbox/beets/issues/2805
+- Please note, the libraries that were installed originally are as follows:
+`pip install beets[fetchart,lyrics,lastgenre,scrub] flask`
 
-- Put single tracks/albums in SEPARATE FOLDERS
+4. Copy music you want to import into beets into the `export` directory,
+under this same folder.
+- Tip: each folder under `export/` should be one album. Don't create artist folders
+that include several albums each.
+ 
+5. Finally, use beets to import the music into your library.
 
-## Running beets
-Please modify the directories and config file as required.
-```bash
- beet -c ~/dev/music/music/config.yaml import /media/dev/Data/export/
+```shell
+beet -c $(pwd)/config.yaml import $(pwd)/export/
 ```
