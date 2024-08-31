@@ -7,7 +7,7 @@ import { Component, input } from '@angular/core';
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      [ngClass]="['size-' + size()]"
+      [ngClass]="'size-' + size()"
     >
       <path
         fill-rule="evenodd"
