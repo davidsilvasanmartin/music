@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
 
 import { Album } from '../../albums/album';

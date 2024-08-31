@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+
 import { map, switchMap } from 'rxjs/operators';
 
 import { PageableResource } from '../../api/api-pageable-resource-request';
-import { AlbumsService } from '../albums.service';
 import { Album } from '../album';
+import { AlbumsService } from '../albums.service';
 import * as albumsActions from './actions';
 
 @Injectable()

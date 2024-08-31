@@ -1,12 +1,13 @@
 import { Component, computed, OnDestroy, Signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+
 import { select, Store } from '@ngrx/store';
 
-import * as playlistSelectors from './store/selectors';
-import * as playlistActions from './store/actions';
-import { Song } from '../songs/song';
-import { PlaylistRootState } from './store/state';
 import { ApiService } from '../api/api.service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Song } from '../songs/song';
+import * as playlistActions from './store/actions';
+import * as playlistSelectors from './store/selectors';
+import { PlaylistRootState } from './store/state';
 
 @Component({
   selector: 'app-playlist',

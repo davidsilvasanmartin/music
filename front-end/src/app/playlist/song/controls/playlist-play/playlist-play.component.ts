@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+
 import { Store } from '@ngrx/store';
 
 import { Song } from '../../../../songs/song';
-import { PlaylistRootState } from '../../../store/state';
 import * as playlistActions from '../../../store/actions';
-import { SongControl } from '../song-control';
+import { PlaylistRootState } from '../../../store/state';
 import { SongComponent } from '../../song.component';
+import { SongControl } from '../song-control';
 
 @Component({
   selector: 'app-playlist-play',

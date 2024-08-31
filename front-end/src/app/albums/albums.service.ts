@@ -5,8 +5,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { PageableResource } from '../api/api-pageable-resource-request';
 import { ApiService } from '../api/api.service';
+import { PageableResource } from '../api/api-pageable-resource-request';
 import { Album } from './album';
 import { AlbumDto } from './album-dto';
 import { AlbumsMapper } from './albums-mapper.service';

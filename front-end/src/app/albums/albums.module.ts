@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
 
-import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 
-import { AlbumsComponent } from './albums.component';
-import { UiModule } from '../ui/ui.module';
 import { PlaylistModule } from '../playlist';
-import { albumsReducer } from './store/reducers';
-import { AlbumsEffects } from './store/effects';
+import { UiModule } from '../ui/ui.module';
+import { AlbumsComponent } from './albums.component';
 import { AlbumsSongComponent } from './albums-song/albums-song.component';
+import { AlbumsEffects } from './store/effects';
+import { albumsReducer } from './store/reducers';
 
 @NgModule({
   declarations: [AlbumsComponent, AlbumsSongComponent],

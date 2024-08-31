@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module version="4">
   <component name="AdditionalModuleElements">
-    <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/music/.idea/dataSources" />
-      <excludeFolder url="file://$MODULE_DIR$/music/.venv" />
-      <excludeFolder url="file://$MODULE_DIR$/music/export" />
-      <excludeFolder url="file://$MODULE_DIR$/music/library" />
-      <excludeFolder url="file://$MODULE_DIR$/target" />
-    </content>
+    <content url="file://$MODULE_DIR$" />
   </component>
 </module>

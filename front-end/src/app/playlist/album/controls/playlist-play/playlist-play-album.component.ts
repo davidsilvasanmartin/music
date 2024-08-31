@@ -3,9 +3,9 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { Album } from '../../../../albums/album';
+import * as playlistActions from '../../../store/actions';
 import { PlaylistRootState } from '../../../store/state';
 import { AlbumComponent } from '../../album.component';
-import * as playlistActions from '../../../store/actions';
 import { AlbumControl } from '../album-control';
 
 @Component({

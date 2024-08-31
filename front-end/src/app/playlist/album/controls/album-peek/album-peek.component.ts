@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { Album } from '../../../../albums/album';
+import { AlbumDialogComponent } from '../../../album-dialog/album-dialog.component';
 import { AlbumComponent } from '../../album.component';
 import { AlbumControl } from '../album-control';
-import { AlbumDialogComponent } from '../../../album-dialog/album-dialog.component';
 
 @Component({
   selector: 'app-album-peek',

@@ -1,13 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 
 import { select, Store } from '@ngrx/store';
+
 import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment';
-import * as albumsSelectors from './store/selectors';
-import * as albumsActions from './store/actions';
 import { Album } from './album';
-import { PageEvent } from '@angular/material/paginator';
+import * as albumsActions from './store/actions';
+import * as albumsSelectors from './store/selectors';
 
 @Component({
   selector: 'app-albums',

@@ -2,6 +2,8 @@
 const eslint = require("@eslint/js");
 const tseslint = require("typescript-eslint");
 const angular = require("angular-eslint");
+const simpleImportSort = require("eslint-plugin-simple-import-sort");
+const unusedImports = require("eslint-plugin-unused-imports");
 
 module.exports = tseslint.config(
   {
@@ -33,11 +35,32 @@ module.exports = tseslint.config(
     },
   },
   {
+    files: ["**/*.ts"],
+    plugins: { "simple-import-sort": simpleImportSort },
+    rules: {
+      "simple-import-sort/imports": [
+        "error",
+        {
+          groups: [["^@angular"], ["^@"], ["^[^.]"], ["^\\."]],
+        },
+      ],
+      "simple-import-sort/exports": "error",
+    },
+  },
+  {
+    files: ["**/*.ts"],
+    plugins: { "unused-imports": unusedImports },
+    rules: {
+      "unused-imports/no-unused-imports": "error",
+      "unused-imports/no-unused-vars": "error",
+    },
+  },
+  {
     files: ["**/*.html"],
     extends: [
       ...angular.configs.templateRecommended,
       ...angular.configs.templateAccessibility,
     ],
     rules: {},
-  }
+  },
 );
