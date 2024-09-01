@@ -1,12 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
-import { Album } from '../../../../albums/album';
+import { Song } from '../../../../songs/song';
 import * as playlistActions from '../../../store/actions';
 import { PlaylistRootState } from '../../../store/state';
-import { AlbumComponent } from '../../album.component';
-import { AlbumControl } from '../album-control';
 
 @Component({
   selector: 'app-playlist-replace',
@@ -14,21 +12,21 @@ import { AlbumControl } from '../album-control';
     <button
       class="btn rounded-full bg-blue-500 p-1 font-bold text-white hover:bg-blue-700"
       aria-label="Add to playlist"
+      (click)="replacePlaylist()"
     >
       <app-icon-play />
     </button>
   `,
 })
-export class PlaylistReplaceComponent extends AlbumControl {
-  constructor(
-    albumComponent: AlbumComponent,
-    private readonly _store: Store<PlaylistRootState>,
-  ) {
-    super(albumComponent);
-  }
+export class PlaylistReplaceComponent {
+  songs = input.required<Song[]>();
 
-  onClickAction(album: Album) {
+  constructor(private readonly _store: Store<PlaylistRootState>) {}
+
+  replacePlaylist() {
     this._store.dispatch(playlistActions.reset());
-    this._store.dispatch(playlistActions.addToPlaylist({ songs: album.songs }));
+    this._store.dispatch(
+      playlistActions.addToPlaylist({ songs: this.songs() }),
+    );
   }
 }

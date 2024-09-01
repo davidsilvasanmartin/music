@@ -10,9 +10,10 @@ import { AlbumsComponent } from './albums.component';
 import { AlbumsSongComponent } from './albums-song/albums-song.component';
 import { AlbumsEffects } from './store/effects';
 import { albumsReducer } from './store/reducers';
+import { AlbumComponent } from './album/album.component';
 
 @NgModule({
-  declarations: [AlbumsComponent, AlbumsSongComponent],
+  declarations: [AlbumsComponent, AlbumsSongComponent, AlbumComponent],
   imports: [
     CommonModule,
     UiModule,

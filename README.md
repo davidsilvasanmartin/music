@@ -5,7 +5,8 @@ This project is a Plex-like website that works with Beets
 ## Usage tips
 
 - On MAC, in order to be able to play hi-fi audio, we need to enable it as per the following
-  article: https://support.apple.com/en-us/101405.
+  article: https://support.apple.com/en-us/101405. However, it is still not clear to me whether the
+  default HTML audio player will use the enhanced quality or not.
 
 ## `/music`
 

@@ -1,9 +1,8 @@
 <div class="flex flex-col flex-nowrap gap-4">
   <app-card *ngFor="let album of albums$ | async" class="album">
     <app-album [album]="album">
-      <app-album-peek></app-album-peek>
-      <app-playlist-replace></app-playlist-replace>
-      <app-playlist-play-album></app-playlist-play-album>
+      <app-playlist-replace [songs]="album.songs" />
+      <app-playlist-play-album [songs]="album.songs" />
     </app-album>
   </app-card>
 
