@@ -30,7 +30,6 @@ public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
         SongDto songDto = new SongDto();
         songDto.setId(song.getId());
         songDto.setTitle(song.getTitle());
-        songDto.setLyrics(song.getLyrics());
         return songDto;
     }
 }

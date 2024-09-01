@@ -10,6 +10,7 @@ public class SearchStringMapper {
     public List<SearchCriteria> toSearchCriteria(String searchString) {
         List<SearchCriteria> searchCriteria = new ArrayList<>();
 
+        // TODO: searches where there is a comma in the data (part 3) are not working
         String[] stringCriteria = searchString.split(",");
         for (String stringCriterion : stringCriteria) {
             String[] searchParts = stringCriterion.split(":");

@@ -18,29 +18,20 @@ public class PaginatedResponse<T> {
     @JsonProperty(value = "totalElements")
     long totalElements;
 
-    @JsonProperty(value = "totalPages")
-    int totalPages;
-
-    @JsonProperty(value = "isLast")
-    boolean isLast;
-
-    public PaginatedResponse(int page, int size, long totalElements, int totalPages, boolean isLast, List<T> content) {
+    public PaginatedResponse(int page, int size, long totalElements, List<T> content) {
         this.page = page;
         this.size = size;
         this.totalElements = totalElements;
-        this.totalPages = totalPages;
-        this.isLast = isLast;
         this.content = content;
     }
 
 
     public static <From, To> PaginatedResponse<To> fromPage(Page<From> page, ListMapper<From, To> mapper) {
         return new PaginatedResponse<To>(
-                page.getNumber(),
+                // The Page is 0-indexed, but we expose 1-indexed page parameter
+                page.getNumber() + 1,
                 page.getSize(),
                 page.getTotalElements(),
-                page.getTotalPages(),
-                page.isLast(),
                 mapper.map(page.getContent())
         );
     }

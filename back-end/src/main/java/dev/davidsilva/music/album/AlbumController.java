@@ -22,7 +22,7 @@ public class AlbumController {
 
     @GetMapping
     public ResponseEntity<PaginatedResponse<AlbumDto>> getAlbums(
-            @PageableDefault(page = 0, size = 10)
+            @PageableDefault(page = 1, size = 10)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "albumArtist", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "year", direction = Sort.Direction.ASC)

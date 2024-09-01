@@ -4,7 +4,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { CardModule } from './card/card.module';
 import { IconsModule } from './icons/icons.module';
-import { PaginatorModule } from './paginator/paginator.module';
+import { PaginationModule } from './pagination/pagination.module';
 import { TopbarModule } from './topbar/topbar.module';
 
 @NgModule({
@@ -14,7 +14,7 @@ import { TopbarModule } from './topbar/topbar.module';
     TopbarModule,
     IconsModule,
     CardModule,
-    PaginatorModule,
+    PaginationModule,
   ],
 })
 export class UiModule {}
