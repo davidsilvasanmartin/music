@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-icon-cancel',
@@ -7,7 +7,6 @@ import { Component, input } from '@angular/core';
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      [ngClass]="'size-' + size()"
     >
       <path
         fill-rule="evenodd"
@@ -16,8 +15,6 @@ import { Component, input } from '@angular/core';
       />
     </svg>
   `,
-  styles: ':host { display:contents; }',
+  styles: ':host { display: flex; }',
 })
-export class IconCancelComponent {
-  size = input(4);
-}
+export class IconCancelComponent {}

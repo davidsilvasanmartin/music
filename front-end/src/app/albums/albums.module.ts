@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { PlaylistModule } from '../playlist';
+import { PlayerModule } from '../player';
 import { UiModule } from '../ui/ui.module';
 import { AlbumsComponent } from './albums.component';
 import { AlbumsSongComponent } from './albums-song/albums-song.component';
@@ -16,7 +16,8 @@ import { albumsReducer } from './store/reducers';
   imports: [
     CommonModule,
     UiModule,
-    PlaylistModule,
+    // TODO remove this because it's importing a store
+    PlayerModule,
     StoreModule.forFeature('albums', albumsReducer),
     EffectsModule.forFeature([AlbumsEffects]),
   ],

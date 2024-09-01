@@ -15,7 +15,7 @@ import { SongControl } from '../song-control';
       class="btn rounded-full bg-gray-300 p-1 font-bold text-gray-800 hover:bg-gray-400"
       aria-label="Remove from playlist"
     >
-      <app-icon-cancel [size]="4" />
+      <app-icon-cancel class="size-4" />
     </button>
   `,
 })

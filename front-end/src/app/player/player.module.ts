@@ -9,15 +9,16 @@ import { AlbumPeekComponent } from './album/controls/album-peek/album-peek.compo
 import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playlist-play-album.component';
 import { PlaylistReplaceComponent } from './album/controls/playlist-replace/playlist-replace.component';
 import { AlbumDialogComponent } from './album-dialog/album-dialog.component';
-import { PlaylistComponent } from './playlist.component';
+import { PlayerComponent } from './player.component';
 import { PlaylistPlayComponent } from './song/controls/playlist-play/playlist-play.component';
 import { PlaylistRemoveComponent } from './song/controls/playlist-remove/playlist-remove.component';
 import { SongComponent } from './song/song.component';
 import { playlistReducer } from './store/reducers';
+import { PlaylistComponent } from './playlist/playlist.component';
 
 @NgModule({
   declarations: [
-    PlaylistComponent,
+    PlayerComponent,
     PlaylistRemoveComponent,
     PlaylistPlayComponent,
     SongComponent,
@@ -26,6 +27,7 @@ import { playlistReducer } from './store/reducers';
     PlaylistReplaceComponent,
     AlbumPeekComponent,
     AlbumDialogComponent,
+    PlaylistComponent,
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,7 @@ import { playlistReducer } from './store/reducers';
   ],
   exports: [
     PlaylistRemoveComponent,
-    PlaylistComponent,
+    PlayerComponent,
     SongComponent,
     PlaylistPlayComponent,
     PlaylistRemoveComponent,
@@ -44,4 +46,4 @@ import { playlistReducer } from './store/reducers';
     AlbumPeekComponent,
   ],
 })
-export class PlaylistModule {}
+export class PlayerModule {}

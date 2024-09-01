@@ -11,7 +11,7 @@ import { AlbumsModule } from './albums/albums.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { ErrorHandlerService } from './error-handler.service';
-import { PlaylistModule } from './playlist';
+import { PlayerModule } from './player';
 import { reducers } from './store/reducers';
 import { UiModule } from './ui/ui.module';
 
@@ -24,7 +24,7 @@ import { UiModule } from './ui/ui.module';
     BrowserAnimationsModule,
     UiModule,
     AlbumsModule,
-    PlaylistModule,
+    PlayerModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     // TODO this should not be here in production

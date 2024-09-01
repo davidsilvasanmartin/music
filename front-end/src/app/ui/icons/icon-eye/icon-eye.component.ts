@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 
 @Component({
   selector: 'app-icon-eye',
@@ -7,7 +7,7 @@ import { Component, input } from '@angular/core';
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      [ngClass]="'size-' + size()"
+      [ngClass]="svgClasses()"
     >
       <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
       <path
@@ -21,4 +21,9 @@ import { Component, input } from '@angular/core';
 })
 export class IconEyeComponent {
   size = input(4);
+
+  svgClasses = computed(() => ({
+    ['size-' + this.size()]: true,
+    flex: true,
+  }));
 }

@@ -1,0 +1,52 @@
+@if (isPlaylistOpen()) {
+  <div
+    class="pointer-events-none absolute bottom-20 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
+  >
+    <div
+      class="pointer-events-auto relative m-2 flex-shrink-0 flex-grow-0 overflow-y-auto bg-emerald-50 px-2 shadow-md"
+      style="flex-basis: 64rem; max-height: 32rem"
+    >
+      <div
+        class="absolute left-0 right-0 top-0 flex flex-row justify-end"
+      ></div>
+      <div class="flex flex-col flex-nowrap">
+        <div class="sticky top-0 bg-emerald-50 p-2">
+          <div class="flex flex-row flex-nowrap">
+            <span class="flex-grow">Playlist</span>
+            <button (click)="closePlaylist()">
+              <app-icon-cancel class="size-4" />
+            </button>
+          </div>
+        </div>
+        @if (nextSongs() && nextSongs().length > 0) {
+          @for (song of nextSongs(); track song) {
+            <app-song [song]="song">
+              <app-playlist-remove></app-playlist-remove>
+            </app-song>
+          }
+        } @else {
+          <div class="p-2">No songs in playlist</div>
+        }
+      </div>
+    </div>
+  </div>
+}
+<div class="z-10 flex h-20 flex-row flex-nowrap bg-emerald-50 shadow-md">
+  <button (click)="togglePlaylist()">OPEN</button>
+  @if (currentSong(); as song) {
+    <img [src]="currentSongImgUrl()" alt="Album art" class="w-8" />
+    <app-song [song]="song">
+      <app-playlist-remove></app-playlist-remove>
+    </app-song>
+    <audio
+      (ended)="goToNextSong()"
+      [autoplay]="true"
+      [src]="currentSongAudioUrl()"
+      type="audio/*"
+      controls
+    >
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+  }
+</div>

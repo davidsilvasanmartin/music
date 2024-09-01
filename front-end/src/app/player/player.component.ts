@@ -1,4 +1,4 @@
-import { Component, computed, OnDestroy, Signal } from '@angular/core';
+import { Component, computed, OnDestroy, Signal, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 
 import { select, Store } from '@ngrx/store';
@@ -10,10 +10,10 @@ import * as playlistSelectors from './store/selectors';
 import { PlaylistRootState } from './store/state';
 
 @Component({
-  selector: 'app-playlist',
-  templateUrl: './playlist.component.html',
+  selector: 'app-player',
+  templateUrl: './player.component.html',
 })
-export class PlaylistComponent implements OnDestroy {
+export class PlayerComponent implements OnDestroy {
   currentSong: Signal<Song>;
   currentSongImgUrl: Signal<string> = computed(() =>
     this._apiService.createApiUrl(`/songs/${this.currentSong().id}/albumArt`),
@@ -22,6 +22,7 @@ export class PlaylistComponent implements OnDestroy {
     this._apiService.createApiUrl(`/songs/${this.currentSong().id}/play`),
   );
   nextSongs: Signal<Song[]>;
+  isPlaylistOpen = signal(false);
 
   constructor(
     private readonly _store: Store<PlaylistRootState>,
@@ -44,5 +45,13 @@ export class PlaylistComponent implements OnDestroy {
 
   ngOnDestroy() {
     this._store.dispatch(playlistActions.reset());
+  }
+
+  togglePlaylist() {
+    this.isPlaylistOpen.set(!this.isPlaylistOpen());
+  }
+
+  closePlaylist() {
+    this.isPlaylistOpen.set(false);
   }
 }
