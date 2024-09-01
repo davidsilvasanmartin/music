@@ -4,6 +4,7 @@ import dev.davidsilva.music.album.AlbumNotFoundException;
 import dev.davidsilva.music.search.InvalidSearchException;
 import dev.davidsilva.music.search.InvalidSearchFormatException;
 import dev.davidsilva.music.search.InvalidSearchOperationException;
+import dev.davidsilva.music.song.SongFormatNotSupportedException;
 import dev.davidsilva.music.song.SongNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,13 @@ public class GlobalExceptionHandler {
         ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
         return new ResponseEntity<>(apiErrorDto, HttpStatus.NOT_ACCEPTABLE);
     }
+
+    @ExceptionHandler(SongFormatNotSupportedException.class)
+    public ResponseEntity<ApiErrorDto> handleInvalidSearchOperationException(SongFormatNotSupportedException exception, WebRequest webRequest) {
+        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
+        return new ResponseEntity<>(apiErrorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 
 //    @ExceptionHandler(Exception.class)
 //    public ResponseEntity<ApiErrorDto> handleGenericException(Exception exception, WebRequest webRequest) {

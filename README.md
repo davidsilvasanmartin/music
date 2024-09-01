@@ -2,11 +2,16 @@
 
 This project is a Plex-like website that works with Beets
 
-## Music
+## Usage tips
 
-Folder that contains a Beets library. This would be somewhere else in our filesystem.
+- On MAC, in order to be able to play hi-fi audio, we need to enable it as per the following
+  article: https://support.apple.com/en-us/101405.
 
-## Back-end
+## `/music`
+
+Folder that contains the Beets configuration. Use the project within this folder to create the music library.
+
+## `/back-end`
 
 Spring application running on port 8080.
 
@@ -18,7 +23,7 @@ Selected topics:
     - https://www.baeldung.com/hibernate-criteria-queries
     - https://www.baeldung.com/rest-api-search-language-spring-data-specifications
 
-## Front-end
+## `/front-end`
 
 Angular app
 
@@ -29,7 +34,7 @@ Angular app
   endpoint (https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc)
 - Add a unique id for songs in the playlist. Now when you remove one, all will be removed
 - Custom playlists (requires users)
-- Deploy!
+- Deploy! Containerise so it can be run with one command.
 - Log everything
 
 ### TODO - Long term
