@@ -1,46 +1,51 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
+import { Component, OnDestroy } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
 
+import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
-import { environment } from '../../environments/environment';
+import { PaginatedListComponent } from '../ui/pagination/paginated-list/paginated-list.component';
 import { Album } from './album';
 import * as albumsActions from './store/actions';
 import * as albumsSelectors from './store/selectors';
 
+@UntilDestroy()
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
   styleUrls: ['./albums.component.scss'],
 })
-export class AlbumsComponent implements OnInit, OnDestroy {
+export class AlbumsComponent
+  extends PaginatedListComponent
+  implements OnDestroy
+{
   albums$: Observable<Album[]>;
   pageIndex$: Observable<number>;
   size$: Observable<number>;
   totalElements$: Observable<number>;
 
-  apiUrl = environment.apiUrl;
-
-  constructor(private readonly _store: Store) {
+  constructor(
+    activatedRoute: ActivatedRoute,
+    private readonly _store: Store,
+  ) {
+    super(activatedRoute);
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
     this.pageIndex$ = this._store.pipe(select(albumsSelectors.getPageIndex));
     this.size$ = this._store.pipe(select(albumsSelectors.getSize));
     this.totalElements$ = this._store.pipe(
-      select(albumsSelectors.getTotalElements)
+      select(albumsSelectors.getTotalElements),
     );
-  }
-
-  ngOnInit() {
-    this._store.dispatch(albumsActions.loadAlbums({}));
+    this.paginationParams$
+      .pipe(takeUntilDestroyed())
+      .subscribe((paginationParams) =>
+        this._store.dispatch(albumsActions.loadAlbums({ paginationParams })),
+      );
   }
 
   ngOnDestroy() {
     this._store.dispatch(albumsActions.reset());
-  }
-
-  paginateList(pageEvent: PageEvent) {
-    this._store.dispatch(albumsActions.loadAlbums({ pageEvent }));
   }
 }

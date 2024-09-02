@@ -1,12 +1,12 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { PageEvent } from '@angular/material/paginator';
 
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiService } from '../api/api.service';
 import { PageableResource } from '../api/api-pageable-resource-request';
+import { PaginationParams } from '../ui/pagination/pagination-params';
 import { Album } from './album';
 import { AlbumDto } from './album-dto';
 import { AlbumsMapper } from './albums-mapper.service';
@@ -18,29 +18,31 @@ export class AlbumsService {
   constructor(
     private readonly _http: HttpClient,
     private readonly _albumsMapper: AlbumsMapper,
-    private readonly _apiService: ApiService
+    private readonly _apiService: ApiService,
   ) {}
 
-  getAlbums(pageEvent: PageEvent): Observable<PageableResource<Album[]>> {
+  getAlbums(
+    paginationParams: PaginationParams,
+  ): Observable<PageableResource<Album[]>> {
     return this._http
       .get<PageableResource<AlbumDto[]>>(
         this._apiService.createApiUrl('albums'),
         {
           params: new HttpParams({
             fromObject: {
-              page: pageEvent?.pageIndex,
-              size: pageEvent?.pageSize,
+              page: paginationParams.page,
+              size: paginationParams.size,
             },
           }),
-        }
+        },
       )
       .pipe(
         map((albumsResource: PageableResource<AlbumDto[]>) => ({
           ...albumsResource,
           content: albumsResource.content.map((a: AlbumDto) =>
-            this._albumsMapper.fromDto(a)
+            this._albumsMapper.fromDto(a),
           ),
-        }))
+        })),
       );
   }
 }

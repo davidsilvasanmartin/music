@@ -14,20 +14,20 @@ export class AlbumsEffects {
   loadAlbums$ = createEffect(() =>
     this._actions$.pipe(
       ofType(albumsActions.loadAlbums),
-      switchMap(({ pageEvent }) =>
+      switchMap(({ paginationParams }) =>
         this._albumsService
-          .getAlbums(pageEvent as any)
+          .getAlbums(paginationParams)
           .pipe(
             map((albums: PageableResource<Album[]>) =>
-              albumsActions.loadAlbumsSuccess({ albums })
-            )
-          )
-      )
-    )
+              albumsActions.loadAlbumsSuccess({ albums }),
+            ),
+          ),
+      ),
+    ),
   );
 
   constructor(
     private readonly _actions$: Actions,
-    private readonly _albumsService: AlbumsService
+    private readonly _albumsService: AlbumsService,
   ) {}
 }

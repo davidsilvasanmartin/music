@@ -6,12 +6,9 @@
     </app-album>
   </app-card>
 
-  <mat-paginator
-    (page)="paginateList($event)"
-    [length]="totalElements$ | async"
-    [pageIndex]="pageIndex$ | async"
-    [pageSize]="size$ | async"
-    [showFirstLastButtons]="true"
-  >
-  </mat-paginator>
+  <app-paginator
+    [page]="pageIndex$ | async"
+    [size]="size$ | async"
+    [totalElements]="totalElements$ | async"
+  />
 </div>
