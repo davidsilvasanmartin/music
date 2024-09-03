@@ -21,7 +21,7 @@
         @if (nextSongs() && nextSongs().length > 0) {
           @for (song of nextSongs(); track song) {
             <app-song [song]="song">
-              <app-playlist-remove></app-playlist-remove>
+              <app-player-playlist-remove [song]="song" />
             </app-song>
           }
         } @else {
@@ -36,7 +36,7 @@
   @if (currentSong(); as song) {
     <img [src]="currentSongImgUrl()" alt="Album art" class="w-8" />
     <app-song [song]="song">
-      <app-playlist-remove></app-playlist-remove>
+      <app-player-playlist-remove [song]="song" />
     </app-song>
     <audio
       (ended)="goToNextSong()"

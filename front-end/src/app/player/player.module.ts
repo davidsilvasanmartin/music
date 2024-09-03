@@ -4,24 +4,22 @@ import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
 import { UiModule } from '../ui/ui.module';
-import { PlaylistPlayAlbumComponent } from './album/controls/playlist-play/playlist-play-album.component';
-import { PlaylistReplaceComponent } from './album/controls/playlist-replace/playlist-replace.component';
+import { PlayerPlaylistAddComponent } from './controls/player-playlist-add.component';
+import { PlayerPlaylistRemoveComponent } from './controls/player-playlist-remove.component';
+import { PlayerPlaylistReplaceComponent } from './controls/player-playlist-replace.component';
 import { PlayerComponent } from './player.component';
-import { PlaylistComponent } from './playlist/playlist.component';
-import { PlaylistPlayComponent } from './song/controls/playlist-play/playlist-play.component';
-import { PlaylistRemoveComponent } from './song/controls/playlist-remove/playlist-remove.component';
+import { PlayerPlaylistComponent } from './player-playlist/player-playlist.component';
 import { SongComponent } from './song/song.component';
 import { playlistReducer } from './store/reducers';
 
 @NgModule({
   declarations: [
     PlayerComponent,
-    PlaylistRemoveComponent,
-    PlaylistPlayComponent,
+    PlayerPlaylistRemoveComponent,
     SongComponent,
-    PlaylistPlayAlbumComponent,
-    PlaylistReplaceComponent,
-    PlaylistComponent,
+    PlayerPlaylistAddComponent,
+    PlayerPlaylistReplaceComponent,
+    PlayerPlaylistComponent,
   ],
   imports: [
     CommonModule,
@@ -29,13 +27,12 @@ import { playlistReducer } from './store/reducers';
     StoreModule.forFeature('playlist', playlistReducer),
   ],
   exports: [
-    PlaylistRemoveComponent,
+    PlayerPlaylistRemoveComponent,
     PlayerComponent,
     SongComponent,
-    PlaylistPlayComponent,
-    PlaylistRemoveComponent,
-    PlaylistPlayAlbumComponent,
-    PlaylistReplaceComponent,
+    PlayerPlaylistRemoveComponent,
+    PlayerPlaylistAddComponent,
+    PlayerPlaylistReplaceComponent,
   ],
 })
 export class PlayerModule {}

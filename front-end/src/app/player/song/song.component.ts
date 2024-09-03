@@ -1,10 +1,12 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input } from "@angular/core";
 
-import { UntilDestroy, untilDestroyed } from '@ngneat/until-destroy';
+import { UntilDestroy } from "@ngneat/until-destroy";
 
-import { Song } from '../../songs/song';
-import { SongControl } from './controls/song-control';
+import { Song } from "../../songs/song";
 
+/**
+ * @TODO remove this component. Hard-code song in PlayerPlaylistComponent
+ */
 @UntilDestroy()
 @Component({
   selector: 'app-song',
@@ -13,10 +15,4 @@ import { SongControl } from './controls/song-control';
 })
 export class SongComponent {
   @Input() song: Song = null as any;
-
-  registerControl(control: SongControl) {
-    control.clicked$
-      .pipe(untilDestroyed(this))
-      .subscribe(() => control.onClickAction(this.song));
-  }
 }

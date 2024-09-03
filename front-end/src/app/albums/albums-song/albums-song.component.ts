@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { Song } from '../../songs/song';
 
@@ -7,10 +7,6 @@ import { Song } from '../../songs/song';
   templateUrl: './albums-song.component.html',
   styleUrls: ['./albums-song.component.scss'],
 })
-export class AlbumsSongComponent implements OnInit {
+export class AlbumsSongComponent {
   @Input() song: Song = null as any;
-
-  constructor() {}
-
-  ngOnInit(): void {}
 }
