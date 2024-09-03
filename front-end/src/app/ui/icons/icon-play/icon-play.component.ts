@@ -1,4 +1,4 @@
-import { Component, computed, input } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-icon-play',
@@ -7,7 +7,6 @@ import { Component, computed, input } from '@angular/core';
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       fill="currentColor"
-      [ngClass]="svgClasses()"
     >
       <path
         fill-rule="evenodd"
@@ -16,13 +15,6 @@ import { Component, computed, input } from '@angular/core';
       />
     </svg>
   `,
-  styles: ':host { display:contents; }',
+  styles: ':host { display:flex; }',
 })
-export class IconPlayComponent {
-  size = input(4);
-
-  svgClasses = computed(() => ({
-    ['size-' + this.size()]: true,
-    flex: true,
-  }));
-}
+export class IconPlayComponent {}

@@ -14,7 +14,7 @@ import { PlaylistRootState } from '../store/state';
       aria-label="Add to playlist"
       (click)="addToPlaylist()"
     >
-      <app-icon-add-to-playlist />
+      <app-icon-add-to-playlist class="size-4" />
     </button>
   `,
 })
