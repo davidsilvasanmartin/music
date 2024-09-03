@@ -1,3 +1,5 @@
+package dev.davidsilva.musictests;
+
 import io.restassured.RestAssured;
 import org.testng.annotations.BeforeSuite;
 

@@ -1,3 +1,5 @@
+package dev.davidsilva.musictests;
+
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -5,20 +7,20 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
 
 public class TestAlbums {
-    final int albumId = 16;
+    final int albumId = 1;
     final int nonExistentAlbumId = 99999999;
-    final String albumArtist = "2manydjs";
+    final String albumArtist = "Dimitri From Paris";
     final String nonExistent = "#####NON_EXSTENT#####";
     // TODO fix application code to not break with commas
     final String albumBreakingTheSearch = "As Heard on Radio Soulwax, Part 2";
-    final String album = "California Love";
+    final String album = "Cruising Attitude";
     final int albumYear = 2003;
-    final String albumGenre = "Electronic";
+    final String albumGenre = "House";
 
     @Test
     void getAlbums() {
         given().when().get("albums").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(0))
+                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
                 .body("size", equalTo(10)).body("content.size()", greaterThan(0));
     }
 

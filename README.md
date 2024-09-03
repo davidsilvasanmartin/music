@@ -37,6 +37,7 @@ Angular app
 - Custom playlists (requires users)
 - Deploy! Containerise so it can be run with one command.
 - Log everything
+- For the test project: create a fake beets database for the back-end application to use. Have a few albums/songs in it.
 
 ### TODO - Long term
 

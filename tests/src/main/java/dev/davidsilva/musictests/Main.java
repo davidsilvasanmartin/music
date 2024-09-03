@@ -1,4 +1,4 @@
-package dev.davidsilva;
+package dev.davidsilva.musictests;
 
 public class Main {
     public static void main(String[] args) {

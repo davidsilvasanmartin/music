@@ -22,7 +22,10 @@ public class AlbumController {
 
     @GetMapping
     public ResponseEntity<PaginatedResponse<AlbumDto>> getAlbums(
-            @PageableDefault(page = 1, size = 10)
+            // This default has to be 0 even if we are using one-indexed parameters. Spring uses number 0
+            // for the first page in the Pageable object always, the one-indexed parameter option only
+            // means that a 1 from the front-end is transformed into a 0 on the back-end
+            @PageableDefault(page = 0, size = 10)
             @SortDefault.SortDefaults({
                     @SortDefault(sort = "albumArtist", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "year", direction = Sort.Direction.ASC)

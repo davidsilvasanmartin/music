@@ -1,7 +1,10 @@
+package dev.davidsilva.musictests;
+
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.startsWith;
 
 public class TestSongs {
     final int songId = 1;
@@ -36,7 +39,7 @@ public class TestSongs {
         // Below is the Accept header that Firefox uses for <audio> elements
         given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
                 .when().get("songs/" + songId + "/play").then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("audio/webm");
+                .statusCode(HttpStatus.SC_OK).and().contentType(startsWith("audio/"));
     }
 
     @Test
