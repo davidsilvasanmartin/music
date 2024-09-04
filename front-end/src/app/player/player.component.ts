@@ -1,10 +1,14 @@
 import { Component, computed, OnDestroy, Signal, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 import { select, Store } from '@ngrx/store';
 
+import { Observable, switchMap } from 'rxjs';
+
+import { Album } from '../albums/album';
 import { ApiService } from '../api/api.service';
 import { Song } from '../songs/song';
+import { SongsService } from '../songs/songs.service';
 import * as playlistActions from './store/actions';
 import * as playlistSelectors from './store/selectors';
 import { PlaylistRootState } from './store/state';
@@ -21,12 +25,14 @@ export class PlayerComponent implements OnDestroy {
   currentSongAudioUrl: Signal<string> = computed(() =>
     this._apiService.createApiUrl(`/songs/${this.currentSong().id}/play`),
   );
+  currentSongAlbum$: Observable<Album>;
   nextSongs: Signal<Song[]>;
   isPlaylistOpen = signal(false);
 
   constructor(
     private readonly _store: Store<PlaylistRootState>,
     private readonly _apiService: ApiService,
+    private readonly _songsService: SongsService,
   ) {
     this.currentSong = toSignal(
       this._store.pipe(select(playlistSelectors.getCurrentSong)),
@@ -35,6 +41,9 @@ export class PlayerComponent implements OnDestroy {
     this.nextSongs = toSignal(
       this._store.pipe(select(playlistSelectors.getNextSongs)),
       { requireSync: true },
+    );
+    this.currentSongAlbum$ = toObservable(this.currentSong).pipe(
+      switchMap((song) => this._songsService.getSongAlbum(song.id)),
     );
   }
 

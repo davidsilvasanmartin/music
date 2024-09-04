@@ -12,11 +12,11 @@ export class AlbumsMapper {
     return {
       id: albumDto.id,
       artPathUrl: this._apiService.createApiUrl(
-        `/albums/${albumDto.id}/albumArt`
+        `/albums/${albumDto.id}/albumArt`,
       ),
       albumArtist: albumDto.albumArtist,
       album: albumDto.album,
-      genre: albumDto.genre,
+      genres: albumDto.genres,
       year: albumDto.year,
       // TODO
       songs: albumDto.songs,

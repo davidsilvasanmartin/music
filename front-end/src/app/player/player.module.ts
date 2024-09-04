@@ -9,14 +9,12 @@ import { PlayerPlaylistRemoveComponent } from './controls/player-playlist-remove
 import { PlayerPlaylistReplaceComponent } from './controls/player-playlist-replace.component';
 import { PlayerComponent } from './player.component';
 import { PlayerPlaylistComponent } from './player-playlist/player-playlist.component';
-import { SongComponent } from './song/song.component';
 import { playlistReducer } from './store/reducers';
 
 @NgModule({
   declarations: [
     PlayerComponent,
     PlayerPlaylistRemoveComponent,
-    SongComponent,
     PlayerPlaylistAddComponent,
     PlayerPlaylistReplaceComponent,
     PlayerPlaylistComponent,
@@ -29,7 +27,6 @@ import { playlistReducer } from './store/reducers';
   exports: [
     PlayerPlaylistRemoveComponent,
     PlayerComponent,
-    SongComponent,
     PlayerPlaylistRemoveComponent,
     PlayerPlaylistAddComponent,
     PlayerPlaylistReplaceComponent,

@@ -5,7 +5,7 @@ export interface AlbumDto {
   artPath: string;
   albumArtist: string;
   album: string;
-  genre: string;
+  genres: string[];
   year: number;
   // TODO
   songs: Song[];

@@ -7,8 +7,10 @@ export interface PlaylistRootState extends AppState {
 
 export interface PlaylistState {
   playlist: Song[];
+  currentSong: Song | null;
 }
 
 export const playlistInitialState: PlaylistState = {
   playlist: [],
+  currentSong: null,
 };

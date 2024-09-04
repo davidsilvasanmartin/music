@@ -6,14 +6,13 @@ import { StoreModule } from '@ngrx/store';
 
 import { PlayerModule } from '../player';
 import { UiModule } from '../ui/ui.module';
+import { AlbumComponent } from './album/album.component';
 import { AlbumsComponent } from './albums.component';
-import { AlbumsSongComponent } from './albums-song/albums-song.component';
 import { AlbumsEffects } from './store/effects';
 import { albumsReducer } from './store/reducers';
-import { AlbumComponent } from './album/album.component';
 
 @NgModule({
-  declarations: [AlbumsComponent, AlbumsSongComponent, AlbumComponent],
+  declarations: [AlbumsComponent, AlbumComponent],
   imports: [
     CommonModule,
     UiModule,

@@ -1,5 +1,6 @@
 package dev.davidsilva.music.song;
 
+import dev.davidsilva.music.album.AlbumDto;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,12 @@ public class SongController {
     public ResponseEntity<SongDto> getSongById(@PathVariable("id") int id) {
         SongDto song = songService.findSongById(id);
         return new ResponseEntity<>(song, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/album")
+    public ResponseEntity<AlbumDto> getAlbumBySongId(@PathVariable("id") int id) {
+        AlbumDto album = songService.findSongAlbumById(id);
+        return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
     @CrossOrigin

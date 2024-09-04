@@ -7,15 +7,18 @@ import { playlistInitialState, PlaylistState } from './state';
 const reducer = createReducer(
   playlistInitialState,
   on(playlistActions.addToPlaylist, (state, { songs }) => ({
+    ...state,
     playlist: [...state.playlist, ...songs],
   })),
   on(playlistActions.removeFromPlaylist, (state, { song }) => ({
+    ...state,
     playlist: state.playlist.filter((s: Song) => s !== song),
   })),
   on(playlistActions.next, (state) => ({
+    ...state,
     playlist: state.playlist.slice(1),
   })),
-  on(playlistActions.reset, () => playlistInitialState)
+  on(playlistActions.reset, () => playlistInitialState),
 );
 
 export const playlistReducer = (state: PlaylistState, action: Action) =>

@@ -5,7 +5,7 @@ export interface Album {
   artPathUrl: string;
   albumArtist: string;
   album: string;
-  genre: string;
+  genres: string[];
   year: number;
   songs: Song[];
 }
