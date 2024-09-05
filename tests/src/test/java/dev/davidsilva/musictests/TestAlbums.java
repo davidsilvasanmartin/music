@@ -9,13 +9,12 @@ import static org.hamcrest.Matchers.*;
 public class TestAlbums {
     final int albumId = 1;
     final int nonExistentAlbumId = 99999999;
-    final String albumArtist = "Dimitri From Paris";
+    final String albumArtist = "Flight of the Pink Goats";
     final String nonExistent = "#####NON_EXSTENT#####";
-    // TODO fix application code to not break with commas
-    final String albumBreakingTheSearch = "As Heard on Radio Soulwax, Part 2";
-    final String album = "Cruising Attitude";
-    final int albumYear = 2003;
-    final String albumGenre = "House";
+    final String album = "Album 1";
+    final String albumBreakingTheSearch = "whatever, with comma";
+    final int albumYear = 2001;
+    final String albumGenre = "House 1";
 
     @Test
     void getAlbums() {

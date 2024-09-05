@@ -12,7 +12,7 @@
     <div>
       <span> [{{ album().year }}] </span>
       <span>
-        {{ album().genre }}
+        {{ album().genres.join(", ") }}
       </span>
     </div>
   </div>

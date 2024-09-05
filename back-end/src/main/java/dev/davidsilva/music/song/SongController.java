@@ -65,6 +65,13 @@ public class SongController {
                 // See https://stackoverflow.com/questions/67078696/which-is-the-correct-content-type-for-flac
                 headers.setContentType(MediaType.parseMediaType("audio/flac"));
                 break;
+            case "m4a":
+                // https://stackoverflow.com/questions/39885749/is-a-m4a-file-considered-as-of-mime-type-audio-m4a-or-audio-mp4
+                headers.setContentType(MediaType.parseMediaType("audio/mp4"));
+                break;
+            case "ogg":
+                headers.setContentType(MediaType.parseMediaType("audio/ogg"));
+                break;
             default:
                 throw new SongFormatNotSupportedException(resourceExtension);
         }
