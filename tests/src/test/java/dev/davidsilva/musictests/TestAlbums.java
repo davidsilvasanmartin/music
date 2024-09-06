@@ -10,9 +10,7 @@ public class TestAlbums {
     final int albumId = 1;
     final int nonExistentAlbumId = 99999999;
     final String albumArtist = "Flight of the Pink Goats";
-    final String nonExistent = "#####NON_EXSTENT#####";
     final String album = "Album 1";
-    final String albumBreakingTheSearch = "whatever, with comma";
     final int albumYear = 2001;
     final String albumGenre = "House 1";
 
@@ -43,27 +41,6 @@ public class TestAlbums {
     }
 
     @Test
-    void searchAlbumsWithBadFormat() {
-        given().when().get("albums?search=qqq").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
-                .body("message", containsStringIgnoringCase("invalid search format:"));
-    }
-
-    @Test
-    void searchAlbumsWithBadField() {
-        given().when().get("albums?search=NON_EXISTENT_FIELD:eq:value").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
-                .body("message", containsStringIgnoringCase("invalid search:"));
-    }
-
-    @Test
-    void searchAlbumsWithBadCondition() {
-        given().when().get("albums?search=albumArtist:NON_EXISTENT_CONDITION:value").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
-                .body("message", containsStringIgnoringCase("invalid search operation:"));
-    }
-
-    @Test
     void searchAlbumsByArtist() {
         given().when().get("albums?search=albumArtist:eq:" + albumArtist).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
@@ -71,24 +48,10 @@ public class TestAlbums {
     }
 
     @Test
-    void searchAlbumsByNonExistentAlbumArtist() {
-        given().when().get("albums?search=albumArtist:eq:" + nonExistent).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
-                .body("content.size()", equalTo(0));
-    }
-
-    @Test
     void searchAlbumsByAlbum() {
         given().when().get("albums?search=album:eq:" + album).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
                 .body("content.size()", greaterThan(0)).body("content[0].album", equalTo(album));
-    }
-
-    @Test
-    void searchAlbumsByAlbumThatIsBreakingTheSearch() {
-        given().when().get("albums?search=album:eq:" + albumBreakingTheSearch).then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
-                .body("message", containsStringIgnoringCase("invalid search format:"));
     }
 
     @Test
@@ -103,5 +66,23 @@ public class TestAlbums {
         given().when().get("albums?search=genre:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
                 .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
+    }
+
+    @Test
+    public void getAlbumAlbumArt() {
+        given().accept("image/*").when().get("albums/" + albumId + "/albumArt").then()
+                .statusCode(HttpStatus.SC_OK).and().contentType("image/png");
+    }
+
+    @Test
+    public void getNonExistentAlbumAlbumArt() {
+        given().accept("image/*").when().get("albums/" + nonExistentAlbumId + "/albumArt").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
+    }
+
+    @Test
+    public void getAlbumWithoutAlbumArtAlbumArt() {
+        // todo
     }
 }

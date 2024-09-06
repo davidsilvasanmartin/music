@@ -37,7 +37,6 @@ Angular app
 - Custom playlists (requires users)
 - Deploy! Containerise so it can be run with one command.
 - Log everything
-- For the test project: create a fake beets database for the back-end application to use. Have a few albums/songs in it.
 
 ### TODO - Long term
 
@@ -48,4 +47,4 @@ Angular app
 
 - Pagination for albums (also back-end)
 - Specification for searching albums, inspired on https://attacomsian.com/blog/spring-data-jpa-specifications.
-- Peek into an albumDto: see songs one by one
+- For the test project: create a fake beets database for the back-end application to use. Have a few albums/songs in it.

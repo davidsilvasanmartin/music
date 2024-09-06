@@ -30,14 +30,14 @@ public class AlbumService {
 
     public AlbumDto findAlbumById(int id) {
         Album album = albumRepository.findById(id).orElseThrow(() ->
-                new AlbumNotFoundException("Album with id " + id + " was not found")
+                new AlbumNotFoundException(id)
         );
         return albumDtoMapper.toDto(album);
     }
 
     public String findAlbumArtPathById(int id) {
         Album album = albumRepository.findById(id).orElseThrow(() ->
-                new AlbumNotFoundException("Album with id " + id + " was not found")
+                new AlbumNotFoundException(id)
         );
         return album.getArtPath();
     }
