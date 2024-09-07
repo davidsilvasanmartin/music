@@ -1,14 +1,15 @@
 import { Component, OnDestroy } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
 
 import { UntilDestroy } from '@ngneat/until-destroy';
 import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
-import { PaginatedListComponent } from '../ui/pagination/paginated-list/paginated-list.component';
+import { PaginatedSortedFilteredListComponent } from '../ui/pagination-sort-filter/paginated-sorted-filtered-list.component';
+import { SortDirection } from '../ui/sort/sort';
 import { Album } from './album';
+import { AlbumDto } from './album-dto';
 import * as albumsActions from './store/actions';
 import * as albumsSelectors from './store/selectors';
 
@@ -19,25 +20,27 @@ import * as albumsSelectors from './store/selectors';
   styleUrls: ['./albums.component.scss'],
 })
 export class AlbumsComponent
-  extends PaginatedListComponent
+  extends PaginatedSortedFilteredListComponent<AlbumDto>
   implements OnDestroy
 {
   albums$: Observable<Album[]>;
   totalElements$: Observable<number>;
 
-  constructor(
-    activatedRoute: ActivatedRoute,
-    private readonly _store: Store,
-  ) {
-    super(activatedRoute);
+  constructor(private readonly _store: Store) {
+    super(['album', 'albumArtist', 'year'], {
+      field: 'albumArtist',
+      direction: SortDirection.ASC,
+    });
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
     this.totalElements$ = this._store.pipe(
       select(albumsSelectors.getTotalElements),
     );
-    this.paginationParams$
+    this.params$
       .pipe(takeUntilDestroyed())
       .subscribe((paginationParams) =>
-        this._store.dispatch(albumsActions.loadAlbums({ paginationParams })),
+        this._store.dispatch(
+          albumsActions.loadAlbums({ params: paginationParams }),
+        ),
       );
   }
 

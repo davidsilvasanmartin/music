@@ -36,6 +36,14 @@ public class TestAlbums {
     }
 
     @Test
+    void getAlbumsWithSort() {
+        given().when().get("albums?sort=albumArtist,desc").then()
+                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
+                .body("size", equalTo(10)).body("content.size()", equalTo(10))
+                .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"));
+    }
+
+    @Test
     void getAlbumById() {
         given().when().get("albums/" + albumId).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json");

@@ -6,23 +6,23 @@ import { map } from 'rxjs/operators';
 
 import { ApiService } from '../api/api.service';
 import { PageableResource } from '../api/api-pageable-resource-request';
-import { PaginationParams } from '../ui/pagination/pagination-params';
+import { PaginationSortFilterParams } from '../ui/pagination-sort-filter/pagination-sort-filter-params';
+import { SortMapperService } from '../ui/sort/sort-mapper.service';
 import { Album } from './album';
 import { AlbumDto } from './album-dto';
 import { AlbumsMapper } from './albums-mapper.service';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AlbumsService {
   constructor(
     private readonly _http: HttpClient,
     private readonly _albumsMapper: AlbumsMapper,
     private readonly _apiService: ApiService,
+    private readonly _sortMapperService: SortMapperService,
   ) {}
 
   getAlbums(
-    paginationParams: PaginationParams,
+    paginationParams: PaginationSortFilterParams,
   ): Observable<PageableResource<Album[]>> {
     return this._http
       .get<PageableResource<AlbumDto[]>>(
@@ -32,6 +32,7 @@ export class AlbumsService {
             fromObject: {
               page: paginationParams.page,
               size: paginationParams.size,
+              sort: this._sortMapperService.toQueryParam(paginationParams.sort),
             },
           }),
         },

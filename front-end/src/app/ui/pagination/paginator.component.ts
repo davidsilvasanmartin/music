@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './paginator.component.html',
 })
 export class PaginatorComponent {
-  totalElements = input.required<number>();
+  totalElements = input.required<number | null>();
   page = input.required<number>();
   size = input.required<number>();
   totalPages = computed(() => {

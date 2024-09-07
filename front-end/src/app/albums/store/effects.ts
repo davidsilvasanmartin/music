@@ -14,9 +14,9 @@ export class AlbumsEffects {
   loadAlbums$ = createEffect(() =>
     this._actions$.pipe(
       ofType(albumsActions.loadAlbums),
-      switchMap(({ paginationParams }) =>
+      switchMap(({ params }) =>
         this._albumsService
-          .getAlbums(paginationParams)
+          .getAlbums(params)
           .pipe(
             map((albums: PageableResource<Album[]>) =>
               albumsActions.loadAlbumsSuccess({ albums }),

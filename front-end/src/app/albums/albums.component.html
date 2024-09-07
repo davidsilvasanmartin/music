@@ -1,4 +1,11 @@
 <div class="flex flex-col flex-nowrap gap-4" style="max-width: 1500px">
+  @if (params$ | async; as params) {
+    <app-sort
+      [sortableFields]="sortableFilterableFields"
+      [sort]="params.sort"
+    ></app-sort>
+  }
+
   <app-card *ngFor="let album of albums$ | async" class="album">
     <app-album [album]="album">
       <app-player-playlist-replace [songs]="album.songs" />
@@ -6,10 +13,10 @@
     </app-album>
   </app-card>
 
-  @if (paginationParams$ | async; as paginationParams) {
+  @if (params$ | async; as params) {
     <app-paginator
-      [page]="paginationParams.page"
-      [size]="paginationParams.size"
+      [page]="params.page"
+      [size]="params.size"
       [totalElements]="totalElements$ | async"
     />
   }
