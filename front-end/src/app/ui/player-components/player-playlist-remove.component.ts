@@ -2,9 +2,9 @@ import { Component, input } from '@angular/core';
 
 import { Store } from '@ngrx/store';
 
-import { Song } from '../../songs/song';
-import * as playlistActions from '../store/actions';
-import { PlaylistRootState } from '../store/state';
+import * as playlistActions from '../../player/store/actions';
+import type { PlaylistRootState } from '../../player/store/state';
+import type { Song } from '../../songs/song';
 
 @Component({
   selector: 'app-player-playlist-remove',

@@ -1,31 +1,16 @@
 package dev.davidsilva.music.song;
 
-import dev.davidsilva.music.album.AlbumDto;
-import dev.davidsilva.music.album.AlbumDtoMapper;
-import dev.davidsilva.music.utils.ListMapper;
+import dev.davidsilva.music.album.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
+@RequiredArgsConstructor
 public class SongService {
     private final SongRepository songRepository;
     private final SongDtoMapper songDtoMapper;
+    private final AlbumRepository albumRepository;
     private final AlbumDtoMapper albumDtoMapper;
-    private final ListMapper<Song, SongDto> listMapper;
-
-    public SongService(SongRepository songRepository, SongDtoMapper songDtoMapper, AlbumDtoMapper albumDtoMapper) {
-        this.songRepository = songRepository;
-        this.songDtoMapper = songDtoMapper;
-        this.albumDtoMapper = albumDtoMapper;
-        this.listMapper = (songs) -> songs.stream().map(songDtoMapper::toDto).toList();
-    }
-
-    // TODO pagination, searching, sorting
-    public List<SongDto> findAllSongs() {
-        List<Song> songs = songRepository.findAll();
-        return listMapper.map(songs);
-    }
 
     public SongDto findSongById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
@@ -34,9 +19,9 @@ public class SongService {
     }
 
     public AlbumDto findSongAlbumById(int id) {
-        Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException(id));
-        return albumDtoMapper.toDto(song.getAlbum());
+        Album album = albumRepository.findById(id).orElseThrow(() ->
+                new AlbumNotFoundException(id));
+        return albumDtoMapper.toDto(album);
     }
 
     public String getSongAlbumArtPathById(int id) {

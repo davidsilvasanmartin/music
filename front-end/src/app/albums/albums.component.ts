@@ -23,8 +23,6 @@ export class AlbumsComponent
   implements OnDestroy
 {
   albums$: Observable<Album[]>;
-  pageIndex$: Observable<number>;
-  size$: Observable<number>;
   totalElements$: Observable<number>;
 
   constructor(
@@ -33,8 +31,6 @@ export class AlbumsComponent
   ) {
     super(activatedRoute);
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
-    this.pageIndex$ = this._store.pipe(select(albumsSelectors.getPageIndex));
-    this.size$ = this._store.pipe(select(albumsSelectors.getSize));
     this.totalElements$ = this._store.pipe(
       select(albumsSelectors.getTotalElements),
     );

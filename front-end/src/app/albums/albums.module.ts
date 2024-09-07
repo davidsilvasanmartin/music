@@ -4,10 +4,10 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { PlayerModule } from '../player';
 import { UiModule } from '../ui/ui.module';
 import { AlbumComponent } from './album/album.component';
 import { AlbumsComponent } from './albums.component';
+import { AlbumsRoutingModule } from './albums-routing.module';
 import { AlbumsEffects } from './store/effects';
 import { albumsReducer } from './store/reducers';
 
@@ -15,12 +15,10 @@ import { albumsReducer } from './store/reducers';
   declarations: [AlbumsComponent, AlbumComponent],
   imports: [
     CommonModule,
+    AlbumsRoutingModule,
     UiModule,
-    // TODO remove this because it's importing a store
-    PlayerModule,
     StoreModule.forFeature('albums', albumsReducer),
     EffectsModule.forFeature([AlbumsEffects]),
   ],
-  exports: [AlbumsComponent],
 })
 export class AlbumsModule {}

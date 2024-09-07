@@ -1,4 +1,4 @@
-<div class="flex flex-col flex-nowrap gap-4">
+<div class="flex flex-col flex-nowrap gap-4" style="max-width: 1500px">
   <app-card *ngFor="let album of albums$ | async" class="album">
     <app-album [album]="album">
       <app-player-playlist-replace [songs]="album.songs" />
@@ -6,9 +6,11 @@
     </app-album>
   </app-card>
 
-  <app-paginator
-    [page]="pageIndex$ | async"
-    [size]="size$ | async"
-    [totalElements]="totalElements$ | async"
-  />
+  @if (paginationParams$ | async; as paginationParams) {
+    <app-paginator
+      [page]="paginationParams.page"
+      [size]="paginationParams.size"
+      [totalElements]="totalElements$ | async"
+    />
+  }
 </div>

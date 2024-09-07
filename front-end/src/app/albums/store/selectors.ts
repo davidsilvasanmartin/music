@@ -6,20 +6,10 @@ export const getAlbumsState = createFeatureSelector<AlbumsState>('albums');
 
 export const getAlbums = createSelector(
   getAlbumsState,
-  (state: AlbumsState) => state.albums.data?.content
-);
-
-export const getPageIndex = createSelector(
-  getAlbumsState,
-  (state: AlbumsState) => state.albums.data?.number
-);
-
-export const getSize = createSelector(
-  getAlbumsState,
-  (state: AlbumsState) => state.albums.data?.size
+  (state: AlbumsState) => state.albums.data?.content,
 );
 
 export const getTotalElements = createSelector(
   getAlbumsState,
-  (state: AlbumsState) => state.albums.data?.totalElements
+  (state: AlbumsState) => state.albums.data?.totalElements || 0,
 );

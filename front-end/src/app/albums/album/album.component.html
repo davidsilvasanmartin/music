@@ -11,12 +11,14 @@
     </div>
     <div>
       <span> [{{ album().year }}] </span>
+    </div>
+    <div>
       <span>
         {{ album().genres.join(", ") }}
       </span>
     </div>
   </div>
-  <div class="album__controls">
+  <div class="flex flex-row-reverse flex-wrap items-end gap-1">
     <ng-content></ng-content>
   </div>
 </div>

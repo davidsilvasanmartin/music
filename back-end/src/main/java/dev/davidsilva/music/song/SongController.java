@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -19,12 +18,6 @@ import java.util.Objects;
 @RequestMapping("songs")
 public class SongController {
     private final SongService songService;
-
-    @GetMapping
-    public ResponseEntity<List<SongDto>> getAllSongs() {
-        List<SongDto> songs = songService.findAllSongs();
-        return new ResponseEntity<>(songs, HttpStatus.OK);
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<SongDto> getSongById(@PathVariable("id") int id) {

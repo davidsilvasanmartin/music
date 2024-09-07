@@ -1,4 +1,7 @@
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,17 +23,19 @@ import { UiModule } from './ui/ui.module';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule,
     BrowserAnimationsModule,
+    PlayerModule,
     UiModule,
     AlbumsModule,
-    PlayerModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([]),
     // TODO this should not be here in production
     StoreDevtoolsModule.instrument(),
   ],
-  providers: [{ provide: ErrorHandler, useClass: ErrorHandlerService }],
+  providers: [
+    { provide: ErrorHandler, useClass: ErrorHandlerService },
+    provideHttpClient(withInterceptorsFromDi()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

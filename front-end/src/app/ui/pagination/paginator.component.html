@@ -1,5 +1,33 @@
-<div class="w-100 flex flex-row flex-nowrap">
-  <button (click)="onPageChanged(1)">1</button>
-  <button (click)="onPageChanged(2)">2</button>
-  <button (click)="onPageChanged(3)">3</button>
+<div
+  class="w-100 flex flex-row flex-nowrap items-center justify-center gap-1 italic text-gray-700"
+>
+  <app-icon-first (click)="goToFirstPage()" class="size-5 cursor-pointer" />
+  <app-icon-previous
+    (click)="goToPreviousPage()"
+    class="size-5 cursor-pointer"
+  />
+  <span> Page </span>
+  <input
+    #pageInput
+    (keydown.enter)="onPageChanged(pageInput.value)"
+    [ngModel]="page()"
+    class="block w-9 rounded-sm px-1 text-center italic focus:border-blue-500 focus:ring-blue-500"
+  />
+  <span> of {{ totalPages() }} </span>
+  <app-icon-next (click)="goToNextPage()" class="size-5 cursor-pointer" />
+  <app-icon-last (click)="goToLastPage()" class="size-5 cursor-pointer" />
+  <span class="w-12"></span>
+  <span> Showing </span>
+  <select
+    #sizeInput
+    (ngModelChange)="onSizeChanged($event)"
+    [ngModel]="size()"
+    class="rounded-sm bg-white text-center italic"
+  >
+    <option value="10">10</option>
+    <option value="20">20</option>
+    <option value="50">50</option>
+    <option value="100">100</option>
+  </select>
+  <span>elements per page.</span>
 </div>
