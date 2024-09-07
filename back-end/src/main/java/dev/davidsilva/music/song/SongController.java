@@ -1,6 +1,7 @@
 package dev.davidsilva.music.song;
 
 import dev.davidsilva.music.album.AlbumDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,14 +14,11 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
+@RequiredArgsConstructor
 @CrossOrigin
 @RequestMapping("songs")
 public class SongController {
     private final SongService songService;
-
-    public SongController(SongService songService) {
-        this.songService = songService;
-    }
 
     @GetMapping
     public ResponseEntity<List<SongDto>> getAllSongs() {

@@ -29,25 +29,25 @@ public class SongService {
 
     public SongDto findSongById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException("Song with id " + id + " was not found"));
+                new SongNotFoundException(id));
         return songDtoMapper.toDto(song);
     }
 
     public AlbumDto findSongAlbumById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException("Song with id " + id + " was not found"));
+                new SongNotFoundException(id));
         return albumDtoMapper.toDto(song.getAlbum());
     }
 
     public String getSongAlbumArtPathById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException("Song with id " + id + " was not found"));
+                new SongNotFoundException(id));
         return song.getAlbum().getArtPath();
     }
 
     public String getSongFilePathById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException("Song with id " + id + " was not found"));
+                new SongNotFoundException(id));
         return song.getPath();
     }
 }

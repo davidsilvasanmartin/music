@@ -29,6 +29,13 @@ public class TestAlbums {
     }
 
     @Test
+    void getAlbumsWithSize() {
+        given().when().get("albums?size=20").then()
+                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
+                .body("size", equalTo(20)).body("content.size()", greaterThan(10));
+    }
+
+    @Test
     void getAlbumById() {
         given().when().get("albums/" + albumId).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("application/json");
@@ -37,7 +44,8 @@ public class TestAlbums {
     @Test
     void getNonExistentAlbumById() {
         given().when().get("albums/" + nonExistentAlbumId).then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }
 
     @Test
@@ -70,13 +78,16 @@ public class TestAlbums {
 
     @Test
     public void getAlbumAlbumArt() {
-        given().accept("image/*").when().get("albums/" + albumId + "/albumArt").then()
+        given().accept("image/*,*/*").when().get("albums/" + albumId + "/albumArt").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("image/png");
     }
 
     @Test
     public void getNonExistentAlbumAlbumArt() {
-        given().accept("image/*").when().get("albums/" + nonExistentAlbumId + "/albumArt").then()
+        // Please note: we need to add */* to the accepted types if we want the API to correctly return JSON
+        // in case of error. Otherwise, the API will crash with a different (500) error. Browsers do
+        // typically add */* to the list of content types when requesting files.
+        given().accept("image/*,*/*").when().get("albums/" + nonExistentAlbumId + "/albumArt").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
                 .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }

@@ -10,12 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.NotAcceptableStatusException;
 
 import java.util.Date;
 
 @ControllerAdvice
+@ResponseBody
 public class GlobalExceptionHandler {
     @ExceptionHandler(AlbumNotFoundException.class)
     public ResponseEntity<ApiErrorDto> handleAlbumNotFoundException(AlbumNotFoundException exception, WebRequest webRequest) {

@@ -52,9 +52,9 @@ public class AlbumController {
 
     @GetMapping(value = "{id}/albumArt", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseBody
-    public FileSystemResource getAlbumArtById(@PathVariable("id") int id) {
+    public ResponseEntity<FileSystemResource> getAlbumArtById(@PathVariable("id") int id) {
         String artPath = albumService.findAlbumArtPathById(id);
         // TODO: album.getArtPath() can be null
-        return new FileSystemResource(artPath);
+        return new ResponseEntity<>(new FileSystemResource(artPath), HttpStatus.OK);
     }
 }

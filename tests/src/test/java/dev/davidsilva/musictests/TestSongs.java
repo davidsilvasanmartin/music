@@ -4,6 +4,7 @@ import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsStringIgnoringCase;
 
 public class TestSongs {
     final int m4aSongId = 1;
@@ -21,7 +22,8 @@ public class TestSongs {
     @Test
     public void getNonExistentSong() {
         given().when().get("songs/" + nonExistentSongId).then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 
     @Test
@@ -33,27 +35,28 @@ public class TestSongs {
     @Test
     public void getNonExistentSongAlbumArt() {
         given().when().get("songs/" + nonExistentSongId + "/albumArt").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 
     @Test
     public void playM4aSong() {
         // Below is the Accept header that Firefox uses for <audio> elements
-        given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
+        given().accept("audio/*,*/*")
                 .when().get("songs/" + m4aSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/mp4");
     }
 
     @Test
     public void playFlacSong() {
-        given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
+        given().accept("audio/*,*/*")
                 .when().get("songs/" + flacSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/flac");
     }
 
     @Test
     public void playMp3Song() {
-        given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
+        given().accept("audio/*,*/*")
                 .when().get("songs/" + mp3SongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/mpeg");
     }
@@ -61,7 +64,7 @@ public class TestSongs {
     @Test
     public void playOggSong() {
         // Below is the Accept header that Firefox uses for <audio> elements
-        given().accept("audio/webm,audio/ogg,audio/wav,audio/*;q=0.9,application/ogg;q=0.7,video/*;q=0.6,*/*;q=0.5")
+        given().accept("audio/*,*/*")
                 .when().get("songs/" + oggSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/ogg");
     }
@@ -75,12 +78,7 @@ public class TestSongs {
     @Test
     public void playNonExistentSong() {
         given().when().get("songs/" + nonExistentSongId + "/play").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
-
-//    @Test
-//    public void searchByNonExistentSongField() {
-//        given().when().get("songs?search=NON_EXISTENT_FIELD:eq:value").then()
-//                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json");
-//    }
 }
