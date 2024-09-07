@@ -7,10 +7,10 @@ import dev.davidsilva.music.search.InvalidSearchOperationException;
 import dev.davidsilva.music.song.SongFormatNotSupportedException;
 import dev.davidsilva.music.song.SongNotFoundException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.NotAcceptableStatusException;
 
@@ -19,55 +19,33 @@ import java.util.Date;
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionHandler {
-    @ExceptionHandler(AlbumNotFoundException.class)
-    public ResponseEntity<ApiErrorDto> handleAlbumNotFoundException(AlbumNotFoundException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.NOT_FOUND);
+    @ExceptionHandler({AlbumNotFoundException.class, SongNotFoundException.class})
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrorDto handleAlbumNotFoundException(Exception exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
     }
 
-    @ExceptionHandler(SongNotFoundException.class)
-    public ResponseEntity<ApiErrorDto> handleSongNotFoundException(SongNotFoundException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.NOT_FOUND);
-    }
 
-    // TODO: group all search exceptions into one (subclass each particular case)
-
-    @ExceptionHandler(InvalidSearchFormatException.class)
-    public ResponseEntity<ApiErrorDto> handleInvalidSearchFormatException(InvalidSearchFormatException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InvalidSearchException.class)
-    public ResponseEntity<ApiErrorDto> handleInvalidSearchException(InvalidSearchException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(InvalidSearchOperationException.class)
-    public ResponseEntity<ApiErrorDto> handleInvalidSearchOperationException(InvalidSearchOperationException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({InvalidSearchFormatException.class, InvalidSearchException.class, InvalidSearchOperationException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorDto handleInvalidSearchFormatException(Exception exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
     }
 
     // TODO: this is not working at the moment
     @ExceptionHandler(NotAcceptableStatusException.class)
-    public ResponseEntity<ApiErrorDto> handleNotAcceptableStatusException(NotAcceptableStatusException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.NOT_ACCEPTABLE);
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ApiErrorDto handleNotAcceptableStatusException(NotAcceptableStatusException exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
     }
 
     @ExceptionHandler(SongFormatNotSupportedException.class)
-    public ResponseEntity<ApiErrorDto> handleInvalidSearchOperationException(SongFormatNotSupportedException exception, WebRequest webRequest) {
-        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-        return new ResponseEntity<>(apiErrorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiErrorDto handleInvalidSearchOperationException(SongFormatNotSupportedException exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
     }
 
-
-//    @ExceptionHandler(Exception.class)
-//    public ResponseEntity<ApiErrorDto> handleGenericException(Exception exception, WebRequest webRequest) {
-//        ApiErrorDto apiErrorDto = new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
-//        return new ResponseEntity<>(apiErrorDto, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
+    private ApiErrorDto toApiErrorDto(Exception exception, WebRequest webRequest) {
+        return new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
+    }
 }
