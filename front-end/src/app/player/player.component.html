@@ -1,37 +1,66 @@
 @if (isPlaylistOpen()) {
   <app-player-playlist [nextSongs]="nextSongs()" />
 }
-<div class="z-10 flex h-20 flex-row flex-nowrap bg-emerald-50 shadow-md">
-  <button (click)="togglePlaylist()">OPEN</button>
-  @if (currentSong(); as song) {
-    <img
-      [src]="currentSongImgUrl()"
-      alt="Album art"
-      class="h-20 w-20 object-contain"
-    />
-    <div class="flex flex-col flex-nowrap p-2">
-      <div>{{ song.title }}</div>
-      @if (currentSongAlbum$ | async; as album) {
-        <div>
-          <small>
-            {{ album.albumArtist }} /
-            <span class="font-bold">{{ album.album }}</span>
-          </small>
-        </div>
-        <div>
-          <small>[{{ album.genres.join(", ") }}]</small>
-        </div>
-      }
-    </div>
-    <audio
-      (ended)="goToNextSong()"
-      [autoplay]="true"
-      [src]="currentSongAudioUrl()"
-      type="audio/*"
-      controls
-    >
-      Your browser does not support the
-      <code>audio</code> element.
-    </audio>
-  }
+<div
+  class="z-10 flex h-16 w-full flex-row flex-nowrap justify-center bg-emerald-200 shadow-md"
+>
+  <div
+    class="flex h-full grow flex-row flex-nowrap items-center gap-1"
+    style="max-width: 1200px"
+  >
+    @if (currentSong(); as song) {
+      <img
+        [src]="currentSongImgUrl()"
+        alt="Album art"
+        class="h-16 w-16 object-contain"
+      />
+      <div class="line flex grow flex-col flex-nowrap px-2 py-1 leading-4">
+        <div>{{ song.title }}</div>
+        @if (currentSongAlbum$ | async; as album) {
+          <div>
+            <small>
+              {{ album.albumArtist }} /
+              <span class="font-bold">{{ album.album }}</span>
+            </small>
+          </div>
+          <div>
+            <small>[{{ album.year }}]</small>&nbsp;
+            <small>{{ album.genres.join(", ") }}</small>
+          </div>
+        }
+      </div>
+      <button
+        class="btn rounded-full bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
+        aria-label="Next song"
+        (click)="goToNextSong()"
+      >
+        <app-icon-play-next class="size-5" />
+      </button>
+      <audio
+        (ended)="goToNextSong()"
+        [autoplay]="true"
+        [src]="currentSongAudioUrl()"
+        type="audio/*"
+        controls
+      >
+        Your browser does not support the
+        <code>audio</code> element.
+      </audio>
+      <button
+        class="btn ml-4 rounded-full bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
+        aria-label="Toggle playlist"
+        (click)="togglePlaylist()"
+      >
+        @if (isPlaylistOpen()) {
+          <app-icon-chevron-down class="size-5" />
+        } @else {
+          <app-icon-chevron-up class="size-5" />
+        }
+      </button>
+    } @else {
+      <div class="grow self-center text-center">
+        &lt;No elements in playlist&gt;
+      </div>
+    }
+  </div>
 </div>

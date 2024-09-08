@@ -1,36 +1,48 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { IconAddToPlayListComponent } from './icon-add-to-playlist.component';
 import { IconCancelComponent } from './icon-cancel.component';
+import { IconChevronDoubleLeftComponent } from './icon-chevron-double-left.component';
+import { IconChevronDoubleRightComponent } from './icon-chevron-double-right.component';
+import { IconChevronDownComponent } from './icon-chevron-down.component';
+import { IconChevronLeftComponent } from './icon-chevron-left.component';
+import { IconChevronRightComponent } from './icon-chevron-right.component';
+import { IconChevronUpComponent } from './icon-chevron-up.component';
 import { IconEyeComponent } from './icon-eye.component';
-import { IconFirstComponent } from './icon-first.component';
-import { IconLastComponent } from './icon-last.component';
-import { IconNextComponent } from './icon-next.component';
 import { IconPlayComponent } from './icon-play.component';
-import { IconPreviousComponent } from './icon-previous.component';
+import { IconPlayNextComponent } from './icon-play-next.component';
+import { IconPlayPreviousComponent } from './icon-play-previous.component';
+import { IconPlaylistAddComponent } from './icon-playlist-add.component';
 
 @NgModule({
   declarations: [
     IconEyeComponent,
     IconPlayComponent,
-    IconAddToPlayListComponent,
+    IconPlaylistAddComponent,
     IconCancelComponent,
-    IconFirstComponent,
-    IconLastComponent,
-    IconPreviousComponent,
-    IconNextComponent,
+    IconChevronDoubleLeftComponent,
+    IconChevronDoubleRightComponent,
+    IconChevronLeftComponent,
+    IconChevronRightComponent,
+    IconChevronUpComponent,
+    IconChevronDownComponent,
+    IconPlayNextComponent,
+    IconPlayPreviousComponent,
   ],
   imports: [CommonModule],
   exports: [
     IconEyeComponent,
     IconPlayComponent,
-    IconAddToPlayListComponent,
+    IconPlaylistAddComponent,
     IconCancelComponent,
-    IconFirstComponent,
-    IconLastComponent,
-    IconPreviousComponent,
-    IconNextComponent,
+    IconChevronDoubleLeftComponent,
+    IconChevronDoubleRightComponent,
+    IconChevronLeftComponent,
+    IconChevronRightComponent,
+    IconChevronUpComponent,
+    IconChevronDownComponent,
+    IconPlayNextComponent,
+    IconPlayPreviousComponent,
   ],
 })
 export class IconsModule {}

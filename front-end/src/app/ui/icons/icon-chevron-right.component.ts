@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-icon-previous',
+  selector: 'app-icon-chevron-right',
   template: `
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -13,10 +13,10 @@ import { Component } from '@angular/core';
       <path
         stroke-linecap="round"
         stroke-linejoin="round"
-        d="M15.75 19.5 8.25 12l7.5-7.5"
+        d="m8.25 4.5 7.5 7.5-7.5 7.5"
       />
     </svg>
   `,
   styles: ':host { display:flex; }',
 })
-export class IconPreviousComponent {}
+export class IconChevronRightComponent {}

@@ -6,7 +6,7 @@ import { Song } from '../../songs/song';
   selector: 'app-player-playlist',
   template: `
     <div
-      class="pointer-events-none absolute bottom-20 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
+      class="pointer-events-none absolute bottom-16 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
     >
       <div
         class="pointer-events-auto relative m-2 flex-shrink-0 flex-grow-0 overflow-y-auto bg-emerald-50 px-2 shadow-md"

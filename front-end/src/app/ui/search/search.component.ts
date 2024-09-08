@@ -18,7 +18,7 @@ import { SearchMapperService } from './search-mapper.service';
         [ngModel]="selectedField()"
         class="rounded-sm bg-white text-center italic"
       >
-        <option [value]="null">-</option>
+        <option [value]="null"></option>
         @for (field of searchableFields(); track field) {
           <option [value]="field">{{ field }}</option>
         }
@@ -29,7 +29,7 @@ import { SearchMapperService } from './search-mapper.service';
         (keydown.enter)="onValueChanged(valueInput.value)"
         [ngModel]="selectedValue$ | async"
         [disabled]="!selectedField()"
-        class="block w-32 rounded-sm px-1 text-center italic focus:border-blue-500 focus:ring-blue-500"
+        class="block shrink-0 basis-80 rounded-sm px-1 text-start italic focus:border-blue-500 focus:ring-blue-500"
       />
       @if (selectedField() && (selectedValue$ | async)) {
         <app-icon-cancel

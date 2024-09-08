@@ -27,7 +27,7 @@ public class SongController {
 
     @GetMapping("/{id}/album")
     public ResponseEntity<AlbumDto> getAlbumBySongId(@PathVariable("id") int id) {
-        AlbumDto album = songService.findSongAlbumById(id);
+        AlbumDto album = songService.findAlbumBySongId(id);
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 

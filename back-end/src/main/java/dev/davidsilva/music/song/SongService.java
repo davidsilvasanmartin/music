@@ -18,9 +18,13 @@ public class SongService {
         return songDtoMapper.toDto(song);
     }
 
-    public AlbumDto findSongAlbumById(int id) {
-        Album album = albumRepository.findById(id).orElseThrow(() ->
-                new AlbumNotFoundException(id));
+    // TODO: test
+    public AlbumDto findAlbumBySongId(int songId) {
+        Song song = songRepository.findById(songId).orElseThrow(() ->
+                new SongNotFoundException(songId));
+        int albumId = song.getAlbum().getId();
+        Album album = albumRepository.findById(albumId).orElseThrow(() ->
+                new AlbumNotFoundException(albumId));
         return albumDtoMapper.toDto(album);
     }
 

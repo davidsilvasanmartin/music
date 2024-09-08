@@ -1,8 +1,11 @@
 <div
   class="w-100 flex flex-row flex-nowrap items-center justify-center gap-1.5 italic text-gray-700"
 >
-  <app-icon-first (click)="goToFirstPage()" class="size-5 cursor-pointer" />
-  <app-icon-previous
+  <app-icon-chevron-double-left
+    (click)="goToFirstPage()"
+    class="size-5 cursor-pointer"
+  />
+  <app-icon-chevron-left
     (click)="goToPreviousPage()"
     class="size-5 cursor-pointer"
   />
@@ -11,11 +14,17 @@
     #pageInput
     (keydown.enter)="onPageChanged(pageInput.value)"
     [ngModel]="page()"
-    class="block w-9 rounded-sm px-1 text-center italic focus:border-blue-500 focus:ring-blue-500"
+    class="block w-12 rounded-sm px-1 text-center italic focus:border-blue-500 focus:ring-blue-500"
   />
   <span> of {{ totalPages() }} </span>
-  <app-icon-next (click)="goToNextPage()" class="size-5 cursor-pointer" />
-  <app-icon-last (click)="goToLastPage()" class="size-5 cursor-pointer" />
+  <app-icon-chevron-right
+    (click)="goToNextPage()"
+    class="size-5 cursor-pointer"
+  />
+  <app-icon-chevron-double-right
+    (click)="goToLastPage()"
+    class="size-5 cursor-pointer"
+  />
   <span class="w-12"></span>
   <span> Showing </span>
   <select
