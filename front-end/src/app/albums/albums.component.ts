@@ -6,10 +6,9 @@ import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
-import { PaginatedSortedFilteredListComponent } from '../ui/pagination-sort-filter/paginated-sorted-filtered-list.component';
-import { SortDirection } from '../ui/sort/sort';
-import { Album } from './album';
-import { AlbumDto } from './album-dto';
+import { PaginatedSortedSearchableListComponent } from '../ui/pagination-sort-search';
+import { SortDirection } from '../ui/sort';
+import type { Album } from './album';
 import * as albumsActions from './store/actions';
 import * as albumsSelectors from './store/selectors';
 
@@ -18,19 +17,17 @@ import * as albumsSelectors from './store/selectors';
   selector: 'app-albums',
   templateUrl: './albums.component.html',
   styleUrls: ['./albums.component.scss'],
+  styles: ':host { display: contents;}',
 })
 export class AlbumsComponent
-  extends PaginatedSortedFilteredListComponent<AlbumDto>
+  extends PaginatedSortedSearchableListComponent
   implements OnDestroy
 {
   albums$: Observable<Album[]>;
   totalElements$: Observable<number>;
 
   constructor(private readonly _store: Store) {
-    super(['album', 'albumArtist', 'year'], {
-      field: 'albumArtist',
-      direction: SortDirection.ASC,
-    });
+    super({ field: 'albumArtist', direction: SortDirection.ASC });
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
     this.totalElements$ = this._store.pipe(
       select(albumsSelectors.getTotalElements),

@@ -4,7 +4,8 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { SortModule } from '../ui/sort/sort.module';
+import { SearchModule } from '../ui/search';
+import { SortModule } from '../ui/sort';
 import { UiModule } from '../ui/ui.module';
 import { AlbumComponent } from './album/album.component';
 import { AlbumsComponent } from './albums.component';
@@ -21,6 +22,7 @@ import { albumsReducer } from './store/reducers';
     StoreModule.forFeature('albums', albumsReducer),
     EffectsModule.forFeature([AlbumsEffects]),
     SortModule,
+    SearchModule,
   ],
 })
 export class AlbumsModule {}

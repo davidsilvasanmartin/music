@@ -5,11 +5,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiService } from '../api/api.service';
-import { PageableResource } from '../api/api-pageable-resource-request';
-import { PaginationSortFilterParams } from '../ui/pagination-sort-filter/pagination-sort-filter-params';
-import { SortMapperService } from '../ui/sort/sort-mapper.service';
-import { Album } from './album';
-import { AlbumDto } from './album-dto';
+import type { PageableResource } from '../api/api-pageable-resource-request';
+import type { PaginationSortSearchParams } from '../ui/pagination-sort-search';
+import { SearchMapperService } from '../ui/search';
+import { SortMapperService } from '../ui/sort';
+import type { Album } from './album';
+import type { AlbumDto } from './album-dto';
 import { AlbumsMapper } from './albums-mapper.service';
 
 @Injectable({ providedIn: 'root' })
@@ -19,22 +20,28 @@ export class AlbumsService {
     private readonly _albumsMapper: AlbumsMapper,
     private readonly _apiService: ApiService,
     private readonly _sortMapperService: SortMapperService,
+    private readonly _searchMapperService: SearchMapperService,
   ) {}
 
   getAlbums(
-    paginationParams: PaginationSortFilterParams,
+    params: PaginationSortSearchParams,
   ): Observable<PageableResource<Album[]>> {
+    const paramsObject: Record<string, string | number> = {
+      page: params.page,
+      size: params.size,
+      sort: this._sortMapperService.toQueryParam(params.sort),
+    };
+    if (params.search) {
+      paramsObject['search'] = this._searchMapperService.toQueryParam(
+        params.search,
+      );
+    }
+
     return this._http
       .get<PageableResource<AlbumDto[]>>(
         this._apiService.createApiUrl('albums'),
         {
-          params: new HttpParams({
-            fromObject: {
-              page: paginationParams.page,
-              size: paginationParams.size,
-              sort: this._sortMapperService.toQueryParam(paginationParams.sort),
-            },
-          }),
+          params: new HttpParams({ fromObject: paramsObject }),
         },
       )
       .pipe(

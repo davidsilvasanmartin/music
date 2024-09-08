@@ -6,7 +6,17 @@
   />
   <div class="flex flex-shrink flex-grow basis-auto flex-col flex-nowrap">
     <div>
-      <span class="text-2xl"> {{ album().albumArtist }} / </span>
+      <span class="text-2xl"
+        ><a
+          [queryParams]="
+            getSearchQueryParamsForAlbumArtist(album().albumArtist)
+          "
+          [routerLink]="['.']"
+          queryParamsHandling="merge"
+          >{{ album().albumArtist }}</a
+        >
+        /
+      </span>
       <span class="text-xl font-bold text-gray-800"> {{ album().album }}</span>
     </div>
     <div>
@@ -14,7 +24,15 @@
     </div>
     <div>
       <span>
-        {{ album().genres.join(", ") }}
+        @for (genre of album().genres; track genre; let isLast = $last) {
+          <a
+            [routerLink]="['.']"
+            [queryParams]="getSearchQueryParamsForGenre(genre)"
+            queryParamsHandling="merge"
+            >{{ genre }}</a
+          >
+          {{ isLast ? "" : ", " }}
+        }
       </span>
     </div>
   </div>

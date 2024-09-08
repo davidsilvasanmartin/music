@@ -19,10 +19,7 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "ES2022",
-    "lib": [
-      "ES2022",
-      "dom"
-    ],
+    "lib": ["ES2022", "dom"],
     // https://stackoverflow.com/questions/71916089/typescript-angular-ngrx-effects-actions-pipe-undefined
     // https://github.com/ngrx/platform/issues/3278
     "useDefineForClassFields": false

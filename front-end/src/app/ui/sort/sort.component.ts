@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
-import { Sort, SortDirection } from './sort';
+import { type Sort, SortDirection } from './sort';
 import { SortMapperService } from './sort-mapper.service';
 
 @Component({
@@ -50,6 +50,7 @@ export class SortComponent {
           ...this.sort(),
           field,
         }),
+        page: 1,
       },
       queryParamsHandling: 'merge',
     });
@@ -63,6 +64,7 @@ export class SortComponent {
           ...this.sort(),
           direction,
         }),
+        page: 1,
       },
       queryParamsHandling: 'merge',
     });

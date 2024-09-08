@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Sort, SortDirection } from './sort';
+import { type Sort, SortDirection } from './sort';
 
 @Injectable({ providedIn: 'root' })
 export class SortMapperService {

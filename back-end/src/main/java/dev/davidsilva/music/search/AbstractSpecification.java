@@ -4,12 +4,14 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
+@Slf4j
 public abstract class AbstractSpecification<T> implements Specification<T> {
     private final List<SearchCriteria> criteria;
 
@@ -35,6 +37,7 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
 
             return builder.and(predicates.toArray(new Predicate[0]));
         } catch (Exception e) {
+            log.error("Error creating predicate: ", e);
             throw new InvalidSearchException(this.criteria.toString());
         }
     }

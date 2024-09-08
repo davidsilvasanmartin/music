@@ -1,8 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 
-import { PageableResource } from '../../api/api-pageable-resource-request';
-import { PaginationSortFilterParams } from '../../ui/pagination-sort-filter/pagination-sort-filter-params';
-import { Album } from '../album';
+import type { PageableResource } from '../../api/api-pageable-resource-request';
+import type { PaginationSortSearchParams } from '../../ui/pagination-sort-search';
+import type { Album } from '../album';
 
 export enum AlbumsActionTypes {
   loadAlbums = '[Albums] Load Albums',
@@ -13,7 +13,7 @@ export enum AlbumsActionTypes {
 
 export const loadAlbums = createAction(
   AlbumsActionTypes.loadAlbums,
-  props<{ params: PaginationSortFilterParams }>(),
+  props<{ params: PaginationSortSearchParams }>(),
 );
 
 export const loadAlbumsSuccess = createAction(

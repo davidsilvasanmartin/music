@@ -1,9 +1,16 @@
-<div class="flex flex-col flex-nowrap gap-4" style="max-width: 1500px">
+<div class="flex w-full flex-col flex-nowrap gap-4">
   @if (params$ | async; as params) {
-    <app-sort
-      [sortableFields]="sortableFilterableFields"
-      [sort]="params.sort"
-    ></app-sort>
+    <div class="flex flex-row flex-wrap">
+      <app-search
+        class="grow"
+        [searchableFields]="['album', 'albumArtist', 'genre']"
+        [search]="params.search"
+      ></app-search>
+      <app-sort
+        [sortableFields]="['album', 'albumArtist', 'year']"
+        [sort]="params.sort"
+      ></app-sort>
+    </div>
   }
 
   <app-card *ngFor="let album of albums$ | async" class="album">

@@ -26,14 +26,16 @@ class Album implements Serializable {
     @Column(name = "albumartist")
     private String albumArtist;
 
+    @Column(name = "album")
     private String album;
 
+    @Column(name = "genre")
     private String genre;
 
+    @Column(name = "original_year")
     private int year;
 
     @OneToMany(mappedBy = "album")
     @JsonManagedReference
     private List<Song> songs;
-
 }
