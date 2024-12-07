@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="music" />
         <module name="tests" />
+        <module name="musictests" />
       </profile>
     </annotationProcessing>
   </component>

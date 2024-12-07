@@ -5,9 +5,15 @@ import org.testng.annotations.Test;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
+import static org.hamcrest.Matchers.equalTo;
 
 public class TestSongs {
     final int m4aSongId = 1;
+    final String m4aSongTitle = "Song m4a";
+    final String m4aSongLyrics = "";
+    final int m4aSongAlbumId = 1;
+    final String m4aSongAlbumArtist = "Flight of the Pink Goats";
+    final String m4aSongAlbumTitle = "Album 1";
     final int flacSongId = 2;
     final int mp3SongId = 3;
     final int oggSongId = 4;
@@ -16,7 +22,13 @@ public class TestSongs {
     @Test
     public void getSong() {
         given().when().get("songs/" + m4aSongId).then()
-                .statusCode(200).and().contentType("application/json");
+                .statusCode(200).and().contentType("application/json")
+                .and().body("id", equalTo(m4aSongId))
+                .and().body("album.id", equalTo(m4aSongAlbumId))
+                .and().body("album.albumArtist", equalTo(m4aSongAlbumArtist))
+                .and().body("album.album", equalTo(m4aSongAlbumTitle))
+                .and().body("title", equalTo(m4aSongTitle))
+                .and().body("lyrics", equalTo(m4aSongLyrics));
     }
 
     @Test

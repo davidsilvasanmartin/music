@@ -1,5 +1,8 @@
 @if (isPlaylistOpen()) {
-  <app-player-playlist [nextSongs]="nextSongs()" />
+  <app-player-playlist
+    [nextSongs]="nextSongs()"
+    (closePlaylist)="closePlaylist()"
+  />
 }
 <div
   class="z-10 flex h-16 w-full flex-row flex-nowrap justify-center bg-emerald-200 shadow-md"

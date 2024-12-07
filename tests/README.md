@@ -23,7 +23,7 @@ SET artpath = replace(path, '/Users/dev/Developer/music/tests/src/test/resources
 
 3. Before running the tests, the back-end application needs to be running. In order for the real application
    to use the test database, you need to set the `BEETS_DB_FILE` environment variable to point to the
-   test database. If `<RESOURCES_PATH>` means the same as in step 2, you need to do the following:
+   test database. With `<RESOURCES_PATH>` meaning the same as in step 2, you need to do the following:
 
 ```bash
 export BEETS_DB_FILE=<RESOURCES_PATH>/test_music_library.db
