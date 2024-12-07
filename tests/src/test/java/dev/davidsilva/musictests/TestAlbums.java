@@ -13,6 +13,9 @@ public class TestAlbums {
     final String album = "Album 1";
     final int albumYear = 2001;
     final String albumGenre = "House 1";
+    final int albumNumberOfSongs = 4;
+    final int albumFirstSongId = 1;
+    final String albumFirstSongTitle = "Song m4a";
 
     @Test
     void getAlbums() {
@@ -46,7 +49,16 @@ public class TestAlbums {
     @Test
     void getAlbumById() {
         given().when().get("albums/" + albumId).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json");
+                .statusCode(HttpStatus.SC_OK).contentType("application/json")
+                .body("id", equalTo(albumId))
+                .body("albumArtist", equalTo(albumArtist))
+                .body("album", equalTo(album))
+                .body("year", equalTo(albumYear))
+                .body("genres.size()", equalTo(1))
+                .body("genres", hasItem(albumGenre))
+                .body("songs.size()", equalTo(albumNumberOfSongs))
+                .body("songs[0].id", equalTo(albumFirstSongId))
+                .body("songs[0].title", equalTo(albumFirstSongTitle));
     }
 
     @Test
