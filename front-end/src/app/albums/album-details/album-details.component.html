@@ -1,0 +1,20 @@
+<div class="relative flex flex-col flex-nowrap gap-2">
+  @for (song of album().songs; track song; let i = $index) {
+    <div class="flex flex-row flex-nowrap gap-1">
+      <div>{{ i }}</div>
+      <div class="w-0.5 bg-gray-200"></div>
+      <div class="grow">
+        {{ song.title }}
+      </div>
+      <div>
+        <button
+          class="btn rounded-full bg-blue-500 p-2 text-white hover:bg-blue-700"
+          aria-label="Add to playlist"
+          (click)="addSongToPlaylist(song.id)"
+        >
+          <app-icon-playlist-add class="size-2" />
+        </button>
+      </div>
+    </div>
+  }
+</div>

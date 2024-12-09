@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { Params } from '@angular/router';
 
 import { SearchMapperService } from '../../ui/search';
@@ -10,6 +10,7 @@ import { Album } from '../album';
 })
 export class AlbumComponent {
   album = input.required<Album>();
+  isDetailsOpen = signal(false);
 
   constructor(private readonly _searchMapperService: SearchMapperService) {}
 
@@ -33,5 +34,9 @@ export class AlbumComponent {
       }),
       page: 1,
     };
+  }
+
+  toggleDetails() {
+    this.isDetailsOpen.set(!this.isDetailsOpen());
   }
 }

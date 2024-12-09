@@ -3,7 +3,7 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
 import { select, Store } from '@ngrx/store';
 
-import { Observable, switchMap } from 'rxjs';
+import { filter, Observable, switchMap } from 'rxjs';
 
 import { Album } from '../albums/album';
 import { ApiService } from '../api/api.service';
@@ -43,12 +43,12 @@ export class PlayerComponent implements OnDestroy {
       { requireSync: true },
     );
     this.currentSongAlbum$ = toObservable(this.currentSong).pipe(
+      filter((song) => !!song),
       switchMap((song) => this._songsService.getSongAlbum(song.id)),
     );
   }
 
   goToNextSong() {
-    console.log('nEXT!');
     this._store.dispatch(playlistActions.next());
   }
 

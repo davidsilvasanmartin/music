@@ -8,13 +8,14 @@ import { SearchModule } from '../ui/search';
 import { SortModule } from '../ui/sort';
 import { UiModule } from '../ui/ui.module';
 import { AlbumComponent } from './album/album.component';
+import { AlbumDetailsComponent } from './album-details/album-details.component';
 import { AlbumsComponent } from './albums.component';
 import { AlbumsRoutingModule } from './albums-routing.module';
 import { AlbumsEffects } from './store/effects';
 import { albumsReducer } from './store/reducers';
 
 @NgModule({
-  declarations: [AlbumsComponent, AlbumComponent],
+  declarations: [AlbumsComponent, AlbumComponent, AlbumDetailsComponent],
   imports: [
     CommonModule,
     AlbumsRoutingModule,

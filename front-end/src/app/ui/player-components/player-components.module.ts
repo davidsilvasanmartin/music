@@ -6,6 +6,7 @@ import { PlayerPlaylistAddComponent } from './player-playlist-add.component';
 import { PlayerPlaylistRemoveComponent } from './player-playlist-remove.component';
 import { PlayerPlaylistReplaceComponent } from './player-playlist-replace.component';
 
+// TODO probably move this module into player module
 @NgModule({
   declarations: [
     PlayerPlaylistAddComponent,
