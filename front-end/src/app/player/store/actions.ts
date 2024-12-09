@@ -1,6 +1,6 @@
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 
-import { Song } from "../../songs/song";
+import { Song } from '../../songs/song';
 
 export enum PlaylistActionTypes {
   addToPlaylist = '[Playlist] Add to playlist',
@@ -22,7 +22,7 @@ export const addToPlaylistSuccess = createAction(
 
 export const removeFromPlaylist = createAction(
   PlaylistActionTypes.removeFromPlaylist,
-  props<{ songIndex: number }>),
+  props<{ songIndex: number }>(),
 );
 
 export const next = createAction(PlaylistActionTypes.next);
