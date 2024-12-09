@@ -26,7 +26,7 @@ export class PlayerPlaylistReplaceComponent {
   replacePlaylist() {
     this._store.dispatch(playlistActions.reset());
     this._store.dispatch(
-      playlistActions.addToPlaylist({ songs: this.songs() }),
+      playlistActions.addToPlaylist({ songIds: this.songs().map((s) => s.id) }),
     );
   }
 }

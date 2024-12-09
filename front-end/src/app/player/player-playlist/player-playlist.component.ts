@@ -26,11 +26,20 @@ import { Song } from '../../songs/song';
           </div>
           <div class="p-2">
             @if (nextSongs() && nextSongs().length > 0) {
-              @for (song of nextSongs(); track song) {
-                <div>
-                  {{ song.title }} ({{ song.album?.albumArtist }} /
-                  {{ song.album?.album }})
-                  <app-player-playlist-remove [song]="song" />
+              @for (song of nextSongs(); track song; let songIndex = $index) {
+                <div class="flex flex-row flex-nowrap gap-2">
+                  <div>
+                    <!-- nextSongs does not include the song currently playing, which
+                    is first in the store's playlist -->
+                    <app-player-playlist-remove [songIndex]="songIndex + 1" />
+                  </div>
+                  <div class="grow">
+                    {{ song.title }}
+                  </div>
+                  <div>
+                    {{ song.album?.album }} /
+                    {{ song.album?.albumArtist }}
+                  </div>
                 </div>
               }
             } @else {

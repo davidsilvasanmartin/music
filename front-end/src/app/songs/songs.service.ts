@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 
 import { Album } from '../albums/album';
 import { ApiService } from '../api/api.service';
+import { Song } from './song';
 
 @Injectable({ providedIn: 'root' })
 export class SongsService {
@@ -12,6 +13,12 @@ export class SongsService {
     private readonly _http: HttpClient,
     private readonly _apiService: ApiService,
   ) {}
+
+  getSong(songId: number): Observable<Song> {
+    return this._http.get<Song>(
+      this._apiService.createApiUrl(`songs/${songId}`),
+    );
+  }
 
   getSongAlbum(songId: number): Observable<Album> {
     return this._http.get<Album>(

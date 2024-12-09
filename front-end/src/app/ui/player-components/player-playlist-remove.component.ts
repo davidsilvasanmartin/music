@@ -4,13 +4,12 @@ import { Store } from '@ngrx/store';
 
 import * as playlistActions from '../../player/store/actions';
 import type { PlaylistRootState } from '../../player/store/state';
-import type { Song } from '../../songs/song';
 
 @Component({
   selector: 'app-player-playlist-remove',
   template: `
     <button
-      class="btn rounded-full bg-gray-300 p-1 font-bold text-gray-800 hover:bg-gray-400"
+      class="btn rounded-full bg-blue-500 p-1 font-bold text-white hover:bg-blue-700"
       aria-label="Remove from playlist"
       (click)="removeSongFromPlaylist()"
     >
@@ -19,13 +18,14 @@ import type { Song } from '../../songs/song';
   `,
 })
 export class PlayerPlaylistRemoveComponent {
-  song = input.required<Song>();
+  /** The index of the song in the playlist */
+  songIndex = input.required<number>();
 
   constructor(private readonly _store: Store<PlaylistRootState>) {}
 
   removeSongFromPlaylist() {
     this._store.dispatch(
-      playlistActions.removeFromPlaylist({ song: this.song() }),
+      playlistActions.removeFromPlaylist({ songIndex: this.songIndex() }),
     );
   }
 }

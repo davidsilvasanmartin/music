@@ -25,7 +25,7 @@ export class PlayerPlaylistAddComponent {
 
   addToPlaylist() {
     this._store.dispatch(
-      playlistActions.addToPlaylist({ songs: this.songs() }),
+      playlistActions.addToPlaylist({ songIds: this.songs().map((s) => s.id) }),
     );
   }
 }

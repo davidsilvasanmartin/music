@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
+import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { UiModule } from '../ui/ui.module';
 import { PlayerComponent } from './player.component';
 import { PlayerPlaylistComponent } from './player-playlist/player-playlist.component';
+import { PlayerEffects } from './store/effects';
 import { playlistReducer } from './store/reducers';
 
 @NgModule({
@@ -14,6 +16,7 @@ import { playlistReducer } from './store/reducers';
     CommonModule,
     UiModule,
     StoreModule.forFeature('playlist', playlistReducer),
+    EffectsModule.forFeature([PlayerEffects]),
   ],
   exports: [PlayerComponent],
 })
