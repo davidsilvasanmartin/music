@@ -1,11 +1,13 @@
 package dev.davidsilva.music.song;
 
 import dev.davidsilva.music.album.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class SongService {
     private final SongRepository songRepository;
     private final SongDtoMapper songDtoMapper;

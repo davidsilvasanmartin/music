@@ -2,11 +2,13 @@ package dev.davidsilva.music.album;
 
 import dev.davidsilva.music.utils.ListMapper;
 import dev.davidsilva.music.utils.PaginatedResponse;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 public class AlbumService {
     private final AlbumRepository albumRepository;
     private final AlbumDtoMapper albumDtoMapper;

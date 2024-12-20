@@ -1,6 +1,7 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MusicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
     <envs>
+      <env name="APP_DB_FILE" value="$PROJECT_DIR$/back-end/src/main/resources/app.db" />
       <env name="BEETS_DB_FILE" value="$USER_HOME$/music/music_library.db" />
     </envs>
     <module name="music" />
