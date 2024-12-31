@@ -16,15 +16,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.Objects;
 
-/**
- * Following these guides for configuration of 2 datasources
- * https://stackoverflow.com/a/48140893/10997015
- * https://springframework.guru/how-to-configure-multiple-data-sources-in-a-spring-boot-application/
- * <p>
- * Please note: I had to annotate all services as Transactional because otherwise I was getting this error:
- * https://stackoverflow.com/questions/21574236/
- * As mentioned in there, I probably should declare as transactional individual methods ??
- */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(

@@ -18,7 +18,6 @@ import { SearchMapperService } from './search-mapper.service';
         [ngModel]="selectedField()"
         class="rounded-sm bg-white text-center italic"
       >
-        <option [value]="null"></option>
         @for (field of searchableFields(); track field) {
           <option [value]="field">{{ field }}</option>
         }

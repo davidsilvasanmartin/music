@@ -23,6 +23,19 @@ Selected topics:
     - https://www.baeldung.com/spring-data-criteria-queries
     - https://www.baeldung.com/hibernate-criteria-queries
     - https://www.baeldung.com/rest-api-search-language-spring-data-specifications
+- Configuring 2 different datasources
+    - I have followed this
+      tutorial https://springframework.guru/how-to-configure-multiple-data-sources-in-a-spring-boot-application/
+    - Please note: I had to annotate all services as Transactional because otherwise I was getting this
+      error: https://stackoverflow.com/questions/21574236/
+- Authentication and authorization with JWT
+    - https://chariotsolutions.com/blog/post/angular-2-spring-boot-jwt-cors_part2/
+    - Tutorial I've followed, which is linked from the previous
+      post: https://www.toptal.com/java/rest-security-with-jwt-spring-security-and-java
+- Spring Security in general
+    - Architecture of the filter system: https://docs.spring.io/spring-security/reference/servlet/architecture.html
+    - Baeldung series on Spring Security: https://www.baeldung.com/security-spring
+        - `HttpSecurity` vs `WebSecurity`: https://www.baeldung.com/spring-security-httpsecurity-vs-websecurity
 
 ## `/front-end`
 
@@ -37,6 +50,7 @@ Angular app
 - Custom playlists (requires users)
 - Deploy! Containerise so it can be run with one command.
 - Log everything
+- Look into HATEOAS, maybe it allows to hide entity ids from URLs??
 
 ### TODO - Long term
 

@@ -51,3 +51,9 @@ This is for my own future reference.
 
 - https://www.youtube.com/watch?v=Orn8cP1yRJc
 - https://www.youtube.com/watch?v=OM4mr3PKgcQ&list=PLUDwpEzHYYLvLZX_QEGTNolPvNADXid0I
+
+### Issues
+
+- There is the following issue when running the tests. But it's only a warning so I'm ignoring it
+    - https://www.slf4j.org/codes.html#multiple_bindings
+    - https://stackoverflow.com/questions/14024756
