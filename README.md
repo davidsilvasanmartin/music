@@ -28,6 +28,12 @@ Selected topics:
       tutorial https://springframework.guru/how-to-configure-multiple-data-sources-in-a-spring-boot-application/
     - Please note: I had to annotate all services as Transactional because otherwise I was getting this
       error: https://stackoverflow.com/questions/21574236/
+- SQLITE configuration in Spring Boot
+    - https://www.baeldung.com/spring-boot-sqlite
+    - When configuring the dialect with Java, we should use `hibernate.dialect` instead of the
+      `spring.jpa.database-platform`
+      property which is used in the `application.properties`
+      file: https://stackoverflow.com/questions/67839078/how-to-configure-multiple-database-platforms-in-spring-boot
 - Authentication and authorization with JWT
     - https://chariotsolutions.com/blog/post/angular-2-spring-boot-jwt-cors_part2/
     - Tutorial I've followed, which is linked from the previous

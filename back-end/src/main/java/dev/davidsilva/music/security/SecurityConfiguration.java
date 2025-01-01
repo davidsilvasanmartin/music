@@ -36,9 +36,8 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
-                // We don't need CSRF because our token is invulnerable
-                .csrf(AbstractHttpConfigurer::disable);
+        // We don't need CSRF because our token is invulnerable
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity.authorizeHttpRequests(auth -> auth.requestMatchers("/**").permitAll());
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         // TODO I don't know if we need to keep the following 3

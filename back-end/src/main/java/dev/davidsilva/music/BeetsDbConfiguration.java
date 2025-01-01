@@ -13,8 +13,13 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
-import java.util.Objects;
+import java.util.HashMap;
 
+/**
+ * Configuration class for the database created by Beets that stores the music
+ * <p>
+ * Note that database type (sqlite) is hardcoded because it will not change
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -29,14 +34,16 @@ public class BeetsDbConfiguration {
     @Bean(name = "beetsDb")
     public DataSource beetsDbDataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Objects.requireNonNull(env.getProperty("spring.data-source.driver-class-name")));
-        dataSource.setUrl(env.getProperty("custom-data-source.url"));
+        dataSource.setDriverClassName("org.sqlite.JDBC");
+        dataSource.setUrl(env.getProperty("beets-db.url"));
         return dataSource;
     }
 
     @Bean(name = "beetsDbEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDb") DataSource dataSource) {
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.album", "dev.davidsilva.music.song").build();
+        HashMap<String, String> propertiesMap = new HashMap<>();
+        propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
+        return builder.dataSource(dataSource).packages("dev.davidsilva.music.album", "dev.davidsilva.music.song").properties(propertiesMap).build();
     }
 
     @Bean(name = "beetsDbTransactionManager")
