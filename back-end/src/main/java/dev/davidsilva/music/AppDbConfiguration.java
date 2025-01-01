@@ -1,12 +1,10 @@
 package dev.davidsilva.music;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.core.env.Environment;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -31,10 +29,7 @@ import java.util.HashMap;
         transactionManagerRef = "appDbTransactionManager"
 )
 public class AppDbConfiguration {
-    @Autowired
-    Environment env;
-
-    @Bean(name = "appDb")
+    @Bean(name = "appDbDataSource")
     @Primary
     public DataSource appDbDataSource() throws IOException, ClassNotFoundException {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
@@ -47,7 +42,7 @@ public class AppDbConfiguration {
 
     @Bean(name = "appDbEntityManagerFactory")
     @Primary
-    public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDb") DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
         return builder.dataSource(dataSource).packages("dev.davidsilva.music.user").properties(propertiesMap).build();
@@ -55,7 +50,7 @@ public class AppDbConfiguration {
 
     @Bean(name = "appDbTransactionManager")
     @Primary
-    public DataSourceTransactionManager appDbTransactionManager(@Qualifier("appDb") DataSource dataSource) {
+    public DataSourceTransactionManager appDbTransactionManager(@Qualifier("appDbDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }

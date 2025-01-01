@@ -51,8 +51,7 @@ public class SecurityConfiguration {
     public WebSecurityCustomizer webSecurityCustomizer() {
         // We would add an ignore rule for static resources here, if we had them
         // Also, add ".debug(true)" if debugging info is needed
-        return (web) -> web.ignoring().
-                requestMatchers(HttpMethod.OPTIONS, "/**");
+        return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
     }
 
 }

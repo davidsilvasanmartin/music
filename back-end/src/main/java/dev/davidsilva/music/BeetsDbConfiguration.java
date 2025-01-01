@@ -1,6 +1,6 @@
 package dev.davidsilva.music;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -27,11 +27,11 @@ import java.util.HashMap;
         entityManagerFactoryRef = "beetsDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
+@AllArgsConstructor
 public class BeetsDbConfiguration {
-    @Autowired
-    Environment env;
+    private final Environment env;
 
-    @Bean(name = "beetsDb")
+    @Bean(name = "beetsDbDataSource")
     public DataSource beetsDbDataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
@@ -40,14 +40,14 @@ public class BeetsDbConfiguration {
     }
 
     @Bean(name = "beetsDbEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDb") DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
         return builder.dataSource(dataSource).packages("dev.davidsilva.music.album", "dev.davidsilva.music.song").properties(propertiesMap).build();
     }
 
     @Bean(name = "beetsDbTransactionManager")
-    public DataSourceTransactionManager beetsDbTransactionManager(@Qualifier("beetsDb") DataSource dataSource) {
+    public DataSourceTransactionManager beetsDbTransactionManager(@Qualifier("beetsDbDataSource") DataSource dataSource) {
         return new DataSourceTransactionManager(dataSource);
     }
 }
