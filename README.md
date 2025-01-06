@@ -42,6 +42,9 @@ Selected topics:
     - Architecture of the filter system: https://docs.spring.io/spring-security/reference/servlet/architecture.html
     - Baeldung series on Spring Security: https://www.baeldung.com/security-spring
         - `HttpSecurity` vs `WebSecurity`: https://www.baeldung.com/spring-security-httpsecurity-vs-websecurity
+- Storing passwords
+    - https://www.dontpanicblog.co.uk/2022/03/14/spring-security-delegating-password-encoder/
+    - https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
 
 ## `/front-end`
 
