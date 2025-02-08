@@ -52,6 +52,9 @@ Angular app
 
 ## TODO
 
+- Have a look at this article, which has a list of good practices and relevant features that should be implemented in
+  this
+  project https://bhawana-gaur.medium.com/best-practices-for-developing-and-maintaining-spring-boot-applications-d96bb1816da6.
 - Fix front-end styling and get rid of Angular Material.
 - Read about content negotiation for the /play
   endpoint (https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc)

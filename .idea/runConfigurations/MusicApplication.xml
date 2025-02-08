@@ -1,5 +1,12 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="MusicApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+    <additionalParameters>
+      <param>
+        <option name="enabled" value="true" />
+        <option name="name" value="management.endpoint.env.show-values" />
+        <option name="value" value="when_authorized" />
+      </param>
+    </additionalParameters>
     <envs>
       <env name="APP_DB_FILE" value="$PROJECT_DIR$/databases/app.db" />
       <env name="BEETS_DB_FILE" value="$USER_HOME$/music/music_library.db" />

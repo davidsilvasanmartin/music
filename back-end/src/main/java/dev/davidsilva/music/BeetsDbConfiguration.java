@@ -1,6 +1,6 @@
 package dev.davidsilva.music;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
@@ -27,7 +27,7 @@ import java.util.HashMap;
         entityManagerFactoryRef = "beetsDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class BeetsDbConfiguration {
     private final Environment env;
 

@@ -47,11 +47,11 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="app" uuid="28e23bff-5fc6-4792-a3b7-9ab944da1360">
+    <data-source source="LOCAL" name="app" uuid="b46b547f-6d9c-4d71-b996-ad17e65f35fd">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/back-end/src/main/resources/db/app.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/databases/app.db</jdbc-url>
       <jdbc-additional-properties>
         <property name="com.intellij.clouds.kubernetes.db.enabled" value="false" />
       </jdbc-additional-properties>

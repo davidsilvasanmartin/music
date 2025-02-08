@@ -1,6 +1,7 @@
 package dev.davidsilva.music.song;
 
 import dev.davidsilva.music.album.AlbumDto;
+import dev.davidsilva.music.audit.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpHeaders;
@@ -18,6 +19,7 @@ import java.util.Objects;
 @RequestMapping("songs")
 public class SongController {
     private final SongService songService;
+    private final AuditLogService auditLogService;
 
     @GetMapping("/{id}")
     public ResponseEntity<SongDto> getSongById(@PathVariable("id") int id) {
@@ -66,6 +68,11 @@ public class SongController {
             default:
                 throw new SongFormatNotSupportedException(resourceExtension);
         }
+        // TODO this is trash because we will log the same song several times
+        // as the browser's media player asks for chunks of it
+        auditLogService.log(
+                "GET", "SONG_PLAY", String.valueOf(id), null, null, null, null
+        );
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }
