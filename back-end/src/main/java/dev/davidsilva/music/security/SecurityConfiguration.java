@@ -28,7 +28,8 @@ import java.util.Map;
  * https://docs.spring.io/spring-security/reference/5.8/migration/servlet/config.html
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity()
+//@EnableWebSecurity(debug = true)
 @AllArgsConstructor
 public class SecurityConfiguration {
 //    private final TokenProvider tokenProvider;
@@ -57,7 +58,6 @@ public class SecurityConfiguration {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         // We would add an ignore rule for static resources here, if we had them
-        // Also, add ".debug(true)" if debugging info is needed
         return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
     }
 
