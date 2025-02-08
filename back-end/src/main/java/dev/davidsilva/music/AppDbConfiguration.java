@@ -25,7 +25,7 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"dev.davidsilva.music.user", "dev.davidsilva.music.audit"},
+        basePackages = {"dev.davidsilva.music.auth", "dev.davidsilva.music.audit", "dev.davidsilva.music.auth"},
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
@@ -48,7 +48,7 @@ public class AppDbConfiguration {
     public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.user", "dev.davidsilva.music.audit").properties(propertiesMap).build();
+        return builder.dataSource(dataSource).packages("dev.davidsilva.music.user", "dev.davidsilva.music.audit", "dev.davidsilva.music.auth").properties(propertiesMap).build();
     }
 
     @Bean(name = "appDbTransactionManager")

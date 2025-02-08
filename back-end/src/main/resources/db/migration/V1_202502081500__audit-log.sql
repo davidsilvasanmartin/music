@@ -1,6 +1,7 @@
 CREATE TABLE log_audit
 (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
+--     TODO think whether we want to have only 1 column for action and remove entity_type
     action      VARCHAR(255) NOT NULL,
     entity_type VARCHAR(255),
     entity_id   VARCHAR(255),
@@ -8,6 +9,7 @@ CREATE TABLE log_audit
     old_value   TEXT,
     new_value   TEXT,
     timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+--     TODO think about removing "description", if the actions are granular we don't really need it
     description VARCHAR(500),
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id)
 );
