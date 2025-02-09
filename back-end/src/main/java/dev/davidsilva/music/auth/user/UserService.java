@@ -1,6 +1,9 @@
-package dev.davidsilva.music.auth;
+package dev.davidsilva.music.auth.user;
 
+import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
+import dev.davidsilva.music.auth.role.Role;
+import dev.davidsilva.music.auth.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,16 +26,18 @@ public class UserService {
     public User createUser(User user) {
         // TODO add validation logic here
         User newUser = userRepository.save(user);
-        // TODO the current user's id
         this.auditLogService.log(
-                AuthAuditLogActions.AUTH_USER_CREATED.toString(),
+                AuditLogAction.CREATE.toString(),
                 "USER",
                 String.valueOf(newUser.getId()),
                 null,
                 null,
+                // TODO The logged-in user's id
+                null,
+                null,
                 // TODO check what this logs
                 newUser.toString(),
-                "New user account created"
+                null
         );
         return newUser;
     }

@@ -1,6 +1,7 @@
 package dev.davidsilva.music.song;
 
 import dev.davidsilva.music.album.AlbumDto;
+import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
@@ -71,7 +72,16 @@ public class SongController {
         // TODO this is trash because we will log the same song several times
         // as the browser's media player asks for chunks of it
         auditLogService.log(
-                "GET", "SONG_PLAY", String.valueOf(id), null, null, null, null
+                AuditLogAction.READ.toString(),
+                "SONG_PLAY",
+                String.valueOf(id),
+                null,
+                null,
+                // TODO: the logged-in user's id
+                null,
+                null,
+                null,
+                null
         );
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }

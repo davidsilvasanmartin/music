@@ -23,8 +23,14 @@ public class AuditLog {
     @Column(name = "entity_type")
     private String entityType;
 
-    @Column(name = "entity_id")
-    private String entityId;
+    @Column(name = "entity_id_1")
+    private String entityId1;
+
+    @Column(name = "entity_id_2")
+    private String entityId2;
+
+    @Column(name = "entity_id_3")
+    private String entityId3;
 
     @Column(name = "user_id")
     private Integer userId;

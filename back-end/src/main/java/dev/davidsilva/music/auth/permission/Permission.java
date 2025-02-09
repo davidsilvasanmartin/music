@@ -1,4 +1,4 @@
-package dev.davidsilva.music.auth;
+package dev.davidsilva.music.auth.permission;
 
 import jakarta.persistence.*;
 import lombok.Data;
