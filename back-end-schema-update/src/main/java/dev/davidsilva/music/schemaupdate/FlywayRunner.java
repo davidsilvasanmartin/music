@@ -1,13 +1,13 @@
-package dev.davidsilva.music.appdb;
+package dev.davidsilva.music.schemaupdate;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.flywaydb.core.Flyway;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FlywayRunner implements ApplicationRunner {
     private final Flyway flyway;
 

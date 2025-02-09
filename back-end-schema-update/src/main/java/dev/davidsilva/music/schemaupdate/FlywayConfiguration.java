@@ -1,7 +1,6 @@
-package dev.davidsilva.music.appdb;
+package dev.davidsilva.music.schemaupdate;
 
 import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,7 +10,7 @@ import javax.sql.DataSource;
 public class FlywayConfiguration {
     private final DataSource dataSource;
 
-    public FlywayConfiguration(@Qualifier("appDbDataSource") DataSource dataSource) {
+    public FlywayConfiguration(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
@@ -21,7 +20,6 @@ public class FlywayConfiguration {
                 .configure()
                 .dataSource(dataSource)
                 .locations("db/migration")
-                .table("migrations")
                 .cleanDisabled(false)
                 .load();
     }
