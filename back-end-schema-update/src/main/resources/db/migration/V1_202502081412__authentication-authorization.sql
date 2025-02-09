@@ -37,13 +37,13 @@ To use this schema effectively, you should also implement appropriate applicatio
 -- Users table
 CREATE TABLE IF NOT EXISTS auth_users
 (
-    user_id       INTEGER PRIMARY KEY AUTOINCREMENT,
-    username      VARCHAR(50)  NOT NULL UNIQUE,
-    email         VARCHAR(100) NOT NULL UNIQUE,
-    password_hash VARCHAR(255) NOT NULL,
-    is_active     BOOLEAN   DEFAULT TRUE,
-    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id    INTEGER PRIMARY KEY AUTOINCREMENT,
+    username   VARCHAR(50)  NOT NULL UNIQUE,
+    email      VARCHAR(100) NOT NULL UNIQUE,
+    password   VARCHAR(255) NOT NULL,
+    is_active  BOOLEAN   DEFAULT TRUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Roles table
@@ -134,3 +134,12 @@ CREATE INDEX idx_password_reset_tokens_user_id ON auth_password_reset_tokens (us
 CREATE INDEX idx_password_reset_tokens_token ON auth_password_reset_tokens (token);
 CREATE INDEX idx_login_attempts_user_id ON log_auth_login_attempts (user_id);
 CREATE INDEX idx_login_attempts_ip ON log_auth_login_attempts (ip_address);
+
+-- I'm adding the first admin use here because I can't get the CommandLineRunner to work.
+-- TODO add roles and permissions for admin user
+INSERT INTO auth_users
+    (username, email, password, is_active)
+VALUES ('admin',
+        'admin@email.test',
+        '{bcrypt}$2a$10$xb7bRNhQ8ihvpMUiA5uzKOOakmd0YT7z/cQgCQ0bP7VKpu/.AxSTW',
+        TRUE);

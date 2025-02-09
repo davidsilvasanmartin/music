@@ -10,6 +10,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+/**
+ * When deleting users, check
+ * - You can't delete yourself (maybe yes?)
+ * - You can't delete the last admin user
+ */
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -50,5 +56,10 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("Role not found"));
         user.getRoles().add(role);
         userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    public long countUsers() {
+        return userRepository.count();
     }
 }
