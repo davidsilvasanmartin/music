@@ -1,0 +1,12 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="SchemaUpdateApplication for TESTS" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+    <envs>
+      <env name="APP_DB_FILE" value="$PROJECT_DIR$/tests/src/test/resources/app.db" />
+    </envs>
+    <module name="schema-update" />
+    <option name="SPRING_BOOT_MAIN_CLASS" value="dev.davidsilva.music.schemaupdate.SchemaUpdateApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
