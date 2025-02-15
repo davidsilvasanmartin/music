@@ -1,4 +1,4 @@
-package dev.davidsilva.music.auth.role;
+package dev.davidsilva.music.security.role;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

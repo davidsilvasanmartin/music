@@ -1,7 +1,7 @@
-package dev.davidsilva.music.auth.role;
+package dev.davidsilva.music.security.role;
 
-import dev.davidsilva.music.auth.permission.Permission;
-import dev.davidsilva.music.auth.permission.PermissionRepository;
+import dev.davidsilva.music.security.permission.Permission;
+import dev.davidsilva.music.security.permission.PermissionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

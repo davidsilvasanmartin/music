@@ -1,9 +1,9 @@
-package dev.davidsilva.music.auth.user;
+package dev.davidsilva.music.security.user;
 
 import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
-import dev.davidsilva.music.auth.role.Role;
-import dev.davidsilva.music.auth.role.RoleRepository;
+import dev.davidsilva.music.security.role.Role;
+import dev.davidsilva.music.security.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package dev.davidsilva.music.security;
 
 import dev.davidsilva.music.audit.AuditLogService;
-import dev.davidsilva.music.auth.user.UserService;
+import dev.davidsilva.music.security.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;

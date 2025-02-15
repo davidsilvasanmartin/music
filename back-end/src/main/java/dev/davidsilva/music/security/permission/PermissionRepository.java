@@ -1,4 +1,4 @@
-package dev.davidsilva.music.auth.permission;
+package dev.davidsilva.music.security.permission;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

@@ -1,4 +1,4 @@
-package dev.davidsilva.music.auth.user;
+package dev.davidsilva.music.security.user;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
