@@ -2,26 +2,26 @@ package dev.davidsilva.music.security;
 
 import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.auth.user.UserService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,14 +42,14 @@ import java.util.Map;
  */
 
 @Configuration
-@EnableWebSecurity
-//@EnableWebSecurity(debug = true)
-@AllArgsConstructor
+//@EnableWebSecurity
+@EnableWebSecurity(debug = true)
+@RequiredArgsConstructor
 public class SecurityConfiguration {
     //    private final TokenProvider tokenProvider;
-    // TODO make my USersService implement UserDetailsService ??
     private final UserService usersService; // Inject UsersService that stores and loads users from DB
     private final AuditLogService auditLogService;
+    private final AuthenticationProvider authenticationProvider;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,26 +59,26 @@ public class SecurityConfiguration {
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
-    // Expose UsersService as the UserDetailsService for authentication
-    @Bean
     public UserDetailsService userDetailsService() {
-        return usersService;
+        UserDetails user = User.withUsername("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
+        return new InMemoryUserDetailsManager(user);
+        // TODO use my own
+        // return usersService;
     }
 
-    // Configure an authentication provider that uses UsersService to load user details
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userDetailsService());
-        authProvider.setPasswordEncoder(passwordEncoder());
-        return authProvider;
-    }
-
-    // Expose the AuthenticationManager bean
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-        return authConfig.getAuthenticationManager();
-    }
+//    @Bean
+//    public DaoAuthenticationProvider authenticationProvider() {
+//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+//        authProvider.setUserDetailsService(userDetailsService());
+//        authProvider.setPasswordEncoder(passwordEncoder());
+//        return authProvider;
+//    }
+//
+//    // Expose the AuthenticationManager bean
+//    @Bean
+//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
+//        return authConfig.getAuthenticationManager();
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -90,7 +90,7 @@ public class SecurityConfiguration {
                 // Use the stateless session management
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Register our custom authentication provider
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider)
                 // Define authorization rules:
                 .authorizeHttpRequests(auth -> auth
                         // The authentication-related endpoints are open
@@ -99,23 +99,24 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // All other endpoints require authentication.
                         .anyRequest().authenticated()
-                )
-                // Disable basic HTTP auth, form login and logout endpoints if not needed.
-                // TODO I don't know if we need to keep the following 3
-                .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable);
+                ).userDetailsService(userDetailsService())
+                .httpBasic(Customizer.withDefaults());
+        // Disable basic HTTP auth, form login and logout endpoints if not needed.
+        // TODO I don't know if we need to keep the following 3
+        // .httpBasic(AbstractHttpConfigurer::disable)
+        // .formLogin(AbstractHttpConfigurer::disable)
+        // .logout(AbstractHttpConfigurer::disable);
 
         // Optionally add JWT filter(s) here if using JWT authentication
 
         return httpSecurity.build();
     }
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        // We would add an ignore rule for static resources here, if we had them
-        return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
-    }
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        // We would add an ignore rule for static resources here, if we had them
+//        return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
+//    }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
@@ -138,8 +139,10 @@ public class SecurityConfiguration {
             // Depending on your UsersService implementation, you might retrieve user details (such as id).
             // Here, we pass null for userId and other values as placeholders.
             auditLogService.log(
+                    // TODO add constant or use auth log table
                     "AUTH_SUCCESS",
                     "USER_AUTH",
+                    // TODO user id
                     null, // entityId1 (if needed)
                     null, // entityId2
                     null, // entityId3

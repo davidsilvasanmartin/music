@@ -1,23 +1,25 @@
-import { Component, computed, OnDestroy, Signal, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { AfterViewInit, Component, computed, ElementRef, OnDestroy, Signal, signal, ViewChild } from "@angular/core";
+import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 
-import { select, Store } from '@ngrx/store';
-
-import { filter, Observable, switchMap } from 'rxjs';
-
-import { Album } from '../albums/album';
-import { ApiService } from '../api/api.service';
-import { Song } from '../songs/song';
-import { SongsService } from '../songs/songs.service';
-import * as playlistActions from './store/actions';
-import * as playlistSelectors from './store/selectors';
-import { PlaylistRootState } from './store/state';
+import { select, Store } from "@ngrx/store";
+import { Album } from "../albums/album";
+import { ApiService } from "../api/api.service";
+import { Song } from "../songs/song";
+import { SongsService } from "../songs/songs.service";
+import * as playlistActions from "./store/actions";
+import * as playlistSelectors from "./store/selectors";
+import { PlaylistRootState } from "./store/state";
+import { filter, Observable } from"rxjs"';
+import { switchMap } from"rxjs/operators"';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
 })
-export class PlayerComponent implements OnDestroy {
+export class PlayerComponent implements OnDestroy, AfterViewInit {
+  @ViewChild("audioElement", { static: false })
+  audioElement: ElementRef | undefined;
+
   currentSong: Signal<Song>;
   currentSongImgUrl: Signal<string> = computed(() =>
     this._apiService.createApiUrl(`/songs/${this.currentSong().id}/albumArt`),
@@ -62,5 +64,26 @@ export class PlayerComponent implements OnDestroy {
 
   closePlaylist() {
     this.isPlaylistOpen.set(false);
+  }
+
+  ngAfterViewInit(): void {
+    setInterval(() => {
+      // TODO add websockets or something to send to the server chunks of listened songs. This will allow us to track which songs have been listened the most
+      if (this.audioElement) {
+        const htmlAudioElement: HTMLAudioElement =
+          this.audioElement.nativeElement;
+        console.log("------------------");
+        const numChunks = htmlAudioElement.played.length;
+        console.log("Chunks", numChunks);
+        for (let i = 0; i < numChunks; i++) {
+          console.log(
+            `    ${i}     Start ->:`,
+            htmlAudioElement.played.start(i)
+          );
+          console.log(`    ${i}     End   ->:`, htmlAudioElement.played.end(i));
+        }
+        console.log("------------------");
+      }
+    }, 3000);
   }
 }

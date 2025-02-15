@@ -27,8 +27,8 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "is_enabled")
+    private Boolean isEnabled;
 
     @Column(name = "created_at", insertable = false)
     private LocalDateTime createdAt;
@@ -44,6 +44,7 @@ public class User {
     )
     private Set<Role> roles;
 
+    // TODO is this constructor for creating a user ?
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
@@ -52,7 +53,7 @@ public class User {
 
     @PrePersist
     @PreUpdate
-    public void updateTimestamp() {
+    private void updateTimestamp() {
         this.updatedAt = LocalDateTime.now();
     }
 }

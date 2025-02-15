@@ -40,6 +40,7 @@
         <app-icon-play-next class="size-5" />
       </button>
       <audio
+        #audioElement
         (ended)="goToNextSong()"
         [autoplay]="true"
         [src]="currentSongAudioUrl()"
