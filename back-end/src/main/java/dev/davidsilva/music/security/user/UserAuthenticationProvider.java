@@ -1,4 +1,4 @@
-package dev.davidsilva.music.security;
+package dev.davidsilva.music.security.user;
 
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -9,8 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * TODO this class is not used yet (we use a DaoAuthenticationProvider), but I'm leaving it here as an example
+ */
 @Component
-public class CustomAuthenticationProvider implements AuthenticationProvider {
+public class UserAuthenticationProvider implements AuthenticationProvider {
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();

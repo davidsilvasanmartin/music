@@ -1,5 +1,6 @@
 package dev.davidsilva.music;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * Configuration class for the primary application database
@@ -25,7 +27,7 @@ import java.util.HashMap;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"dev.davidsilva.music.audit", "dev.davidsilva.music.auth"},
+        basePackages = {"dev.davidsilva.music.audit", "dev.davidsilva.music.security"},
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
@@ -48,7 +50,13 @@ public class AppDbConfiguration {
     public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.audit", "dev.davidsilva.music.auth").properties(propertiesMap).build();
+        return builder.dataSource(dataSource).packages("dev.davidsilva.music.audit", "dev.davidsilva.music.security").properties(propertiesMap).build();
+    }
+
+    @Bean(name = "appDbEntityManager")
+    @Primary
+    public EntityManager appDbEntityManager(@Qualifier("appDbEntityManagerFactory") LocalContainerEntityManagerFactoryBean factory) {
+        return Objects.requireNonNull(factory.getObject()).createEntityManager();
     }
 
     @Bean(name = "appDbTransactionManager")

@@ -1,5 +1,6 @@
 package dev.davidsilva.music.security.user;
 
+import dev.davidsilva.music.security.permission.Permission;
 import dev.davidsilva.music.security.role.Role;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "auth_users")
@@ -55,5 +57,12 @@ public class User {
     @PreUpdate
     private void updateTimestamp() {
         this.updatedAt = LocalDateTime.now();
+    }
+
+    public Set<Permission> getPermissions() {
+        return roles.stream()
+                .map(Role::getPermissions)
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
     }
 }

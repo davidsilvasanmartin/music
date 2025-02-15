@@ -2,12 +2,15 @@ package dev.davidsilva.music.security;
 
 import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.security.user.UserService;
+import dev.davidsilva.music.security.user.UserUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.Customizer;
@@ -15,13 +18,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -49,7 +48,7 @@ public class SecurityConfiguration {
     //    private final TokenProvider tokenProvider;
     private final UserService usersService; // Inject UsersService that stores and loads users from DB
     private final AuditLogService auditLogService;
-    private final AuthenticationProvider authenticationProvider;
+    private final UserUserDetailsService userUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,26 +58,16 @@ public class SecurityConfiguration {
         return new DelegatingPasswordEncoder(idForEncode, encoders);
     }
 
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin").password(passwordEncoder().encode("admin")).roles("ADMIN").build();
-        return new InMemoryUserDetailsManager(user);
-        // TODO use my own
-        // return usersService;
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userUserDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-//        authProvider.setUserDetailsService(userDetailsService());
-//        authProvider.setPasswordEncoder(passwordEncoder());
-//        return authProvider;
-//    }
-//
-//    // Expose the AuthenticationManager bean
-//    @Bean
-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
-//        return authConfig.getAuthenticationManager();
-//    }
+    public AuthenticationManager authenticationManager() {
+        return new ProviderManager(authenticationProvider());
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -90,22 +79,23 @@ public class SecurityConfiguration {
                 // Use the stateless session management
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Register our custom authentication provider
-                .authenticationProvider(authenticationProvider)
+                .authenticationManager(authenticationManager())
                 // Define authorization rules:
                 .authorizeHttpRequests(auth -> auth
                         // The authentication-related endpoints are open
                         .requestMatchers("/api/auth/**").permitAll()
                         // Permit all OPTIONS requests (e.g., for CORS preflight).
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // All other endpoints require authentication.
+                        // TODO internal errors (500) are not being sent to the user if I don't add matchers for "/error".
+                        // They also do not appear in the running logs, unless I enable TRACE. Need to find
+                        // a better solution for this.
+                        .requestMatchers("/error").permitAll()
+                        .requestMatchers("/api/error").permitAll()
                         .anyRequest().authenticated()
-                ).userDetailsService(userDetailsService())
-                .httpBasic(Customizer.withDefaults());
-        // Disable basic HTTP auth, form login and logout endpoints if not needed.
-        // TODO I don't know if we need to keep the following 3
-        // .httpBasic(AbstractHttpConfigurer::disable)
-        // .formLogin(AbstractHttpConfigurer::disable)
-        // .logout(AbstractHttpConfigurer::disable);
+                )
+                .httpBasic(Customizer.withDefaults())
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable);
 
         // Optionally add JWT filter(s) here if using JWT authentication
 

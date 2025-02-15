@@ -135,11 +135,43 @@ CREATE INDEX idx_password_reset_tokens_token ON auth_password_reset_tokens (toke
 CREATE INDEX idx_login_attempts_user_id ON log_auth_login_attempts (user_id);
 CREATE INDEX idx_login_attempts_ip ON log_auth_login_attempts (ip_address);
 
--- I'm adding the first admin use here because I can't get the CommandLineRunner to work.
--- TODO add roles and permissions for admin user
+/**
+    I'm adding the first admin user and its permissions here because I can't get the CommandLineRunner to work.
+    Ideally this would be done in the application, so as to not duplicate permission names in this file as
+    well as in application code
+ */
 INSERT INTO auth_users
     (username, email, password, is_enabled)
 VALUES ('admin',
         'admin@email.test',
         '{bcrypt}$2a$10$xb7bRNhQ8ihvpMUiA5uzKOOakmd0YT7z/cQgCQ0bP7VKpu/.AxSTW',
         TRUE);
+
+INSERT INTO auth_roles(role_name, description)
+VALUES ('ADMIN', 'Administrator role with full system access');
+
+INSERT INTO auth_permissions(permission_name, description)
+VALUES ('READ', 'Permission to read data'),
+       ('WRITE', 'Permission to create and update data'),
+       ('DELETE', 'Permission to delete data'),
+       ('ADMIN', 'Administrative access');
+
+-- Note that the "NOT EXISTS" clauses are not needed here because the tables are empty. However, we leave
+-- these queries here because they will be useful later when creating migrations for adding new roles
+-- or permissions
+INSERT INTO auth_role_permissions(role_id, permission_id)
+SELECT (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN'),
+       permission_id
+FROM auth_permissions ap
+WHERE NOT EXISTS (SELECT 1
+                  FROM auth_role_permissions rp
+                  WHERE rp.role_id = (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN')
+                    AND rp.permission_id = ap.permission_id);
+
+INSERT INTO auth_user_roles(user_id, role_id)
+SELECT (SELECT user_id FROM auth_users WHERE username = 'admin'),
+       (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN')
+WHERE NOT EXISTS (SELECT 1
+                  FROM auth_user_roles ur
+                  WHERE ur.user_id = (SELECT user_id FROM auth_users WHERE username = 'admin')
+                    AND ur.role_id = (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN'));

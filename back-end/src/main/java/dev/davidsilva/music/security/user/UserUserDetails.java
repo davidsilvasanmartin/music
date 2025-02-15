@@ -1,11 +1,13 @@
 package dev.davidsilva.music.security.user;
 
+import dev.davidsilva.music.security.permission.Permission;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -22,11 +24,12 @@ public class UserUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (user.getRoles() == null) {
+        Set<Permission> permissions = user.getPermissions();
+        if (permissions == null) {
             return Collections.emptyList();
         }
 
-        return user.getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getRoleName()))
+        return permissions.stream().map(p -> new SimpleGrantedAuthority(p.getPermissionName()))
                 .collect(Collectors.toList());
     }
 

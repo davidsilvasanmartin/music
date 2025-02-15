@@ -14,7 +14,7 @@ public class RoleService {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<Role> findByName(String roleName) {
         return roleRepository.findByRoleName(roleName);
     }

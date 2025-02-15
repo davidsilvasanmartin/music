@@ -23,7 +23,7 @@ public class UserService {
     private final RoleRepository roleRepository;
     private final AuditLogService auditLogService;
 
-    @Transactional(readOnly = true)
+    @Transactional
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
@@ -58,7 +58,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public long countUsers() {
         return userRepository.count();
     }
