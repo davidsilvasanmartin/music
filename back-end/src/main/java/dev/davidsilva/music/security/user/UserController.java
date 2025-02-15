@@ -3,6 +3,9 @@ package dev.davidsilva.music.security.user;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -37,5 +40,17 @@ public class UserController {
             // TODO test this not found, maybe create custom exception
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public String test1OnlyForDemoPlsRemove() {
+        // One can get hold of the context by using SecurityContextHolder...
+        SecurityContext context = SecurityContextHolder.getContext();
+        Authentication a = context.getAuthentication();
+        return "Hello, " + a.getName() + "!";
+    }
+
+    public String test2OnlyForDemoPlsRemove(Authentication a) {
+        // ... Or we can inject it into our method thanks to Spring
+        return "Hello, " + a.getName() + "!";
     }
 }

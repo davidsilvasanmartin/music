@@ -45,6 +45,12 @@ Selected topics:
 - Storing passwords
     - https://www.dontpanicblog.co.uk/2022/03/14/spring-security-delegating-password-encoder/
     - https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
+- Authentication & Authorization
+    - TODO read this https://dzone.com/articles/cookies-vs-tokens-the-definitive-guide
+    - I have been following this book https://www.manning.com/books/spring-security-in-action-second-edition
+    - The same author has a video series (TODO check
+      out): https://www.youtube.com/watch?v=Of4HFbsPKqk&list=PLEocw3gLFc8XRaRBZkhBEZ_R3tmvfkWZz
+    - This video explains a lot of concepts very well: https://www.youtube.com/watch?v=iJ2muJniikY
 
 ## `/front-end`
 

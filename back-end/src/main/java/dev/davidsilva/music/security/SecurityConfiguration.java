@@ -1,7 +1,7 @@
 package dev.davidsilva.music.security;
 
 import dev.davidsilva.music.audit.AuditLogService;
-import dev.davidsilva.music.security.user.UserService;
+import dev.davidsilva.music.security.user.UserAuthenticationProvider;
 import dev.davidsilva.music.security.user.UserUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
@@ -18,16 +18,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Inspiration taken from https://chsariotsolutions.com/blog/post/angular-2-spring-boot-jwt-cors_part2/
@@ -46,27 +41,22 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class SecurityConfiguration {
     //    private final TokenProvider tokenProvider;
-    private final UserService usersService; // Inject UsersService that stores and loads users from DB
     private final AuditLogService auditLogService;
     private final UserUserDetailsService userUserDetailsService;
+    private final UserAuthenticationProvider userAuthenticationProvider;
+    private final PasswordEncoder passwordEncoder;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        String idForEncode = "bcrypt";
-        Map<String, PasswordEncoder> encoders = new HashMap<>();
-        encoders.put(idForEncode, new BCryptPasswordEncoder());
-        return new DelegatingPasswordEncoder(idForEncode, encoders);
-    }
 
+    // TODO not used. This would produce something very similar to userAuthenticationProvider
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(passwordEncoder);
         return authProvider;
     }
 
     public AuthenticationManager authenticationManager() {
-        return new ProviderManager(authenticationProvider());
+        return new ProviderManager(userAuthenticationProvider);
     }
 
     @Bean
@@ -74,13 +64,10 @@ public class SecurityConfiguration {
         httpSecurity
                 // We don't need CSRF because our token is invulnerable
                 .csrf(AbstractHttpConfigurer::disable)
-                // Enable CORS using the custom configuration below.
+                // Enable CORS using the custom configuration below. <-- TODO is this true ??
                 .cors(Customizer.withDefaults())
-                // Use the stateless session management
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Register our custom authentication provider
                 .authenticationManager(authenticationManager())
-                // Define authorization rules:
                 .authorizeHttpRequests(auth -> auth
                         // The authentication-related endpoints are open
                         .requestMatchers("/api/auth/**").permitAll()

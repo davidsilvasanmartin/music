@@ -1,28 +1,33 @@
 package dev.davidsilva.music.security.user;
 
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
-/**
- * TODO this class is not used yet (we use a DaoAuthenticationProvider), but I'm leaving it here as an example
- */
 @Component
+@RequiredArgsConstructor
 public class UserAuthenticationProvider implements AuthenticationProvider {
+    // This class would work just injecting UserDetailsService. However, I'm choosing to inject the more specific class.
+    // I think this will be better because in the future we will have several UserDetailsService beans, but we'll see
+    private final UserUserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
         String password = authentication.getCredentials().toString();
-        if ("admin".equals(username) && "admin".equals(password)) {
-            return new UsernamePasswordAuthenticationToken(username, password, List.of());
+
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+        if (passwordEncoder.matches(password, userDetails.getPassword())) {
+            return UsernamePasswordAuthenticationToken.authenticated(userDetails, password, userDetails.getAuthorities());
         } else {
-            throw new AuthenticationCredentialsNotFoundException("Invalid credentials") {
-            };
+            throw new BadCredentialsException("Invalid credentials");
         }
     }
 

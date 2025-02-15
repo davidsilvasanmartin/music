@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
  * This is the class that's used by Spring Security. It wraps our database user. If
  * we add other methods of authentication such as "Sign in with Google", we will
  * need to create another implementation of UserDetails
+ * <p>
+ * TODO think whether this and related classes should be named with "DbUser" prefix instead of just "User" prefix
  */
 public class UserUserDetails implements UserDetails {
     private final User user;
