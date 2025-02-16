@@ -1,6 +1,8 @@
 package dev.davidsilva.music.album;
 
-public class AlbumNotFoundException extends RuntimeException {
+import dev.davidsilva.music.exception.AbstractNotFoundException;
+
+public class AlbumNotFoundException extends AbstractNotFoundException {
     public AlbumNotFoundException(int id) {
         super("Album with id " + id + " was not found");
     }

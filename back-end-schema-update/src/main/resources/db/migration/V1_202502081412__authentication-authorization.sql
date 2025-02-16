@@ -152,7 +152,8 @@ VALUES ('ADMIN', 'Administrator role with full system access');
 
 INSERT INTO auth_permissions(permission_name, description)
 VALUES ('READ', 'Permission to read data'),
-       ('WRITE', 'Permission to create and update data'),
+       ('CREATE', 'Permission to create data'),
+       ('UPDATE', 'Permission to update data'),
        ('DELETE', 'Permission to delete data'),
        ('ADMIN', 'Administrative access');
 

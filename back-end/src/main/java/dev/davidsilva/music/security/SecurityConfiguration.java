@@ -78,6 +78,7 @@ public class SecurityConfiguration {
                         // a better solution for this.
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/error").permitAll()
+                        .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
@@ -109,6 +110,7 @@ public class SecurityConfiguration {
         return source;
     }
 
+    // TODO are these always called or only for FormLogin ???
     @Bean
     public ApplicationListener<AuthenticationSuccessEvent> authenticationSuccessListener() {
         return event -> {
