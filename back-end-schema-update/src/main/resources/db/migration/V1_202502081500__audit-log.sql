@@ -14,7 +14,7 @@ CREATE TABLE log_audit
     new_value   TEXT,
     timestamp   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 --     TODO think about removing "description", if the actions are granular we don't really need it
-    description VARCHAR(500),
+    description TEXT,
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id)
 );
 

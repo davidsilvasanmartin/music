@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 @RequiredArgsConstructor
 public class AuditLogService {
     private final AuditLogRepository auditLogRepository;
@@ -16,6 +15,7 @@ public class AuditLogService {
     // to support Java 8 types such as LocalDateTime) already configured
     private final ObjectMapper objectMapper;
 
+    @Transactional
     public void log(String action, String entityType, String entityId1,
                     String entityId2, String entityId3,
                     Integer userId, Object oldValue, Object newValue,
@@ -23,6 +23,7 @@ public class AuditLogService {
         ObjectWriter ow = this.objectMapper.writer().withDefaultPrettyPrinter();
         String oldValueJson = "";
         String newValueJson = "";
+
         try {
             oldValueJson = ow.writeValueAsString(oldValue);
             newValueJson = ow.writeValueAsString(newValue);

@@ -10,6 +10,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * TODO maybe just use DaoAuthenticationProvider, which has mitigation measures against some attacks
+ */
 @Component
 @RequiredArgsConstructor
 public class UserAuthenticationProvider implements AuthenticationProvider {
@@ -25,7 +28,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            return UsernamePasswordAuthenticationToken.authenticated(userDetails, password, userDetails.getAuthorities());
+            // According to AbstractUserDetailsAuthenticationProvider, we should use authentication.getCredentials()
+            // here (the plain-text password) so that the password is available for possible successive
+            // authentication attempts. But, according to Daniel Garnier-Moiroux, it can (should) be null
+            return UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
         } else {
             throw new BadCredentialsException("Invalid credentials");
         }

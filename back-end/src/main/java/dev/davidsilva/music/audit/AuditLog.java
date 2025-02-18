@@ -1,17 +1,15 @@
 package dev.davidsilva.music.audit;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.Instant;
 
 @Entity
 @Table(name = "log_audit")
-@Getter
-@Setter
 @NoArgsConstructor
+@Data
 public class AuditLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

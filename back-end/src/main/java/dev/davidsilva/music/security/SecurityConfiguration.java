@@ -4,15 +4,12 @@ import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.security.user.UserAuthenticationProvider;
 import dev.davidsilva.music.security.user.UserUserDetailsService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
-import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -45,6 +42,9 @@ public class SecurityConfiguration {
     private final UserUserDetailsService userUserDetailsService;
     private final UserAuthenticationProvider userAuthenticationProvider;
     private final PasswordEncoder passwordEncoder;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
 
     // TODO not used. This would produce something very similar to userAuthenticationProvider
@@ -81,9 +81,15 @@ public class SecurityConfiguration {
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .httpBasic(Customizer.withDefaults())
+                // Specifying the customAuthenticationEntryPoint here will make it handle for example the scenario where the
+                // username is not found. That scenario is not handled just by having the below configuration .exceptionHandling(...)
+                .httpBasic(c -> c.authenticationEntryPoint(customAuthenticationEntryPoint))
                 .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable);
+                .logout(AbstractHttpConfigurer::disable)
+                .exceptionHandling(c -> c
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                );
 
         // Optionally add JWT filter(s) here if using JWT authentication
 
@@ -109,47 +115,4 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-    // TODO are these always called or only for FormLogin ???
-    @Bean
-    public ApplicationListener<AuthenticationSuccessEvent> authenticationSuccessListener() {
-        return event -> {
-            String username = event.getAuthentication().getName();
-            // Depending on your UsersService implementation, you might retrieve user details (such as id).
-            // Here, we pass null for userId and other values as placeholders.
-            auditLogService.log(
-                    // TODO add constant or use auth log table
-                    "AUTH_SUCCESS",
-                    "USER_AUTH",
-                    // TODO user id
-                    null, // entityId1 (if needed)
-                    null, // entityId2
-                    null, // entityId3
-                    null, // userId (extract if available)
-                    event.getAuthentication().getDetails(), // oldValue (or additional details)
-                    null, // newValue
-                    "Authentication succeeded for user: " + username
-            );
-        };
-    }
-
-    @Bean
-    public ApplicationListener<AuthenticationFailureBadCredentialsEvent> authenticationFailureListener() {
-        return event -> {
-            String username = event.getAuthentication().getName();
-            String error = event.getException().getMessage();
-            auditLogService.log(
-                    "AUTH_FAILURE",
-                    "USER_AUTH",
-                    null, // entityId1
-                    null, // entityId2
-                    null, // entityId3
-                    null, // userId (if available)
-                    null, // oldValue
-                    null, // newValue
-                    "Authentication failed for user: " + username + ". Error: " + error
-            );
-        };
-    }
-
 }

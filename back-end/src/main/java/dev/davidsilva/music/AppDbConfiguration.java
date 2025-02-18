@@ -9,15 +9,30 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.sqlite.SQLiteConfig;
+import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
+
+
+/**
+ * TODO
+ * <p>
+ * This is Claude on the "log not working" incident
+ * You're welcome! Yes, the switch from `DataSourceTransactionManager` to `JpaTransactionManager` was crucial here since you're using Spring Data JPA repositories.
+ * Just for future reference, this is a common gotcha when working with Spring transactions. Here's a quick rule of thumb:
+ * - Use `JpaTransactionManager` when working with JPA/Hibernate (like with `@Repository` and Spring Data JPA)
+ * - Use `DataSourceTransactionManager` when working with plain JDBC or Spring's JdbcTemplate
+ * - If you mix both JPA and JDBC operations, use `JpaTransactionManager` as it can handle both
+ * <p>
+ * TODO I need to propagate this change to BeetsDbConfiguration
+ */
 
 /**
  * Configuration class for the primary application database
@@ -38,10 +53,14 @@ public class AppDbConfiguration {
     @Bean(name = "appDbDataSource")
     @Primary
     public DataSource appDbDataSource() throws IOException, ClassNotFoundException {
-        final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        // See the following if we need to get rid of the warning https://www.baeldung.com/configuration-properties-in-spring-boot
-        dataSource.setDriverClassName("org.sqlite.JDBC");
+        final SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(env.getProperty("app-db.url"));
+        // The following properties are supposed to help with proper transaction support
+        SQLiteConfig config = dataSource.getConfig();
+        config.enforceForeignKeys(true);
+        config.setJournalMode(SQLiteConfig.JournalMode.WAL);
+        config.setSynchronous(SQLiteConfig.SynchronousMode.NORMAL);
+        dataSource.setConfig(config);
         return dataSource;
     }
 
@@ -61,7 +80,7 @@ public class AppDbConfiguration {
 
     @Bean(name = "appDbTransactionManager")
     @Primary
-    public DataSourceTransactionManager appDbTransactionManager(@Qualifier("appDbDataSource") DataSource dataSource) {
-        return new DataSourceTransactionManager(dataSource);
+    public JpaTransactionManager appDbTransactionManager(@Qualifier("appDbEntityManagerFactory") LocalContainerEntityManagerFactoryBean factory) {
+        return new JpaTransactionManager(Objects.requireNonNull(factory.getObject()));
     }
 }
