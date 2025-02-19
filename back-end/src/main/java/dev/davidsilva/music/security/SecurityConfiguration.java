@@ -32,6 +32,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  * https://docs.spring.io/spring-security/reference/5.8/migration/servlet/config.html
  */
 
+/**
+ * TODO watch this https://www.youtube.com/watch?v=96vK5BDpT7g
+ * TODO if going with OAuth2+JWT, we probably don't have to implement CSRF tokens but we have to check CORS and CSPs
+ */
+
 @Configuration
 //@EnableWebSecurity
 @EnableWebSecurity(debug = true)
@@ -79,6 +84,7 @@ public class SecurityConfiguration {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/api/error").permitAll()
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/songs/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 // Specifying the customAuthenticationEntryPoint here will make it handle for example the scenario where the
@@ -115,4 +121,6 @@ public class SecurityConfiguration {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+    // TODO we need to log authentication success events (creation of tokens)
 }

@@ -49,15 +49,15 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
     private ApiErrorDto toApiErrorDto(Exception exception, HttpServletRequest request) {
         String details = String.format(
-                "Authentication failed for request to '%s'. Error type: %s. " +
-                        "Please ensure you are properly authenticated to access this resource.",
+                "Authorization failed for request to '%s'. " +
+                        "Please contact your system administrator for more information.",
                 request.getRequestURI(),
                 exception.getClass().getSimpleName()
         );
 
         return new ApiErrorDto(
                 new Date(),
-                exception.getMessage() != null ? exception.getMessage() : "Authentication Failed",
+                "You do not have permission to access this resource",
                 details
         );
     }

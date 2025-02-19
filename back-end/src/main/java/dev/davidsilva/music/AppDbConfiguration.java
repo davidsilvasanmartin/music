@@ -56,6 +56,7 @@ public class AppDbConfiguration {
         final SQLiteDataSource dataSource = new SQLiteDataSource();
         dataSource.setUrl(env.getProperty("app-db.url"));
         // The following properties are supposed to help with proper transaction support
+        // Also, see this https://stackoverflow.com/questions/12605651/sqlite-and-foreign-key-support
         SQLiteConfig config = dataSource.getConfig();
         config.enforceForeignKeys(true);
         config.setJournalMode(SQLiteConfig.JournalMode.WAL);

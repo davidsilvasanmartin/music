@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * TODO when making these editable: DO NOT allow creating permissions that start with ROLE_
+ */
+
 @Entity
 @Table(name = "auth_permissions")
 @Data
