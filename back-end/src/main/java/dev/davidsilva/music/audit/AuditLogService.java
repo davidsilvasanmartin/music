@@ -16,8 +16,7 @@ public class AuditLogService {
     private final ObjectMapper objectMapper;
 
     @Transactional
-    public void log(String action, String entityType, String entityId1,
-                    String entityId2, String entityId3,
+    public void log(String action, String entityType, String entityId,
                     Integer userId, Object oldValue, Object newValue,
                     String description) {
         ObjectWriter ow = this.objectMapper.writer().withDefaultPrettyPrinter();
@@ -34,9 +33,7 @@ public class AuditLogService {
         AuditLog log = new AuditLog();
         log.setAction(action);
         log.setEntityType(entityType);
-        log.setEntityId1(entityId1);
-        log.setEntityId2(entityId2);
-        log.setEntityId3(entityId3);
+        log.setEntityId(entityId);
         log.setUserId(userId);
         log.setOldValue(oldValueJson);
         log.setNewValue(newValueJson);

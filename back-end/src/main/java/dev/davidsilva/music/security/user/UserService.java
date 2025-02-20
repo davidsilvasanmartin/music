@@ -5,6 +5,8 @@ import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.security.role.Role;
 import dev.davidsilva.music.security.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,14 +34,17 @@ public class UserService {
     public User createUser(User user) {
         // TODO add validation logic here
         User newUser = userRepository.save(user);
+
+        // TODO better way of doing this ?
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        int authenticatedUserId = ((UserUserDetails) authentication.getPrincipal()).getUser().getId();
+
         this.auditLogService.log(
                 AuditLogAction.CREATE.toString(),
                 "USER",
                 String.valueOf(newUser.getId()),
-                null,
-                null,
                 // TODO The logged-in user's id
-                null,
+                authenticatedUserId,
                 null,
                 // TODO check what this logs
                 newUser.toString(),

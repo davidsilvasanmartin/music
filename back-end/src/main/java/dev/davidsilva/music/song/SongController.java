@@ -75,8 +75,6 @@ public class SongController {
                 AuditLogAction.READ.toString(),
                 "SONG_PLAY",
                 String.valueOf(id),
-                null,
-                null,
                 // TODO: the logged-in user's id
                 null,
                 null,

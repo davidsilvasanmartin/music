@@ -95,7 +95,8 @@ public class SecurityConfiguration {
                 .exceptionHandling(c -> c
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
-                );
+                        .accessDeniedPage(null)
+                ).cors(c -> c.configurationSource(corsConfigurationSource()));
 
         // Optionally add JWT filter(s) here if using JWT authentication
 
@@ -108,7 +109,6 @@ public class SecurityConfiguration {
 //        return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
 //    }
 
-    @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Allow all origins for demonstration; restrict in production.

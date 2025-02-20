@@ -49,8 +49,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 action,
                 "AUTH",                           // entityType
                 request.getRequestURI(),             // entityId1 - request URI
-                request.getRemoteAddr(),             // entityId2 - IP address
-                null,                            // entityId3
+                //request.getRemoteAddr(),             // entityId2 - IP address
                 null,                            // userId (not authenticated)
                 null,                            // oldValue
                 authException.getClass().getSimpleName(), // newValue - exception type

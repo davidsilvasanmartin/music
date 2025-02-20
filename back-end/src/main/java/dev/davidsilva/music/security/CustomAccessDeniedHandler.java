@@ -30,8 +30,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
                 "ACCESS_DENIED",           // action
                 "AUTH",                           // entityType
                 request.getRequestURI(),             // entityId1 - request URI
-                request.getRemoteAddr(),             // entityId2 - IP address
-                null,                            // entityId3
+                // request.getRemoteAddr(),             // entityId2 - IP address
                 null,                            // userId (not authenticated)
                 null,                            // oldValue
                 accessDeniedException.getClass().getSimpleName(), // newValue - exception type

@@ -23,6 +23,7 @@ Additional recommendations:
 6. Implement session handling that considers MFA status
  */
 
+-- TODO review all
 -- MFA Methods reference table
 CREATE TABLE IF NOT EXISTS auth_mfa_methods
 (
@@ -43,7 +44,7 @@ CREATE TABLE IF NOT EXISTS auth_mfa_user_settings
     verified_at         TIMESTAMP,
     created_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at          TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES auth_users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (method_id) REFERENCES auth_mfa_methods (method_id) ON DELETE RESTRICT,
     UNIQUE (user_id, method_id)
 );

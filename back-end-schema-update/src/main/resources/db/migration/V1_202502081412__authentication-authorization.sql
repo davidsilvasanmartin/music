@@ -34,9 +34,11 @@ To use this schema effectively, you should also implement appropriate applicatio
 - Permission checking
 - Role assignment
  */
--- Users table
+
 CREATE TABLE IF NOT EXISTS auth_users
 (
+    -- AUTOINCREMENT should make it impossible to reuse old deleted ids (we need this for audit logging)
+    -- See https://stackoverflow.com/questions/33135324/sqlite-prevent-primary-key-value-from-resetting-after-delete-all-rows
     user_id    INTEGER PRIMARY KEY AUTOINCREMENT,
     username   VARCHAR(50)  NOT NULL UNIQUE,
     email      VARCHAR(100) NOT NULL UNIQUE,
@@ -46,47 +48,51 @@ CREATE TABLE IF NOT EXISTS auth_users
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Roles table
 CREATE TABLE IF NOT EXISTS auth_roles
 (
     role_id     INTEGER PRIMARY KEY AUTOINCREMENT,
     role_name   VARCHAR(50) NOT NULL UNIQUE,
     description TEXT,
-    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Permissions table
 CREATE TABLE IF NOT EXISTS auth_permissions
 (
     permission_id   INTEGER PRIMARY KEY AUTOINCREMENT,
     permission_name VARCHAR(50) NOT NULL UNIQUE,
     description     TEXT,
-    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    created_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at      TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- User-Role junction table (many-to-many)
 CREATE TABLE IF NOT EXISTS auth_user_roles
 (
-    user_id     INTEGER,
-    role_id     INTEGER,
-    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (user_id, role_id),
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id    INTEGER,
+    role_id    INTEGER,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (user_id, role_id),
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id) ON DELETE CASCADE,
     FOREIGN KEY (role_id) REFERENCES auth_roles (role_id) ON DELETE CASCADE
 );
 
--- Role-Permission junction table (many-to-many)
+
 CREATE TABLE IF NOT EXISTS auth_role_permissions
 (
+    id            INTEGER PRIMARY KEY AUTOINCREMENT,
     role_id       INTEGER,
     permission_id INTEGER,
-    assigned_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (role_id, permission_id),
+    created_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE (role_id, permission_id),
     FOREIGN KEY (role_id) REFERENCES auth_roles (role_id) ON DELETE CASCADE,
     FOREIGN KEY (permission_id) REFERENCES auth_permissions (permission_id) ON DELETE CASCADE
 );
 
--- User sessions table
+
+-- TODO review tables from here
 CREATE TABLE IF NOT EXISTS auth_user_sessions
 (
     session_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -99,7 +105,6 @@ CREATE TABLE IF NOT EXISTS auth_user_sessions
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id) ON DELETE CASCADE
 );
 
--- Password reset tokens
 CREATE TABLE IF NOT EXISTS auth_password_reset_tokens
 (
     token_id   INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -110,7 +115,6 @@ CREATE TABLE IF NOT EXISTS auth_password_reset_tokens
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id) ON DELETE CASCADE
 );
 
--- Login attempts tracking
 CREATE TABLE IF NOT EXISTS log_auth_login_attempts
 (
     attempt_id   INTEGER PRIMARY KEY AUTOINCREMENT,

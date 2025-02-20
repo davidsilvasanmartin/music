@@ -21,14 +21,8 @@ public class AuditLog {
     @Column(name = "entity_type")
     private String entityType;
 
-    @Column(name = "entity_id_1")
-    private String entityId1;
-
-    @Column(name = "entity_id_2")
-    private String entityId2;
-
-    @Column(name = "entity_id_3")
-    private String entityId3;
+    @Column(name = "entity_id")
+    private String entityId;
 
     @Column(name = "user_id")
     private Integer userId;
@@ -41,8 +35,8 @@ public class AuditLog {
 
     // This column has insertable=false to allow the default value (defined on
     // table creation) to be set by the database
-    @Column(name = "timestamp", insertable = false)
-    private Instant timestamp;
+    @Column(name = "created_at", insertable = false)
+    private Instant createdAt;
 
     @Column(name = "description", length = 500)
     private String description;

@@ -35,6 +35,11 @@ public class UserUserDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
+    // TODO not sure if this should be here. We need it to get the authenticated user's id
+    public User getUser() {
+        return user;
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
