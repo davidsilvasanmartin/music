@@ -21,10 +21,22 @@ public class DbUserAuthenticationProvider implements AuthenticationProvider {
     private final DbUserUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * This AuthenticationProvider will try to authenticate any UsernamePasswordAuthenticationTokens it receives.
+     * If adding more AuthenticationProviders that deal with the same token but in a different way, the code in
+     * `authenticate` has to be changed so it returns `null` for the cases that should not be handled by this
+     * AuthenticationProvider
+     */
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String username = authentication.getName();
-        String password = authentication.getCredentials().toString();
+        String username;
+        String password;
+        try {
+            username = authentication.getName();
+            password = authentication.getCredentials().toString();
+        } catch (Exception e) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
