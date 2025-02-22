@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class SongDtoMapper implements DtoMapper<SongDto, Song> {
     @Override
     public Song toEntity(SongDto dto) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override

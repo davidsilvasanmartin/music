@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
     @Override
     public Album toEntity(AlbumDto dto) {
-        return null;
+        throw new UnsupportedOperationException("Not supported yet");
     }
 
     @Override
