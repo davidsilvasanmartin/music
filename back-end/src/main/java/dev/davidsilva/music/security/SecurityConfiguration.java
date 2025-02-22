@@ -42,6 +42,11 @@ public class SecurityConfiguration {
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
+    /**
+     * TODO somewhat we are still redirecting to /error when there is any error (TODO find a way to test this and fix).
+     * One way to force this error is to comment the permitAll() for GET requests below and trying to GET /albums with
+     * a valid JWT token of a valid authenticated user
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -51,17 +56,17 @@ public class SecurityConfiguration {
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                                // TODO review this
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                // Login and related endpoints
-                                .requestMatchers("/auth/**").permitAll()
-                                // Endpoints that return user-specific data (TODO)
-                                .requestMatchers("/playlists").authenticated()
-                                // Endpoints that have to be restricted, such as user admin or system configuration
-                                .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
-                                // We allow getting data such as list of songs and albums (TODO review)
-//                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                                .anyRequest().denyAll()
+                        // TODO review this
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Login and related endpoints
+                        .requestMatchers("/auth/**").permitAll()
+                        // Endpoints that return user-specific data (TODO)
+                        .requestMatchers("/playlists").authenticated()
+                        // Endpoints that have to be restricted, such as user admin or system configuration
+                        .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        // We allow getting data such as list of songs and albums (TODO review)
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                        .anyRequest().denyAll()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

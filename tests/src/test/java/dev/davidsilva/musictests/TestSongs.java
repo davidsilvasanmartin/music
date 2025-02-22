@@ -3,7 +3,7 @@ package dev.davidsilva.musictests;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
-import static io.restassured.RestAssured.given;
+import static dev.davidsilva.musictests.Login.givenLoggedInAsAdmin;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -21,7 +21,7 @@ public class TestSongs {
 
     @Test
     public void getSong() {
-        given().when().get("songs/" + m4aSongId).then()
+        givenLoggedInAsAdmin().when().get("songs/" + m4aSongId).then()
                 .statusCode(200).and().contentType("application/json")
                 .and().body("id", equalTo(m4aSongId))
                 .and().body("album.id", equalTo(m4aSongAlbumId))
@@ -33,20 +33,20 @@ public class TestSongs {
 
     @Test
     public void getNonExistentSong() {
-        given().when().get("songs/" + nonExistentSongId).then()
+        givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId).then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 
     @Test
     public void getSongAlbumArt() {
-        given().when().get("songs/" + m4aSongId + "/albumArt").then()
+        givenLoggedInAsAdmin().when().get("songs/" + m4aSongId + "/albumArt").then()
                 .statusCode(200).and().contentType("application/json");
     }
 
     @Test
     public void getNonExistentSongAlbumArt() {
-        given().when().get("songs/" + nonExistentSongId + "/albumArt").then()
+        givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId + "/albumArt").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
@@ -54,21 +54,21 @@ public class TestSongs {
     @Test
     public void playM4aSong() {
         // Below is the Accept header that Firefox uses for <audio> elements
-        given().accept("audio/*,*/*")
+        givenLoggedInAsAdmin().accept("audio/*,*/*")
                 .when().get("songs/" + m4aSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/mp4");
     }
 
     @Test
     public void playFlacSong() {
-        given().accept("audio/*,*/*")
+        givenLoggedInAsAdmin().accept("audio/*,*/*")
                 .when().get("songs/" + flacSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/flac");
     }
 
     @Test
     public void playMp3Song() {
-        given().accept("audio/*,*/*")
+        givenLoggedInAsAdmin().accept("audio/*,*/*")
                 .when().get("songs/" + mp3SongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/mpeg");
     }
@@ -76,20 +76,20 @@ public class TestSongs {
     @Test
     public void playOggSong() {
         // Below is the Accept header that Firefox uses for <audio> elements
-        given().accept("audio/*,*/*")
+        givenLoggedInAsAdmin().accept("audio/*,*/*")
                 .when().get("songs/" + oggSongId + "/play").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType("audio/ogg");
     }
 
     @Test
     public void playSongWithAcceptJson() {
-        given().accept("application/json").when().get("songs/" + m4aSongId + "/play").then()
+        givenLoggedInAsAdmin().accept("application/json").when().get("songs/" + m4aSongId + "/play").then()
                 .statusCode(HttpStatus.SC_NOT_ACCEPTABLE).and().contentType("application/json");
     }
 
     @Test
     public void playNonExistentSong() {
-        given().when().get("songs/" + nonExistentSongId + "/play").then()
+        givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId + "/play").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
