@@ -1,4 +1,4 @@
-package dev.davidsilva.music.security;
+package dev.davidsilva.music.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.davidsilva.music.audit.AuditLogService;

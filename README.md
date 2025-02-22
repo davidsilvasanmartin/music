@@ -51,6 +51,11 @@ Selected topics:
     - The same author has a video series (TODO check
       out): https://www.youtube.com/watch?v=Of4HFbsPKqk&list=PLEocw3gLFc8XRaRBZkhBEZ_R3tmvfkWZz
     - This video explains a lot of concepts very well: https://www.youtube.com/watch?v=iJ2muJniikY
+    - Regarding oAuth2, check this https://www.youtube.com/watch?v=7zm3mxaAFWk
+- Check this book for troubleshooting Java
+    - https://www.manning.com/books/troubleshooting-java
+- Logging in with JWT
+    - Followed this https://bootify.io/spring-security/rest-api-spring-security-with-jwt.html
 
 ## `/front-end`
 
@@ -64,11 +69,15 @@ Angular app
 - Fix front-end styling and get rid of Angular Material.
 - Read about content negotiation for the /play
   endpoint (https://spring.io/blog/2013/05/11/content-negotiation-using-spring-mvc)
-- Add a unique id for songs in the playlist. Now when you remove one, all will be removed
+- Add a unique id for songs in the playlist. Now when you remove one, all will be removed (TODO: done already??)
 - Custom playlists (requires users)
 - Deploy! Containerise so it can be run with one command.
 - Log everything
 - Look into HATEOAS, maybe it allows to hide entity ids from URLs??
+- Use standardized RFC 7807 error payloads,
+  see https://www.baeldung.com/rest-api-error-handling-best-practices#4-standardized-response-bodies
+- I still don't know how to handle errors that are not thrown *inside* components. For example, trying to access
+  `GET /whatever` would result
 
 ### TODO - Long term
 

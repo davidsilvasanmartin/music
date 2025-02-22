@@ -6,12 +6,14 @@ import dev.davidsilva.music.search.InvalidSearchOperationException;
 import dev.davidsilva.music.song.SongFormatNotSupportedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.NotAcceptableStatusException;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.naming.AuthenticationException;
 import java.util.Date;
@@ -57,6 +59,24 @@ public class GlobalExceptionHandler {
 //    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
     public ApiErrorDto handleAccessDeniedException(AccessDeniedException exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
+    }
+
+    /**
+     * This handler requires that we disable serving static resources, because they are registered under a "/**" route
+     * (if enabled), meaning Spring would look for static resources for any route that does not correspond to one of
+     * the @Controllers. Then, it would throw an exception (because a static resource would not be found), and that
+     * exception would not be captured by this @ControllerAdvice
+     */
+    @ExceptionHandler(NoHandlerFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ApiErrorDto handleNoHandlerFoundException(NoHandlerFoundException exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public ApiErrorDto handleMethodNotAllowedException(HttpRequestMethodNotSupportedException exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 

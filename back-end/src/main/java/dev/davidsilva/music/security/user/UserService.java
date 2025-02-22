@@ -2,6 +2,7 @@ package dev.davidsilva.music.security.user;
 
 import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
+import dev.davidsilva.music.security.auth.DbUserDetails;
 import dev.davidsilva.music.security.role.Role;
 import dev.davidsilva.music.security.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,7 @@ public class UserService {
 
         // TODO better way of doing this ?
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        int authenticatedUserId = ((UserUserDetails) authentication.getPrincipal()).getUser().getId();
+        int authenticatedUserId = ((DbUserDetails) authentication.getPrincipal()).getUser().getId();
 
         this.auditLogService.log(
                 AuditLogAction.CREATE.toString(),

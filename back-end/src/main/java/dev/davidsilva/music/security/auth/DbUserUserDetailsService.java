@@ -1,5 +1,7 @@
-package dev.davidsilva.music.security.user;
+package dev.davidsilva.music.security.auth;
 
+import dev.davidsilva.music.security.user.User;
+import dev.davidsilva.music.security.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,14 +13,14 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserUserDetailsService implements UserDetailsService {
+public class DbUserUserDetailsService implements UserDetailsService {
     private final UserRepository userRepository;
 
     @Transactional
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsernameWithEagerlyFetchedPermissions(username);
-        return userOptional.map(UserUserDetails::new)
+        return userOptional.map(DbUserDetails::new)
                 // TODO not sure if I just have to return null and some spring component up the filter chain will catch this ????
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }

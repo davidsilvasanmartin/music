@@ -1,4 +1,4 @@
-package dev.davidsilva.music.security;
+package dev.davidsilva.music.security.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

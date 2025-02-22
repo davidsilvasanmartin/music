@@ -1,22 +1,18 @@
 package dev.davidsilva.music.security;
 
-import dev.davidsilva.music.audit.AuditLogService;
-import dev.davidsilva.music.security.user.UserAuthenticationProvider;
-import dev.davidsilva.music.security.user.UserUserDetailsService;
+import dev.davidsilva.music.security.auth.CustomAccessDeniedHandler;
+import dev.davidsilva.music.security.auth.CustomAuthenticationEntryPoint;
+import dev.davidsilva.music.security.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -42,73 +38,45 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    //    private final TokenProvider tokenProvider;
-    private final AuditLogService auditLogService;
-    private final UserUserDetailsService userUserDetailsService;
-    private final UserAuthenticationProvider userAuthenticationProvider;
-    private final PasswordEncoder passwordEncoder;
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
-
-    // TODO not used. This would produce something very similar to userAuthenticationProvider
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(userUserDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder);
-        return authProvider;
-    }
-
-    public AuthenticationManager authenticationManager() {
-        return new ProviderManager(userAuthenticationProvider);
-    }
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 // We don't need CSRF because our token is invulnerable
                 .csrf(AbstractHttpConfigurer::disable)
-                // Enable CORS using the custom configuration below. <-- TODO is this true ??
-                .cors(Customizer.withDefaults())
+                // TODO need to find out about CORS
+                .cors(c -> c.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationManager(authenticationManager())
                 .authorizeHttpRequests(auth -> auth
-                        // The authentication-related endpoints are open
-                        .requestMatchers("/api/auth/**").permitAll()
-                        // Permit all OPTIONS requests (e.g., for CORS preflight).
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // TODO internal errors (500) are not being sent to the user if I don't add matchers for "/error".
-                        // They also do not appear in the running logs, unless I enable TRACE. Need to find
-                        // a better solution for this.
-                        .requestMatchers("/error").permitAll()
-                        .requestMatchers("/api/error").permitAll()
-                        .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
-                        .requestMatchers("/songs/**").hasAnyRole("ADMIN")
-                        .anyRequest().authenticated()
+                                // TODO review this
+                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                // Login and related endpoints
+                                .requestMatchers("/auth/**").permitAll()
+                                // Endpoints that return user-specific data (TODO)
+                                .requestMatchers("/playlists").authenticated()
+                                // Endpoints that have to be restricted, such as user admin or system configuration
+                                .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                                // We allow getting data such as list of songs and albums (TODO review)
+//                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                                .anyRequest().denyAll()
                 )
-                // Specifying the customAuthenticationEntryPoint here will make it handle for example the scenario where the
-                // username is not found. That scenario is not handled just by having the below configuration .exceptionHandling(...)
-                .httpBasic(c -> c.authenticationEntryPoint(customAuthenticationEntryPoint))
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(c -> c
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                         .accessDeniedPage(null)
                 ).cors(c -> c.configurationSource(corsConfigurationSource()));
 
-        // Optionally add JWT filter(s) here if using JWT authentication
-
         return httpSecurity.build();
     }
 
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer() {
-//        // We would add an ignore rule for static resources here, if we had them
-//        return (web) -> web.ignoring().requestMatchers(HttpMethod.OPTIONS, "/**");
-//    }
-
+    // TODO need to understand and configure this
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         // Allow all origins for demonstration; restrict in production.

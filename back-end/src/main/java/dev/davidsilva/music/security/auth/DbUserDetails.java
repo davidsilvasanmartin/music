@@ -1,6 +1,8 @@
-package dev.davidsilva.music.security.user;
+package dev.davidsilva.music.security.auth;
 
 import dev.davidsilva.music.security.permission.Permission;
+import dev.davidsilva.music.security.user.User;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,10 +19,12 @@ import java.util.stream.Collectors;
  * <p>
  * TODO think whether this and related classes should be named with "DbUser" prefix instead of just "User" prefix
  */
-public class UserUserDetails implements UserDetails {
+@Getter
+public class DbUserDetails implements UserDetails {
+    // TODO not sure if this should be here. We need it to get the authenticated user's id
     private final User user;
 
-    public UserUserDetails(User user) {
+    public DbUserDetails(User user) {
         this.user = user;
     }
 
@@ -33,11 +37,6 @@ public class UserUserDetails implements UserDetails {
 
         return permissions.stream().map(p -> new SimpleGrantedAuthority(p.getPermissionName()))
                 .collect(Collectors.toList());
-    }
-
-    // TODO not sure if this should be here. We need it to get the authenticated user's id
-    public User getUser() {
-        return user;
     }
 
     @Override

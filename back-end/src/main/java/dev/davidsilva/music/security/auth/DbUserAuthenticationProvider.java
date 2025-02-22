@@ -1,4 +1,4 @@
-package dev.davidsilva.music.security.user;
+package dev.davidsilva.music.security.auth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @RequiredArgsConstructor
-public class UserAuthenticationProvider implements AuthenticationProvider {
+public class DbUserAuthenticationProvider implements AuthenticationProvider {
     // This class would work just injecting UserDetailsService. However, I'm choosing to inject the more specific class.
-    // I think this will be better because in the future we will have several UserDetailsService beans, but we'll see
-    private final UserUserDetailsService userDetailsService;
+    // I think this is better because in the future we will have several UserDetailsService beans, but we'll see
+    private final DbUserUserDetailsService userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -28,9 +28,6 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         if (passwordEncoder.matches(password, userDetails.getPassword())) {
-            // According to AbstractUserDetailsAuthenticationProvider, we should use authentication.getCredentials()
-            // here (the plain-text password) so that the password is available for possible successive
-            // authentication attempts. But, according to Daniel Garnier-Moiroux, it can (should) be null
             return UsernamePasswordAuthenticationToken.authenticated(userDetails, null, userDetails.getAuthorities());
         } else {
             throw new BadCredentialsException("Invalid credentials");

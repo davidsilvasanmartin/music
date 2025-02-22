@@ -1,4 +1,4 @@
-package dev.davidsilva.music.security;
+package dev.davidsilva.music.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.davidsilva.music.audit.AuditLogService;
@@ -65,7 +65,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
     private ApiErrorDto toApiErrorDto(Exception exception, HttpServletRequest request) {
         String details = String.format(
-                "Authentication failed for request to '%s'." +
+                "Authentication failed for request to '%s'. " +
                         "Please ensure you are properly authenticated to access this resource.",
                 request.getRequestURI()
         );
