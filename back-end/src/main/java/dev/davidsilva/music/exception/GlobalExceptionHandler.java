@@ -33,6 +33,12 @@ public class GlobalExceptionHandler {
         return toApiErrorDto(exception, webRequest);
     }
 
+    @ExceptionHandler(AbstractValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiErrorDto handleValidationException(Exception exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
+    }
+
 
     @ExceptionHandler({InvalidSearchFormatException.class, InvalidSearchException.class, InvalidSearchOperationException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)

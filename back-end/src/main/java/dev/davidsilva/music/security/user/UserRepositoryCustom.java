@@ -13,4 +13,6 @@ public interface UserRepositoryCustom {
      * @return an Optional containing the User entity with permissions if found, or an empty Optional otherwise
      */
     Optional<User> findByUsernameWithEagerlyFetchedPermissions(String username);
+
+    int countAdminUsers();
 }

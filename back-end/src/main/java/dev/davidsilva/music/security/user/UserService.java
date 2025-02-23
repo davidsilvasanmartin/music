@@ -55,6 +55,26 @@ public class UserService {
         return userRepository.findByUsername(username);
     }
 
+    public void deleteByUsername(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (countAdminUsers() == 1 && isAdmin(username)) {
+            throw new CannotDeleteLastAdminUserException();
+        }
+        userRepository.delete(user);
+    }
+
+    public int countAdminUsers() {
+        return userRepository.countAdminUsers();
+    }
+
+    public boolean isAdmin(String username) {
+        User user = userRepository
+                .findByUsernameWithEagerlyFetchedPermissions(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        return user.getPermissions().stream().anyMatch(permission -> permission.getName().equals("ADMIN"));
+    }
+
     public UserDto createUser(UserDto user) {
         // TODO add validation logic here
         User newUser = userDtoMapper.toEntity(user);

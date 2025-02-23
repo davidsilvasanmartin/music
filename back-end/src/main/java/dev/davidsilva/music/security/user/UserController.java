@@ -56,6 +56,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
     }
 
+    @DeleteMapping("/{username}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String username) {
+
+        userService.deleteByUsername(username);
+        return ResponseEntity.noContent().build();
+    }
+
     @PutMapping("/{username}/roles/{roleName}")
     public ResponseEntity<Void> addRoleToUser(@PathVariable String username, @PathVariable String roleName) {
         try {

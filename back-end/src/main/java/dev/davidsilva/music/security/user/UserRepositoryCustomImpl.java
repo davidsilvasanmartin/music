@@ -24,7 +24,6 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
                 LEFT JOIN FETCH r.permissions p
                 WHERE u.username = :username
                 """;
-
         TypedQuery<User> query = entityManager.createQuery(jpql, User.class);
         query.setParameter("username", username);
 
@@ -33,6 +32,19 @@ public class UserRepositoryCustomImpl implements UserRepositoryCustom {
         } catch (NoResultException e) {
             return Optional.empty();
         }
+    }
 
+    @Override
+    public int countAdminUsers() {
+        String jpql = """
+                SELECT COUNT(DISTINCT u) FROM User u
+                JOIN u.roles r
+                JOIN r.permissions p
+                WHERE p.name = :permissionName
+                """;
+        TypedQuery<Long> query = entityManager.createQuery(jpql, Long.class);
+        query.setParameter("permissionName", "ADMIN");
+
+        return query.getSingleResult().intValue();
     }
 }
