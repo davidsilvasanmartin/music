@@ -7,7 +7,7 @@ import static dev.davidsilva.musictests.Login.givenLoggedInAsAdmin;
 import static org.hamcrest.Matchers.containsStringIgnoringCase;
 import static org.hamcrest.Matchers.equalTo;
 
-public class TestSongs {
+public class TestSongs extends TestSuite {
     final int m4aSongId = 1;
     final String m4aSongTitle = "Song m4a";
     final String m4aSongLyrics = "";

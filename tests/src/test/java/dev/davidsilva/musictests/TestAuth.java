@@ -49,4 +49,28 @@ public class TestAuth extends TestSuite {
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 
+    @Test
+    void getAlbumsWithoutAuthentication() {
+        given()
+                .contentType("application/json")
+                .when()
+                .get("/albums")
+                .then()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
+                .contentType("application/json")
+                .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
+    }
+
+    @Test
+    void getAlbumsWithInvalidBearerToken() {
+        given()
+                .contentType("application/json")
+                .header("Authorization", "Bearer invalidRandomToken123")
+                .when()
+                .get("/albums")
+                .then()
+                .statusCode(HttpStatus.SC_UNAUTHORIZED)
+                .contentType("application/json")
+                .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
+    }
 }

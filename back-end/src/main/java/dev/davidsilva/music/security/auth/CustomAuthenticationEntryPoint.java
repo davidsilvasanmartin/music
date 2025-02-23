@@ -2,7 +2,6 @@ package dev.davidsilva.music.security.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.davidsilva.music.audit.AuditLogService;
-import dev.davidsilva.music.exception.ApiErrorDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,13 +14,13 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Base64;
-import java.util.Date;
 
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
     private final ObjectMapper objectMapper;
     private final AuditLogService auditLogService;
+    private final AuthExceptionMapper authExceptionMapper;
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
@@ -50,7 +49,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
                 "AUTH",                           // entityType
                 request.getRequestURI(),             // entityId1 - request URI
                 //request.getRemoteAddr(),             // entityId2 - IP address
-                null,                            // userId (not authenticated)
                 null,                            // oldValue
                 authException.getClass().getSimpleName(), // newValue - exception type
                 description
@@ -60,23 +58,10 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         // TODO this is only for HTTP Basic
         response.setHeader("WWW-Authenticate", "Basic realm=\"Secure Area\"");
-        response.getWriter().write(objectMapper.writeValueAsString(toApiErrorDto(authException, request)));
-    }
-
-    private ApiErrorDto toApiErrorDto(Exception exception, HttpServletRequest request) {
-        String details = String.format(
-                "Authentication failed for request to '%s'. " +
-                        "Please ensure you are properly authenticated to access this resource.",
-                request.getRequestURI()
-        );
-
-        return new ApiErrorDto(
-                new Date(),
-                "Authentication failed. Full authentication is required to access this resource",
-                details
+        response.getWriter().write(objectMapper.writeValueAsString(
+                authExceptionMapper.authenticationExceptionToApiErrorDto(authException, request))
         );
     }
-
 
     // TODO only valid for HTTP Basic
     private String extractUsername(String authHeader) {

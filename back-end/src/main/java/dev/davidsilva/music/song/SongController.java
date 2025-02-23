@@ -67,6 +67,7 @@ public class SongController {
                 headers.setContentType(MediaType.parseMediaType("audio/ogg"));
                 break;
             default:
+                // TODO there is not a test for this now. Try to add it somewhat.
                 throw new SongFormatNotSupportedException(resourceExtension);
         }
         // TODO this is trash because we will log the same song several times
@@ -75,8 +76,6 @@ public class SongController {
                 AuditLogAction.READ.toString(),
                 "SONG_PLAY",
                 String.valueOf(id),
-                // TODO: the logged-in user's id
-                null,
                 null,
                 null,
                 null

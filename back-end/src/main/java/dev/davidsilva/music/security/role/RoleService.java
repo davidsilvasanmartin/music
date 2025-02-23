@@ -16,7 +16,7 @@ public class RoleService {
 
     @Transactional
     public Optional<Role> findByName(String roleName) {
-        return roleRepository.findByRoleName(roleName);
+        return roleRepository.findByName(roleName);
     }
 
     @Transactional
@@ -26,9 +26,9 @@ public class RoleService {
 
     @Transactional
     public void addPermissionToRole(String roleName, String permissionName) {
-        Role role = roleRepository.findByRoleName(roleName)
+        Role role = roleRepository.findByName(roleName)
                 .orElseThrow(() -> new RuntimeException("Role not found"));
-        Permission permission = permissionRepository.findByPermissionName(permissionName)
+        Permission permission = permissionRepository.findByName(permissionName)
                 .orElseThrow(() -> new RuntimeException("Permission not found"));
         role.getPermissions().add(permission);
         roleRepository.save(role);

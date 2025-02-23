@@ -128,6 +128,8 @@ CREATE TABLE IF NOT EXISTS log_auth_login_attempts
 -- Indices for better performance
 CREATE INDEX idx_users_email ON auth_users (email);
 CREATE INDEX idx_users_username ON auth_users (username);
+CREATE INDEX idx_roles_role_name ON auth_roles (role_name);
+CREATE INDEX idx_permissions_permission_name ON auth_permissions (permission_name);
 CREATE INDEX idx_user_roles_user_id ON auth_user_roles (user_id);
 CREATE INDEX idx_user_roles_role_id ON auth_user_roles (role_id);
 CREATE INDEX idx_role_permissions_role_id ON auth_role_permissions (role_id);

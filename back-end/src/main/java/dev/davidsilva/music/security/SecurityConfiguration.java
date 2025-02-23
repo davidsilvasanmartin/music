@@ -61,12 +61,17 @@ public class SecurityConfiguration {
                         // Login and related endpoints
                         .requestMatchers("/auth/**").permitAll()
                         // Endpoints that return user-specific data (TODO)
-                        .requestMatchers("/playlists").authenticated()
+                        // .requestMatchers("/playlists").authenticated()
                         // Endpoints that have to be restricted, such as user admin or system configuration
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("READ")
+                        .requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("CREATE")
+                        .requestMatchers(HttpMethod.PATCH, "/**").hasAnyAuthority("UPDATE")
+                        .requestMatchers(HttpMethod.PUT, "/**").denyAll() // Not used for now
+                        .requestMatchers(HttpMethod.DELETE, "/**").hasAnyAuthority("DELETE")
                         // We allow getting data such as list of songs and albums (TODO review)
-                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
-                        .anyRequest().denyAll()
+                        // .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

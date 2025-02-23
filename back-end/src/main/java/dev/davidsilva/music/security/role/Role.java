@@ -17,15 +17,16 @@ public class Role {
     private int id;
 
     @Column(name = "role_name", unique = true, nullable = false)
-    private String roleName;
+    private String name;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "created_at", insertable = false)
     private LocalDateTime createdAt;
 
-//    @ManyToMany(mappedBy = "roles")
-//    private Set<User> users;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(
@@ -34,4 +35,10 @@ public class Role {
             inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private Set<Permission> permissions;
+
+    @PrePersist
+    @PreUpdate
+    private void updateTimestamp() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }

@@ -3,27 +3,33 @@ package dev.davidsilva.music.exception;
 import dev.davidsilva.music.search.InvalidSearchException;
 import dev.davidsilva.music.search.InvalidSearchFormatException;
 import dev.davidsilva.music.search.InvalidSearchOperationException;
+import dev.davidsilva.music.security.auth.AuthExceptionMapper;
 import dev.davidsilva.music.song.SongFormatNotSupportedException;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.server.NotAcceptableStatusException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
-import javax.naming.AuthenticationException;
 import java.util.Date;
 
 @ControllerAdvice
 @ResponseBody
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
+    private final AuthExceptionMapper authExceptionMapper;
+
     @ExceptionHandler(AbstractNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrorDto handleAlbumNotFoundException(Exception exception, WebRequest webRequest) {
+    public ApiErrorDto handleNotFoundException(Exception exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 
@@ -34,32 +40,33 @@ public class GlobalExceptionHandler {
         return toApiErrorDto(exception, webRequest);
     }
 
-    // TODO: this is not working at the moment
-    @ExceptionHandler(NotAcceptableStatusException.class)
+    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
     @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-    public ApiErrorDto handleNotAcceptableStatusException(NotAcceptableStatusException exception, WebRequest webRequest) {
+    public ApiErrorDto handleNotAcceptableStatusException(Exception exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 
     @ExceptionHandler(SongFormatNotSupportedException.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ApiErrorDto handleInvalidSearchOperationException(SongFormatNotSupportedException exception, WebRequest webRequest) {
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ApiErrorDto handleSongFormatNotSupportedException(SongFormatNotSupportedException exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 
-    // TODO not working because these are thrown in filters
+    /**
+     * Authentication and authorization exceptions can be thrown from components (for example when we try to /login), so
+     * they need to be handled here as well as in the handlers we have written for exceptions that are thrown
+     * from within filters
+     */
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ApiErrorDto handleAuthenticationException(AuthenticationException exception, WebRequest webRequest) {
-        return toApiErrorDto(exception, webRequest);
+    public ApiErrorDto handleAuthenticationException(AuthenticationException exception, HttpServletRequest request) {
+        return authExceptionMapper.authenticationExceptionToApiErrorDto(exception, request);
     }
 
-    // TODO not working because these are thrown in filters
     @ExceptionHandler(AccessDeniedException.class)
-//    @ResponseStatus(HttpStatus.FORBIDDEN)
-    @ResponseStatus(HttpStatus.I_AM_A_TEAPOT)
-    public ApiErrorDto handleAccessDeniedException(AccessDeniedException exception, WebRequest webRequest) {
-        return toApiErrorDto(exception, webRequest);
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ApiErrorDto handleAccessDeniedException(AccessDeniedException exception, HttpServletRequest request) {
+        return authExceptionMapper.authorizationExceptionToApiErrorDto(exception, request);
     }
 
     /**
@@ -70,17 +77,23 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ApiErrorDto handleNoHandlerFoundException(NoHandlerFoundException exception, WebRequest webRequest) {
+    public ApiErrorDto handleNoHandlerFoundException(Exception exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
-    public ApiErrorDto handleMethodNotAllowedException(HttpRequestMethodNotSupportedException exception, WebRequest webRequest) {
+    public ApiErrorDto handleMethodNotAllowedException(Exception exception, WebRequest webRequest) {
         return toApiErrorDto(exception, webRequest);
     }
 
-    private ApiErrorDto toApiErrorDto(Exception exception, WebRequest webRequest) {
-        return new ApiErrorDto(new Date(), exception.getMessage(), webRequest.getDescription(false));
+    @ExceptionHandler(Throwable.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ApiErrorDto handleThrowable(Throwable exception, WebRequest webRequest) {
+        return toApiErrorDto(exception, webRequest);
+    }
+
+    private ApiErrorDto toApiErrorDto(Throwable throwable, WebRequest webRequest) {
+        return new ApiErrorDto(new Date(), throwable.getMessage(), webRequest.getDescription(false));
     }
 }

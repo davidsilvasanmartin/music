@@ -19,13 +19,20 @@ public class Permission {
     private int id;
 
     @Column(name = "permission_name", unique = true, nullable = false)
-    private String permissionName;
+    private String name;
 
+    @Column(name = "description")
     private String description;
 
     @Column(name = "created_at", insertable = false)
     private LocalDateTime createdAt;
 
-//    @ManyToMany(mappedBy = "permissions")
-//    private Set<Role> roles;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @PrePersist
+    @PreUpdate
+    private void updateTimestamp() {
+        this.updatedAt = LocalDateTime.now();
+    }
 }
