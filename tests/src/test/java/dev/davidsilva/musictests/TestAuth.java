@@ -1,5 +1,6 @@
 package dev.davidsilva.musictests;
 
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -16,61 +17,61 @@ public class TestAuth extends TestSuite {
     @Test
     void loginWithBadFormatCredentials() {
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("{\"qqq\": \"www\"}")
                 .when()
                 .post("/auth/login")
                 .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 
     @Test
     void loginWithNonExistentUser() {
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("{\"username\": \"NON_EXISTENT\", \"password\": \"NON_EXISTENT\"}")
                 .when()
                 .post("/auth/login")
                 .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 
     @Test
     void loginWithExistingUserButBadPassword() {
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("{\"username\": \"admin\", \"password\": \"NON_EXISTENT\"}")
                 .when()
                 .post("/auth/login")
                 .then()
-                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_UNAUTHORIZED).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 
     @Test
     void getAlbumsWithoutAuthentication() {
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .when()
                 .get("/albums")
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 
     @Test
     void getAlbumsWithInvalidBearerToken() {
         given()
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .header("Authorization", "Bearer invalidRandomToken123")
                 .when()
                 .get("/albums")
                 .then()
                 .statusCode(HttpStatus.SC_UNAUTHORIZED)
-                .contentType("application/json")
+                .contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase(authenticationFailedErrorMessage));
     }
 }

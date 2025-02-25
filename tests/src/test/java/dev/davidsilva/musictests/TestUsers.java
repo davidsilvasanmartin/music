@@ -17,10 +17,33 @@ public class TestUsers extends TestSuite {
                 .body("message", containsStringIgnoringCase("cannot delete last admin user"));
     }
 
+    @Test
+    void getUserByUsername() {
+        givenLoggedInAsAdmin().when().get("users/admin").then()
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON)
+                .body("username", equalTo("admin"))
+                .body(not(hasProperty("password")))
+                .body("email", equalTo("admin@email.test"))
+                .body("createdAt", is(not(emptyString())))
+                .body("updatedAt", is(not(emptyString())))
+                .body("enabled", equalTo(true))
+                .body("roles.size()", equalTo(1))
+                .body("roles[0].name", equalTo("ADMIN"))
+                .body("roles[0].description", is(not(emptyString())))
+                .body("roles[0].createdAt", is(not(emptyString())))
+                .body("roles[0].updatedAt", is(not(emptyString())))
+                .body("roles[0].permissions.size()", equalTo(5))
+                // TODO maybe check permissions one by one
+                .body("content[0].roles[0].permissions[0].name", is(not(emptyString())))
+                .body("content[0].roles[0].permissions[0].description", is(not(emptyString())))
+                .body("content[0].roles[0].permissions[0].createdAt", is(not(emptyString())))
+                .body("content[0].roles[0].permissions[0].updatedAt", is(not(emptyString())));
+    }
+
     @Test(dependsOnMethods = {"deleteCreatedAdminUser"})
     void getUsers() {
         givenLoggedInAsAdmin().when().get("users").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON)
                 .body("page", equalTo(1))
                 .body("size", equalTo(10))
                 .body("totalElements", equalTo(1))
@@ -58,7 +81,7 @@ public class TestUsers extends TestSuite {
         user.put("enabled", true);
 
         givenLoggedInAsAdmin().contentType(ContentType.JSON).body(user.toString()).when().post("users").then()
-                .statusCode(HttpStatus.SC_CREATED).contentType("application/json")
+                .statusCode(HttpStatus.SC_CREATED).contentType(ContentType.JSON)
                 .body("username", equalTo("test"))
                 .body(not(hasProperty("password")))
                 .body("email", equalTo("user@email.test"))
@@ -80,9 +103,16 @@ public class TestUsers extends TestSuite {
     }
 
     @Test
+    void getNonExistentUser() {
+        givenLoggedInAsAdmin().when().get("users/NON_EXISTENT").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
+                .body("message", containsStringIgnoringCase("user with username NON_EXISTENT was not found"));
+    }
+
+    @Test
     void deleteNonExistentUser() {
         givenLoggedInAsAdmin().contentType(ContentType.JSON).when().delete("users/NON_EXISTENT").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("user with username NON_EXISTENT was not found"));
     }
 }

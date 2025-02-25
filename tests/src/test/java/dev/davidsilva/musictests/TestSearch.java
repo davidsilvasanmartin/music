@@ -1,5 +1,6 @@
 package dev.davidsilva.musictests;
 
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -18,35 +19,35 @@ public class TestSearch extends TestSuite {
     @Test
     void searchAlbumsWithBadFormat() {
         givenLoggedInAsAdmin().when().get("albums?search=qqq").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("invalid search format:"));
     }
 
     @Test
     void searchAlbumsWithBadField() {
         givenLoggedInAsAdmin().when().get("albums?search=" + nonExistent + ":eq:value").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("invalid search:"));
     }
 
     @Test
     void searchAlbumsWithBadCondition() {
         givenLoggedInAsAdmin().when().get("albums?search=albumArtist:" + nonExistent + ":value").then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("invalid search operation:"));
     }
 
     @Test
     void searchAlbumsByNonExistentAlbumArtist() {
         givenLoggedInAsAdmin().when().get("albums?search=albumArtist:eq:" + nonExistent).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(0));
     }
 
     @Test
     void searchAlbumsByAlbumThatIsBreakingTheSearch() {
         givenLoggedInAsAdmin().when().get("albums?search=album:eq:" + albumBreakingTheSearch).then()
-                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("invalid search format:"));
     }
 }

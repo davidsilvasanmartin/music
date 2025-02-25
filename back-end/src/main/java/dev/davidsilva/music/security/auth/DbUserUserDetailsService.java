@@ -21,7 +21,6 @@ public class DbUserUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOptional = userRepository.findByUsernameWithEagerlyFetchedPermissions(username);
         return userOptional.map(DbUserDetails::new)
-                // TODO not sure if I just have to return null and some spring component up the filter chain will catch this ????
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

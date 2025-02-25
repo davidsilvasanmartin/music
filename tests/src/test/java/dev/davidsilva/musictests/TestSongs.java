@@ -1,5 +1,6 @@
 package dev.davidsilva.musictests;
 
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -22,7 +23,7 @@ public class TestSongs extends TestSuite {
     @Test
     public void getSong() {
         givenLoggedInAsAdmin().when().get("songs/" + m4aSongId).then()
-                .statusCode(200).and().contentType("application/json")
+                .statusCode(200).and().contentType(ContentType.JSON)
                 .and().body("id", equalTo(m4aSongId))
                 .and().body("album.id", equalTo(m4aSongAlbumId))
                 .and().body("album.albumArtist", equalTo(m4aSongAlbumArtist))
@@ -34,20 +35,20 @@ public class TestSongs extends TestSuite {
     @Test
     public void getNonExistentSong() {
         givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId).then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 
     @Test
     public void getSongAlbumArt() {
         givenLoggedInAsAdmin().when().get("songs/" + m4aSongId + "/albumArt").then()
-                .statusCode(200).and().contentType("application/json");
+                .statusCode(200).and().contentType(ContentType.JSON);
     }
 
     @Test
     public void getNonExistentSongAlbumArt() {
         givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId + "/albumArt").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 
@@ -83,14 +84,14 @@ public class TestSongs extends TestSuite {
 
     @Test
     public void playSongWithAcceptJson() {
-        givenLoggedInAsAdmin().accept("application/json").when().get("songs/" + m4aSongId + "/play").then()
-                .statusCode(HttpStatus.SC_NOT_ACCEPTABLE).and().contentType("application/json");
+        givenLoggedInAsAdmin().accept(ContentType.JSON).when().get("songs/" + m4aSongId + "/play").then()
+                .statusCode(HttpStatus.SC_NOT_ACCEPTABLE).and().contentType(ContentType.JSON);
     }
 
     @Test
     public void playNonExistentSong() {
         givenLoggedInAsAdmin().when().get("songs/" + nonExistentSongId + "/play").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("song with id " + nonExistentSongId + " was not found"));
     }
 }

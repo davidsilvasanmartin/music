@@ -3,6 +3,7 @@ package dev.davidsilva.music.security.user;
 import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.security.role.Role;
+import dev.davidsilva.music.security.role.RoleNotFoundException;
 import dev.davidsilva.music.security.role.RoleRepository;
 import dev.davidsilva.music.utils.ListMapper;
 import dev.davidsilva.music.utils.PaginatedResponse;
@@ -10,8 +11,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 /**
  * When deleting users, check
@@ -51,17 +50,47 @@ public class UserService {
         return PaginatedResponse.fromPage(usersPage, listMapper);
     }
 
-    public Optional<User> findByUsername(String username) {
-        return userRepository.findByUsername(username);
+    public UserDto findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .map(userDtoMapper::toDto).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     public void deleteByUsername(String username) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
         if (countAdminUsers() == 1 && isAdmin(username)) {
+            auditLogService.log(
+                    "DELETE_FAILED",
+                    "USER",
+                    username,
+                    user,
+                    null,
+                    "Failed to delete user: Cannot delete last admin user"
+            );
             throw new CannotDeleteLastAdminUserException();
         }
-        userRepository.delete(user);
+        try {
+            userRepository.delete(user);
+            auditLogService.log(
+                    "DELETE",
+                    "USER",
+                    username,
+                    user,
+                    null,
+                    "User deleted successfully"
+            );
+        } catch (Exception e) {
+            auditLogService.log(
+                    "DELETE_FAILED",
+                    "USER",
+                    username,
+                    user,
+                    null,
+                    "Failed to delete user: " + e.getMessage()
+            );
+            throw e;
+        }
+
     }
 
     public int countAdminUsers() {
@@ -76,32 +105,79 @@ public class UserService {
     }
 
     public UserDto createUser(UserDto user) {
-        // TODO add validation logic here
-        User newUser = userDtoMapper.toEntity(user);
-        newUser = userRepository.save(newUser);
+        if (userRepository.existsByUsername(user.getUsername())) {
+            auditLogService.log(
+                    "CREATE_FAILED",
+                    "USER",
+                    user.getUsername(),
+                    null,
+                    user,
+                    "Failed to create user: username already exists"
+            );
+            throw new UserAlreadyExistsException(user.getUsername());
+        }
 
-        this.auditLogService.log(
-                AuditLogAction.CREATE.toString(),
-                "USER",
-                String.valueOf(newUser.getId()),
-                null,
-                // TODO check what this logs
-                newUser,
-                null
-        );
-        return userDtoMapper.toDto(newUser);
+        // TODO add validation logic here (or in the controller with Bean Validation)
+        User newUser = userDtoMapper.toEntity(user);
+
+        try {
+            newUser = userRepository.save(newUser);
+            this.auditLogService.log(
+                    AuditLogAction.CREATE.toString(),
+                    "USER",
+                    String.valueOf(newUser.getId()),
+                    null,
+                    // TODO check what this logs
+                    newUser,
+                    null
+            );
+            return userDtoMapper.toDto(newUser);
+        } catch (Exception e) {
+            auditLogService.log(
+                    "CREATE_FAILED",
+                    "USER",
+                    user.getUsername(),
+                    null,
+                    user,
+                    "Failed to create user: " + e.getMessage()
+            );
+            throw new RuntimeException(e);
+        }
     }
 
     public void addRoleToUser(String username, String roleName) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserNotFoundException(username));
         Role role = roleRepository.findByName(roleName)
-                .orElseThrow(() -> new RuntimeException("Role not found"));
-        user.getRoles().add(role);
-        userRepository.save(user);
-    }
+                .orElseThrow(() -> new RoleNotFoundException(roleName));
 
-    public long countUsers() {
-        return userRepository.count();
+        try {
+            // TODO review properties that are logged
+            user.getRoles().add(role);
+            userRepository.save(user);
+            auditLogService.log(
+                    "ADD_ROLE",
+                    "USER",
+                    username,
+                    user.getRoles().stream()
+                            .map(Role::getName)
+                            .toList(),
+                    roleName,
+                    "Role '" + roleName + "' added to user"
+            );
+        } catch (Exception e) {
+            auditLogService.log(
+                    "ADD_ROLE_FAILED",
+                    "USER",
+                    username,
+                    user.getRoles().stream()
+                            .map(Role::getName)
+                            .toList(),
+                    roleName,
+                    "Failed to add role: " + e.getMessage()
+            );
+            throw e;
+        }
+
     }
 }

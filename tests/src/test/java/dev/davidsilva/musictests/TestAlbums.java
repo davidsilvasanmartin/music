@@ -1,5 +1,6 @@
 package dev.davidsilva.musictests;
 
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.testng.annotations.Test;
 
@@ -20,28 +21,28 @@ public class TestAlbums extends TestSuite {
     @Test
     void getAlbums() {
         givenLoggedInAsAdmin().when().get("albums").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(1))
                 .body("size", equalTo(10)).body("content.size()", greaterThan(0));
     }
 
     @Test
     void getAlbumsWithPage() {
         givenLoggedInAsAdmin().when().get("albums?page=2").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(2))
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(2))
                 .body("size", equalTo(10)).body("content.size()", greaterThan(0));
     }
 
     @Test
     void getAlbumsWithSize() {
         givenLoggedInAsAdmin().when().get("albums?size=20").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(1))
                 .body("size", equalTo(20)).body("content.size()", greaterThan(10));
     }
 
     @Test
     void getAlbumsWithSort() {
         givenLoggedInAsAdmin().when().get("albums?sort=albumArtist,desc").then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json").body("page", equalTo(1))
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(1))
                 .body("size", equalTo(10)).body("content.size()", equalTo(10))
                 .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"));
     }
@@ -49,7 +50,7 @@ public class TestAlbums extends TestSuite {
     @Test
     void getAlbumById() {
         givenLoggedInAsAdmin().when().get("albums/" + albumId).then()
-                .statusCode(HttpStatus.SC_OK).contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON)
                 .body("id", equalTo(albumId))
                 .body("albumArtist", equalTo(albumArtist))
                 .body("album", equalTo(album))
@@ -64,35 +65,35 @@ public class TestAlbums extends TestSuite {
     @Test
     void getNonExistentAlbumById() {
         givenLoggedInAsAdmin().when().get("albums/" + nonExistentAlbumId).then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }
 
     @Test
     void searchAlbumsByArtist() {
         givenLoggedInAsAdmin().when().get("albums?search=albumArtist:eq:" + albumArtist).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].albumArtist", equalTo(albumArtist));
     }
 
     @Test
     void searchAlbumsByAlbum() {
         givenLoggedInAsAdmin().when().get("albums?search=album:eq:" + album).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].album", equalTo(album));
     }
 
     @Test
     void searchAlbumsByYear() {
         givenLoggedInAsAdmin().when().get("albums?search=year:eq:" + albumYear).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].year", equalTo(albumYear));
     }
 
     @Test
     void searchAlbumsByGenre() {
         givenLoggedInAsAdmin().when().get("albums?search=genre:contains:" + albumGenre).then()
-                .statusCode(HttpStatus.SC_OK).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
     }
 
@@ -108,7 +109,7 @@ public class TestAlbums extends TestSuite {
         // in case of error. Otherwise, the API will crash with a different (500) error. Browsers do
         // typically add */* to the list of content types when requesting files.
         givenLoggedInAsAdmin().accept("image/*,*/*").when().get("albums/" + nonExistentAlbumId + "/albumArt").then()
-                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType("application/json")
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }
 

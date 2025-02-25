@@ -10,12 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-
-/**
- * TODO DTOs !!!
- */
-
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("users")
@@ -39,17 +33,12 @@ public class UserController {
         return new ResponseEntity<>(paginatedUsers, HttpStatus.OK);
     }
 
-    // TODO use DTO because now we are sending password to frontend !!!
     @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> userOptional = userService.findByUsername(username);
-        return userOptional
-                .map(ResponseEntity::ok)
-                // TODO test this not found, maybe create custom exception
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
+        UserDto user = userService.findByUsername(username);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    // TODO TESTS !!!
     @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody UserDto user) {
         UserDto newUser = userService.createUser(user);
@@ -58,19 +47,13 @@ public class UserController {
 
     @DeleteMapping("/{username}")
     public ResponseEntity<Void> deleteUser(@PathVariable String username) {
-
         userService.deleteByUsername(username);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{username}/roles/{roleName}")
     public ResponseEntity<Void> addRoleToUser(@PathVariable String username, @PathVariable String roleName) {
-        try {
-            userService.addRoleToUser(username, roleName);
-            return ResponseEntity.ok().build();
-        } catch (RuntimeException e) {
-            // TODO test this not found, maybe create custom exception
-            return ResponseEntity.notFound().build();
-        }
+        userService.addRoleToUser(username, roleName);
+        return ResponseEntity.ok().build();
     }
 }

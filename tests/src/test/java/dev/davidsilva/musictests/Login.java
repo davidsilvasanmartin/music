@@ -1,5 +1,6 @@
 package dev.davidsilva.musictests;
 
+import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 
 import static io.restassured.RestAssured.given;
@@ -18,7 +19,7 @@ public final class Login {
     public static void initialize() {
         if (token == null) {
             token = given()
-                    .contentType("application/json")
+                    .contentType(ContentType.JSON)
                     .body(adminCredentials)
                     .when()
                     .post("/auth/login")
