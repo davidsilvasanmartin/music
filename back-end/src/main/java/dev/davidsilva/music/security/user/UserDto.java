@@ -7,6 +7,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+// TODO do we need to implement Serializable ??
 // The following annotation prevents the "password" field from going to the frontend when we GET a user (because it will be null).
 // Note that the rest of the fields should not be null
 @JsonInclude(JsonInclude.Include.NON_NULL)

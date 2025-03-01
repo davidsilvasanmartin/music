@@ -8,12 +8,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 
 /**
- * TODO maybe just use DaoAuthenticationProvider, which has mitigation measures against some attacks
+ * TODO using DaoAuthenticationProvider at the moment, this class may be removed ...
  */
-@Component
+//@Component
 @RequiredArgsConstructor
 public class DbUserAuthenticationProvider implements AuthenticationProvider {
     // This class would work just injecting UserDetailsService. However, I'm choosing to inject the more specific class.

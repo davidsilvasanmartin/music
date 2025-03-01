@@ -26,3 +26,4 @@
 
 - Tip: the order of Spring Security filters can be found in the class
   ` org.springframework.security.config.annotation.web.builders.FilterOrderRegistration`.
+- Trying to follow this guide at the moment https://spring.io/guides/tutorials/spring-security-and-angular-js

@@ -36,7 +36,7 @@ public class AuditLogService {
         int authenticatedUserId = -1;
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            authenticatedUserId = ((DbUserDetails) authentication.getPrincipal()).getUser().getId();
+            authenticatedUserId = ((DbUserDetails) authentication.getPrincipal()).user().getId();
         } catch (Exception _) {
         }
 

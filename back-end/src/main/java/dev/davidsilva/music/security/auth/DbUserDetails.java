@@ -2,7 +2,6 @@ package dev.davidsilva.music.security.auth;
 
 import dev.davidsilva.music.security.permission.Permission;
 import dev.davidsilva.music.security.user.User;
-import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,15 +15,10 @@ import java.util.stream.Collectors;
  * This is the class that's used by Spring Security. It wraps our database user. If
  * we add other methods of authentication such as "Sign in with Google", we will
  * need to create another implementation of UserDetails
+ *
+ * @param user The User instance
  */
-@Getter
-public class DbUserDetails implements UserDetails {
-    // TODO not sure if this should be here. We need it to get the authenticated user's id
-    private final User user;
-
-    public DbUserDetails(User user) {
-        this.user = user;
-    }
+public record DbUserDetails(User user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
