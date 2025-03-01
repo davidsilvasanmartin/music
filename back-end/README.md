@@ -19,3 +19,10 @@
     - Gabriel Moiroux
     - Laur Splica
     - [Coffee + Software](https://www.youtube.com/@coffeesoftware/videos)
+
+## Info
+
+### Spring Security
+
+- Tip: the order of Spring Security filters can be found in the class
+  ` org.springframework.security.config.annotation.web.builders.FilterOrderRegistration`.

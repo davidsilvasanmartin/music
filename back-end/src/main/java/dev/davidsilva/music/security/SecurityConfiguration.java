@@ -2,17 +2,21 @@ package dev.davidsilva.music.security;
 
 import dev.davidsilva.music.security.auth.CustomAccessDeniedHandler;
 import dev.davidsilva.music.security.auth.CustomAuthenticationEntryPoint;
-import dev.davidsilva.music.security.auth.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -40,7 +44,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfiguration {
     private final CustomAccessDeniedHandler customAccessDeniedHandler;
     private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+//    private final DbUserDetailsService userDetailsService;
 
     /**
      * TODO somewhat we are still redirecting to /error when there is any error (TODO find a way to test this and fix).
@@ -50,16 +54,19 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // We don't need CSRF because our token is invulnerable
+                // TODO enable csrf
                 .csrf(AbstractHttpConfigurer::disable)
-                // TODO need to find out about CORS
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // TODO review and test this
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(true))
                 .authorizeHttpRequests(auth -> auth
-                        // TODO review this
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // Login and related endpoints
-                        .requestMatchers("/auth/**").permitAll()
+                        // TODO maybe better just use defaults, instead of custom ones
+                        .requestMatchers("/auth/**", "/login").permitAll()
                         // Endpoints that return user-specific data (TODO)
                         // .requestMatchers("/playlists").authenticated()
                         // Endpoints that have to be restricted, such as user admin or system configuration
@@ -67,23 +74,47 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("READ")
                         .requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("CREATE")
                         .requestMatchers(HttpMethod.PATCH, "/**").hasAnyAuthority("UPDATE")
-                        .requestMatchers(HttpMethod.PUT, "/**").denyAll() // Not used for now
+                        .requestMatchers(HttpMethod.PUT, "/**").denyAll()
                         .requestMatchers(HttpMethod.DELETE, "/**").hasAnyAuthority("DELETE")
-                        // We allow getting data such as list of songs and albums (TODO review)
-                        // .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .rememberMe(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .formLogin(AbstractHttpConfigurer::disable)
-                .logout(AbstractHttpConfigurer::disable)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                // TODO review formLogin and logout
+                .formLogin(form -> form
+                        .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/auth/login?error=true")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth/login?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll())
                 .exceptionHandling(c -> c
                         .authenticationEntryPoint(customAuthenticationEntryPoint)
                         .accessDeniedHandler(customAccessDeniedHandler)
                         .accessDeniedPage(null)
-                ).cors(c -> c.configurationSource(corsConfigurationSource()));
+                );
 
         return httpSecurity.build();
+    }
+
+    // TODO
+    @Bean
+    public AuthenticationManager authenticationManager(PasswordEncoder passwordEncoder) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+//        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder);
+        return new ProviderManager(provider);
+    }
+
+    // TODO what is this
+    @Bean
+    public SecurityContextRepository securityContextRepository() {
+        return new HttpSessionSecurityContextRepository();
     }
 
     // TODO need to understand and configure this
