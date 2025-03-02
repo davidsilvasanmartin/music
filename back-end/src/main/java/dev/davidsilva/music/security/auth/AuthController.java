@@ -30,6 +30,11 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * The initial endpoint that will be called by the front-end to verify if it is logged in, and to get the user data and
+     * configuration if it is
+     * TODO other than the UserDto, we want to return more things like configurations
+     */
     @GetMapping("/user")
     public ResponseEntity<UserDto> user() {
         return ResponseEntity.ok(authService.getLoggedInUser());

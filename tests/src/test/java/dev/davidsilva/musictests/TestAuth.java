@@ -63,10 +63,10 @@ public class TestAuth extends TestSuite {
     }
 
     @Test
-    void getAlbumsWithInvalidBearerToken() {
+    void getAlbumsWithInvalidSessionCookie() {
         given()
                 .contentType(ContentType.JSON)
-                .header("Authorization", "Bearer invalidRandomToken123")
+                .cookie("SESSION", "invalid_random_session_cookie_123")
                 .when()
                 .get("/albums")
                 .then()

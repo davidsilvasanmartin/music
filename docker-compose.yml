@@ -1,11 +1,24 @@
-# TODO: not used
-version: "3"
+version: "3.9"
+name: "dev-davidsilva-music"
+
+networks:
+  app-network:
+    name: dev-davidsilva-music-network
+
+volumes:
+  redis-data:
+    name: dev-davidsilva-music-redis-data
+
 services:
-  database:
-    image: "postgres"
-    env_file:
-      - ./config/database.env
-    volumes:
-      - ./database:/var/lib/postgresql/data
+  redis:
+    image: "redis:8.0-M03-bookworm"
+    container_name: dev-davidsilva-music-redis
     ports:
-      - 5432:5432
+      - "6379:6379"
+    environment:
+      REDIS_HOST: localhost
+    # TODO check this is ok
+    volumes:
+      - redis-data:/data
+    networks:
+      - app-network

@@ -1,44 +1,52 @@
 package dev.davidsilva.music.security.auth;
 
-import dev.davidsilva.music.security.permission.Permission;
 import dev.davidsilva.music.security.user.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * This is the class that's used by Spring Security. It wraps our database user. If
  * we add other methods of authentication such as "Sign in with Google", we will
  * need to create another implementation of UserDetails
- *
- * @param user The User instance
  */
-public record DbUserDetails(User user) implements UserDetails {
+public class DbUserDetails implements UserDetails, Serializable {
+    private final int id;
+    private final String password;
+    private final String username;
+    private final Collection<? extends GrantedAuthority> authorities;
+    private final boolean isEnabled;
+
+    public DbUserDetails(User user) {
+        this.id = user.getId();
+        this.password = user.getPassword();
+        this.username = user.getUsername();
+        this.authorities = user.getPermissions().stream().map(p -> new SimpleGrantedAuthority(p.getName()))
+                .collect(Collectors.toList());
+        this.isEnabled = user.getIsEnabled();
+    }
+
+    public int getId() {
+        return id;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Set<Permission> permissions = user.getPermissions();
-        if (permissions == null) {
-            return Collections.emptyList();
-        }
-
-        return permissions.stream().map(p -> new SimpleGrantedAuthority(p.getName()))
-                .collect(Collectors.toList());
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return password;
     }
 
     @Override
     public String getUsername() {
-        return user.getUsername();
+        return username;
     }
 
     @Override
@@ -72,6 +80,6 @@ public record DbUserDetails(User user) implements UserDetails {
      */
     @Override
     public boolean isEnabled() {
-        return user.getIsEnabled();
+        return isEnabled;
     }
 }

@@ -38,6 +38,8 @@ public class SecurityConfiguration {
      * TODO somewhat we are still redirecting to /error when there is any error (TODO find a way to test this and fix).
      * One way to force this error is to comment the permitAll() for GET requests below and trying to GET /albums with
      * a valid JWT token of a valid authenticated user
+     * <p>
+     * TODO server is sending header: WWW-Authenticate: Basic realm="Secure Area"
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -46,11 +48,13 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
                 // TODO review and test this
+                // TODO it seems like one session is created every time I log in, and old ones are not being removed
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         // TODO get from properties
                         .maximumSessions(1)
-                        .maxSessionsPreventsLogin(true))
+                        .maxSessionsPreventsLogin(true)
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         // The auth endpoints that should always be allowed are defined here

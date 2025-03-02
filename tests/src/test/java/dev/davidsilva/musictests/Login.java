@@ -2,6 +2,7 @@ package dev.davidsilva.musictests;
 
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
+import org.apache.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
 
@@ -11,27 +12,31 @@ public final class Login {
               "username": "admin",
               "password": "admin"
             }""";
-    private static String token = null;
+    private static final String token = null;
+    private static String sessionCookie = null;
+
 
     private Login() {
     }
 
     public static void initialize() {
-        if (token == null) {
-            token = given()
+        if (sessionCookie == null) {
+            sessionCookie = given()
                     .contentType(ContentType.JSON)
-                    .body(adminCredentials)
-                    .when()
+                    .body(adminCredentials).when()
                     .post("/auth/login")
-                    .jsonPath()
-                    .get("token");
+                    .then()
+                    .statusCode(HttpStatus.SC_OK)
+                    .extract()
+                    .response()
+                    .getCookie("SESSION");
         }
     }
 
     public static RequestSpecification givenLoggedInAsAdmin() {
-        if (token == null) {
+        if (sessionCookie == null) {
             throw new IllegalStateException("Login must be initialized before using it");
         }
-        return given().header("Authorization", "Bearer " + token);
+        return given().cookie("SESSION", sessionCookie);
     }
 }

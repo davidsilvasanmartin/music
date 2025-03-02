@@ -27,3 +27,23 @@
 - Tip: the order of Spring Security filters can be found in the class
   ` org.springframework.security.config.annotation.web.builders.FilterOrderRegistration`.
 - Trying to follow this guide at the moment https://spring.io/guides/tutorials/spring-security-and-angular-js
+
+### Sessions
+
+- For Spring Session with Redis, see: https://docs.spring.io/spring-session/reference/getting-started/using-redis.html
+
+### Learning resources
+
+```text
+ Resources
+
+The BEST book I've ever read on JPA/Hibernate, is hands down 'Java persistence with Hibernate' published by Manning.
+(There should be a new edition: 'Java persistence with Spring Data')
+
+Also, notable mentions for:
+    Vlad Mihalcea
+    Thorbenn Jansen
+    Laurentiu Spilca
+
+You can check their relative blogs/YT channels. 
+```
