@@ -31,6 +31,9 @@
 ### Sessions
 
 - For Spring Session with Redis, see: https://docs.spring.io/spring-session/reference/getting-started/using-redis.html
+- Official docs for session management
+    - https://docs.spring.io/spring-security/reference/servlet/authentication/persistence.html
+    - https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html
 
 ### Learning resources
 
