@@ -40,6 +40,8 @@ public class SecurityConfiguration {
      * a valid JWT token of a valid authenticated user
      * <p>
      * TODO server is sending header: WWW-Authenticate: Basic realm="Secure Area"
+     * <p>
+     * TODO get rid of Redis, use in-memory normal sessions. Read this to learn https://stackoverflow.com/questions/3106452/how-do-servlets-work-instantiation-sessions-shared-variables-and-multithreadi/3106909#3106909
      */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -47,13 +49,15 @@ public class SecurityConfiguration {
                 // TODO enable csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
-                // TODO review and test this
-                // TODO it seems like one session is created every time I log in, and old ones are not being removed
+                // TODO review and test these configurations
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        // TODO get from properties
+                        // TODO get from properties maybe
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
+                )
+                .securityContext((securityContext) -> securityContext
+                        .requireExplicitSave(false)
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

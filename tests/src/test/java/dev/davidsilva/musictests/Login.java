@@ -29,7 +29,7 @@ public final class Login {
                     .statusCode(HttpStatus.SC_OK)
                     .extract()
                     .response()
-                    .getCookie("SESSION");
+                    .getCookie("JSESSIONID");
         }
     }
 
@@ -37,6 +37,6 @@ public final class Login {
         if (sessionCookie == null) {
             throw new IllegalStateException("Login must be initialized before using it");
         }
-        return given().cookie("SESSION", sessionCookie);
+        return given().cookie("JSESSIONID", sessionCookie);
     }
 }

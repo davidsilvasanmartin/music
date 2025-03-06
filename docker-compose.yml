@@ -1,3 +1,7 @@
+#### TODO NOT USED
+###
+##
+#
 version: "3.9"
 name: "dev-davidsilva-music"
 
@@ -17,7 +21,6 @@ services:
       - "6379:6379"
     environment:
       REDIS_HOST: localhost
-    # TODO check this is ok
     volumes:
       - redis-data:/data
     networks:
