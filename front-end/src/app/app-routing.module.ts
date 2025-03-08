@@ -18,7 +18,7 @@ const routes: Routes = [
       import('./albums/albums.module').then((m) => m.AlbumsModule),
     canActivate: [authenticationGuard],
   },
-  // { path: '**', redirectTo: '/' },
+  { path: '**', redirectTo: '/' },
 ];
 
 @NgModule({

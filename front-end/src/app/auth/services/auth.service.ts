@@ -15,14 +15,28 @@ export class AuthService {
   ) {}
 
   login(credentials: { username: string; password: string }): Observable<User> {
-    console.log('POSTING');
+    return (
+      this.http
+        // TODO UserDto, mapping, ...
+        .post<User>(this.apiService.createApiUrl('/auth/login'), credentials)
+        .pipe(
+          tap((u) => console.log('POSTED succesfully', u)),
+          catchError((err) => {
+            console.error(err);
+            return of(null as unknown as User);
+          }),
+        )
+    );
+  }
+
+  isLoggedIn(): Observable<User | null> {
+    // TODO UserDto, mapping, ...
     return this.http
-      .post<User>(this.apiService.createApiUrl('/auth/login'), credentials)
+      .get<User | null>(this.apiService.createApiUrl('/auth/user'))
       .pipe(
-        tap((u) => console.log('POSTED succesfully', u)),
         catchError((err) => {
           console.error(err);
-          return of(null as unknown as User);
+          return of(null);
         }),
       );
   }
