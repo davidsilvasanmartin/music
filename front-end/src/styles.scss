@@ -19,11 +19,6 @@ body {
 @tailwind components;
 @tailwind utilities;
 
-// Theming: https://simonswiss.com/articles/tailwind-v4-multi-theme/
-@theme {
-  --color-primary: rgba(0, 0, 255, 1);
-}
-
 // The following are fixes for Tailwind's preflight (see https://tailwindcss.com/docs/preflight)
 // See here why to use layer base: https://tailwindcss.com/docs/adding-custom-styles#adding-base-styles
 
@@ -83,9 +78,5 @@ body {
   // Theming config below
   * {
     @apply transition-colors duration-500 ease-in-out;
-  }
-
-  [data-theme="dark"] {
-    --color-primary: rgba(255, 255, 255, 1);
   }
 }
