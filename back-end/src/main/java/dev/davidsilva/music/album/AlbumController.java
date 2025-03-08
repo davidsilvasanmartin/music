@@ -8,10 +8,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.SortDefault;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.Duration;
 
 @RestController
 @RequiredArgsConstructor
@@ -53,8 +53,10 @@ public class AlbumController {
     @GetMapping(value = "{id}/albumArt", produces = {MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_GIF_VALUE})
     @ResponseBody
     public ResponseEntity<FileSystemResource> getAlbumArtById(@PathVariable("id") int id) {
-        String artPath = albumService.findAlbumArtPathById(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(60)).cachePublic());
+        FileSystemResource resource = new FileSystemResource(albumService.findAlbumArtPathById(id));
         // TODO: album.getArtPath() can be null
-        return new ResponseEntity<>(new FileSystemResource(artPath), HttpStatus.OK);
+        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }

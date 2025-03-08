@@ -30,11 +30,13 @@ export class AuthEffects {
     ),
   );
 
-  loginSuccess$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authActions.loginSuccess),
-      tap(() => this.router.navigate(['/'])),
-    ),
+  loginSuccess$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.loginSuccess),
+        tap(() => this.router.navigate(['/'])),
+      ),
+    { dispatch: false },
   );
 
   constructor(

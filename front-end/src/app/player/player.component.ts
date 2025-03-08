@@ -1,24 +1,34 @@
-import { AfterViewInit, Component, computed, ElementRef, OnDestroy, Signal, signal, ViewChild } from "@angular/core";
-import { toObservable, toSignal } from "@angular/core/rxjs-interop";
+import {
+  AfterViewInit,
+  Component,
+  computed,
+  ElementRef,
+  OnDestroy,
+  Signal,
+  signal,
+  ViewChild,
+} from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 
-import { select, Store } from "@ngrx/store";
-import { filter, Observable } from"rxjs"';
-import { switchMap } from"rxjs/operators"';
+import { select, Store } from '@ngrx/store';
 
-import { Album } from"../albums/album"';
-import { ApiService } from"../api/api.service"';
-import { Song } from"../songs/song"';
-import { SongsService } from"../songs/songs.service"';
-import * as playlistActions from"./store/actions"';
-import * as playlistSelectors from"./store/selectors"';
-import { PlaylistRootState } from"./store/state"';
+import { filter, Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+
+import { Album } from '../albums/album';
+import { ApiService } from '../api/api.service';
+import { Song } from '../songs/song';
+import { SongsService } from '../songs/songs.service';
+import * as playlistActions from './store/actions';
+import * as playlistSelectors from './store/selectors';
+import { PlaylistRootState } from './store/state';
 
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
 })
 export class PlayerComponent implements OnDestroy, AfterViewInit {
-  @ViewChild("audioElement", { static: false })
+  @ViewChild('audioElement', { static: false })
   audioElement: ElementRef | undefined;
 
   currentSong: Signal<Song>;
@@ -73,17 +83,17 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
       if (this.audioElement) {
         const htmlAudioElement: HTMLAudioElement =
           this.audioElement.nativeElement;
-        console.log("------------------");
+        console.log('------------------');
         const numChunks = htmlAudioElement.played.length;
-        console.log("Chunks", numChunks);
+        console.log('Chunks', numChunks);
         for (let i = 0; i < numChunks; i++) {
           console.log(
             `    ${i}     Start ->:`,
-            htmlAudioElement.played.start(i)
+            htmlAudioElement.played.start(i),
           );
           console.log(`    ${i}     End   ->:`, htmlAudioElement.played.end(i));
         }
-        console.log("------------------");
+        console.log('------------------');
       }
     }, 3000);
   }
