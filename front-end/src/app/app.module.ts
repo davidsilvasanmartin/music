@@ -17,11 +17,7 @@ import { PlayerModule } from './player';
 import { UiModule } from './ui/ui.module';
 
 /**
- * TODO 1: the auth flow works but does not persist when the browser page is refreshed.
- *  This is because the User is not saved in the store. we need to first send a request
- *  to /user to see whether the User can be fetched (which means we are logged in because
- *  we are sending the right cookie), or whether we get a 401. The cookie is working fine.
- * TODO 2: There are some errors logged by Spring when the front-end is fetching images.
+ * TODO: There are some errors logged by Spring when the front-end is fetching images.
  */
 @NgModule({
   declarations: [AppComponent],
