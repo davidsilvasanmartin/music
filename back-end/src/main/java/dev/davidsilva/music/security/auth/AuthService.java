@@ -33,7 +33,9 @@ public class AuthService {
         context.setAuthentication(authenticationResponse);
         SecurityContextHolder.setContext(context);
 
-        // TODO this necessary ?
+        // In Spring Security 6, the default procedure is that we manually save the Authentication in the HttpSession
+        // using the SecurityContextRepository. See:
+        // https://docs.spring.io/spring-security/reference/servlet/authentication/session-management.html#requireexplicitsave
         securityContextRepository.saveContext(context, httpRequest, httpResponse);
     }
 

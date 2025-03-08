@@ -2,15 +2,16 @@ import { AfterViewInit, Component, computed, ElementRef, OnDestroy, Signal, sign
 import { toObservable, toSignal } from "@angular/core/rxjs-interop";
 
 import { select, Store } from "@ngrx/store";
-import { Album } from "../albums/album";
-import { ApiService } from "../api/api.service";
-import { Song } from "../songs/song";
-import { SongsService } from "../songs/songs.service";
-import * as playlistActions from "./store/actions";
-import * as playlistSelectors from "./store/selectors";
-import { PlaylistRootState } from "./store/state";
 import { filter, Observable } from"rxjs"';
 import { switchMap } from"rxjs/operators"';
+
+import { Album } from"../albums/album"';
+import { ApiService } from"../api/api.service"';
+import { Song } from"../songs/song"';
+import { SongsService } from"../songs/songs.service"';
+import * as playlistActions from"./store/actions"';
+import * as playlistSelectors from"./store/selectors"';
+import { PlaylistRootState } from"./store/state"';
 
 @Component({
   selector: 'app-player',

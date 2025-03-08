@@ -49,15 +49,11 @@ public class SecurityConfiguration {
                 // TODO enable csrf
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(c -> c.configurationSource(corsConfigurationSource()))
-                // TODO review and test these configurations
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-                        // TODO get from properties maybe
+                        // TODO get from properties maybe. And test. Right now I'm not sure what it does
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
-                )
-                .securityContext((securityContext) -> securityContext
-                        .requireExplicitSave(false)
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()

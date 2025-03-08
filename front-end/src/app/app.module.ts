@@ -10,12 +10,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
-import { AlbumsModule } from './albums/albums.module';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthModule } from './auth/auth.module';
+import { AuthEffects } from './auth/store/effects';
+import { authReducer } from './auth/store/reducer';
 import { ErrorHandlerService } from './error-handler.service';
 import { PlayerModule } from './player';
-import { reducers } from './store/reducers';
 import { UiModule } from './ui/ui.module';
 
 @NgModule({
@@ -26,9 +27,9 @@ import { UiModule } from './ui/ui.module';
     BrowserAnimationsModule,
     PlayerModule,
     UiModule,
-    AlbumsModule,
-    StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([]),
+    AuthModule,
+    StoreModule.forRoot({ auth: authReducer }),
+    EffectsModule.forRoot([AuthEffects]),
     // TODO this should not be here in production
     StoreDevtoolsModule.instrument(),
   ],

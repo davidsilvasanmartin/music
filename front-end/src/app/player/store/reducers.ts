@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as playlistActions from './actions';
-import { playlistInitialState, PlaylistState } from './state';
+import { playlistInitialState, type PlaylistState } from './state';
 
 const reducer = createReducer(
   playlistInitialState,

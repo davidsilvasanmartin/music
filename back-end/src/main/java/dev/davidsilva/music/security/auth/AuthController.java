@@ -23,11 +23,10 @@ public class AuthController {
 
     // TODO Add @Valid annotation, figure out how to validate requests
     // Check out bean validation for example https://www.baeldung.com/java-bean-validation-not-null-empty-blank
-    // TODO just use UsernamePasswordAuthenticationFilter with standard URLs
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         authService.authenticate(request, httpRequest, httpResponse);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(authService.getLoggedInUser());
     }
 
     /**
