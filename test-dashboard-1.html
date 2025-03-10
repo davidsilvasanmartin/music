@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <title>Rhythm - Music Dashboard</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+      /* CSS Reset and Base Styles */
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      :root {
+          --primary-color: #7c4dff;
+          --primary-light: #b47cff;
+          --primary-dark: #3f1dcb;
+          --text-primary: #212121;
+          --text-secondary: #757575;
+          --background-main: #f9fafb;
+          --background-card: #ffffff;
+          --border-color: #e0e0e0;
+          --hover-color: #f5f3ff;
+          --nav-height: 64px;
+          --side-nav-width: 240px;
+      }
+
+      body {
+          font-family: 'Inter', sans-serif;
+          background-color: var(--background-main);
+          color: var(--text-primary);
+          line-height: 1.6;
+          overflow-x: hidden;
+      }
+
+      /* Top Navigation Bar Styles */
+      .top-nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          height: var(--nav-height);
+          padding: 0 24px;
+          background-color: var(--background-card);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          z-index: 100;
+      }
+
+      .logo-container {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+      }
+
+      .logo {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+      }
+
+      .app-name {
+          font-weight: 600;
+          font-size: 18px;
+          color: var(--primary-color);
+      }
+
+      .search-box {
+          display: flex;
+          align-items: center;
+          background-color: var(--background-main);
+          border-radius: 8px;
+          padding: 8px 16px;
+          width: 400px;
+          max-width: 40%;
+          border: 1px solid var(--border-color);
+          transition: all 0.2s ease;
+      }
+
+      .search-box:focus-within {
+          box-shadow: 0 0 0 2px var(--primary-light);
+          border-color: var(--primary-light);
+      }
+
+      .search-box i {
+          color: var(--text-secondary);
+          margin-right: 10px;
+      }
+
+      .search-input {
+          border: none;
+          background: transparent;
+          width: 100%;
+          outline: none;
+          font-size: 14px;
+          color: var(--text-primary);
+      }
+
+      .user-menu {
+          display: flex;
+          align-items: center;
+          gap: 16px;
+      }
+
+      .user-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: var(--primary-light);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+          cursor: pointer;
+          position: relative;
+      }
+
+      .dropdown-content {
+          display: none;
+          position: absolute;
+          right: 0;
+          top: 100%;
+          background-color: var(--background-card);
+          min-width: 180px;
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+          z-index: 1;
+          border-radius: 8px;
+          margin-top: 8px;
+          overflow: hidden;
+      }
+
+      .user-avatar:hover .dropdown-content {
+          display: block;
+      }
+
+      .dropdown-item {
+          padding: 12px 16px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+      }
+
+      .dropdown-item:hover {
+          background-color: var(--hover-color);
+      }
+
+      .dropdown-item i {
+          color: var(--text-secondary);
+          width: 16px;
+      }
+
+      /* Side Navigation Styles */
+      .side-nav {
+          position: fixed;
+          top: var(--nav-height);
+          left: 0;
+          width: var(--side-nav-width);
+          height: calc(100vh - var(--nav-height));
+          background-color: var(--background-card);
+          border-right: 1px solid var(--border-color);
+          padding: 24px 0;
+          overflow-y: auto;
+      }
+
+      .side-nav-title {
+          padding: 0 24px;
+          margin-bottom: 16px;
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          color: var(--text-secondary);
+      }
+
+      .nav-links {
+          list-style: none;
+      }
+
+      .nav-link {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 12px 24px;
+          color: var(--text-primary);
+          text-decoration: none;
+          transition: all 0.2s;
+          border-left: 3px solid transparent;
+      }
+
+      .nav-link.active {
+          background-color: var(--hover-color);
+          color: var(--primary-color);
+          border-left-color: var(--primary-color);
+      }
+
+      .nav-link:hover {
+          background-color: var(--hover-color);
+      }
+
+      .nav-link i {
+          width: 20px;
+          text-align: center;
+      }
+
+      /* Main Content Styles */
+      .main-content {
+          margin-left: var(--side-nav-width);
+          margin-top: var(--nav-height);
+          padding: 32px;
+      }
+
+      .page-title {
+          font-weight: 600;
+          font-size: 24px;
+          margin-bottom: 24px;
+      }
+
+      .dashboard-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+          gap: 24px;
+          margin-bottom: 32px;
+      }
+
+      .stats-card {
+          background-color: var(--background-card);
+          border-radius: 12px;
+          padding: 24px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+          transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .stats-card:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      }
+
+      .stats-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+      }
+
+      .stats-title {
+          font-weight: 500;
+          color: var(--text-secondary);
+          font-size: 14px;
+      }
+
+      .stats-icon {
+          width: 42px;
+          height: 42px;
+          border-radius: 8px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 18px;
+      }
+
+      .stats-icon.purple {
+          background: linear-gradient(135deg, #9c27b0, #673ab7);
+      }
+
+      .stats-icon.blue {
+          background: linear-gradient(135deg, #2196f3, #3f51b5);
+      }
+
+      .stats-icon.green {
+          background: linear-gradient(135deg, #4caf50, #009688);
+      }
+
+      .stats-icon.orange {
+          background: linear-gradient(135deg, #ff9800, #f44336);
+      }
+
+      .stats-value {
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 4px;
+      }
+
+      .stats-subtitle {
+          font-size: 13px;
+          color: var(--text-secondary);
+      }
+
+      .content-section {
+          margin-bottom: 32px;
+      }
+
+      .section-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+      }
+
+      .section-title {
+          font-weight: 600;
+          font-size: 18px;
+      }
+
+      .view-all {
+          color: var(--primary-color);
+          font-size: 14px;
+          font-weight: 500;
+          text-decoration: none;
+      }
+
+      .view-all:hover {
+          text-decoration: underline;
+      }
+
+      /* Top Songs Section */
+      .top-items {
+          background-color: var(--background-card);
+          border-radius: 12px;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+          overflow: hidden;
+      }
+
+      .item-row {
+          display: flex;
+          align-items: center;
+          padding: 12px 16px;
+          border-bottom: 1px solid var(--border-color);
+          transition: background-color 0.2s;
+      }
+
+      .item-row:last-child {
+          border-bottom: none;
+      }
+
+      .item-row:hover {
+          background-color: var(--hover-color);
+      }
+
+      .item-number {
+          width: 32px;
+          text-align: center;
+          font-weight: 600;
+          color: var(--text-secondary);
+      }
+
+      .item-cover {
+          width: 48px;
+          height: 48px;
+          border-radius: 6px;
+          object-fit: cover;
+          margin-right: 16px;
+          background-color: var(--primary-light);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+      }
+
+      .item-info {
+          flex: 1;
+      }
+
+      .item-title {
+          font-weight: 500;
+          margin-bottom: 4px;
+      }
+
+      .item-artist {
+          font-size: 13px;
+          color: var(--text-secondary);
+      }
+
+      .item-stats {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: var(--text-secondary);
+          font-size: 13px;
+      }
+
+      .item-genre {
+          padding: 4px 10px;
+          border-radius: 16px;
+          background-color: var(--hover-color);
+          font-size: 12px;
+          margin-left: 16px;
+      }
+
+      /* Artist & Genre Grid */
+      .item-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+          gap: 20px;
+      }
+
+      .grid-item {
+          background-color: var(--background-card);
+          border-radius: 12px;
+          padding: 16px;
+          text-align: center;
+          box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+          transition: transform 0.2s, box-shadow 0.2s;
+      }
+
+      .grid-item:hover {
+          transform: translateY(-3px);
+          box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      }
+
+      .artist-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          margin: 0 auto 12px;
+          object-fit: cover;
+          background: linear-gradient(135deg, var(--primary-light), var(--primary-dark));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+      }
+
+      .genre-icon {
+          width: 70px;
+          height: 70px;
+          border-radius: 18px;
+          margin: 0 auto 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          color: white;
+          background-color: var(--primary-color);
+      }
+
+      .grid-item h4 {
+          margin-bottom: 6px;
+          font-weight: 600;
+      }
+
+      .grid-item p {
+          font-size: 13px;
+          color: var(--text-secondary);
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 992px) {
+          :root {
+              --side-nav-width: 70px;
+          }
+
+          .side-nav-title, .nav-link span {
+              display: none;
+          }
+
+          .nav-link {
+              justify-content: center;
+              padding: 16px;
+          }
+
+          .nav-link i {
+              margin: 0;
+              font-size: 18px;
+          }
+
+          .search-box {
+              width: 200px;
+          }
+      }
+
+      @media (max-width: 768px) {
+          .dashboard-grid {
+              grid-template-columns: 1fr;
+          }
+
+          .main-content {
+              padding: 16px;
+          }
+
+          .stats-card {
+              padding: 16px;
+          }
+
+          .item-grid {
+              grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+          }
+      }
+
+      @media (max-width: 576px) {
+          .search-box {
+              display: none;
+          }
+
+          .top-nav {
+              padding: 0 16px;
+          }
+
+          .main-content {
+              margin-left: 0;
+              padding: 16px;
+          }
+
+          .side-nav {
+              left: -100%;
+              transition: left 0.3s ease;
+          }
+
+          .side-nav.active {
+              left: 0;
+          }
+
+          .mobile-menu-toggle {
+              display: block;
+          }
+      }
+  </style>
+</head>
+<body>
+
+<!-- Top Navigation Bar -->
+<nav class="top-nav">
+  <div class="logo-container">
+    <div class="logo">
+      <i class="fas fa-music"></i>
+    </div>
+    <span class="app-name">Rhythm</span>
+  </div>
+
+  <div class="search-box">
+    <i class="fas fa-search"></i>
+    <input class="search-input" placeholder="Search for artists, albums, or songs..." type="text">
+  </div>
+
+  <div class="user-menu">
+    <div class="user-avatar">
+      JD
+      <div class="dropdown-content">
+        <div class="dropdown-item">
+          <i class="fas fa-user"></i>
+          <span>Profile</span>
+        </div>
+        <div class="dropdown-item">
+          <i class="fas fa-cog"></i>
+          <span>Preferences</span>
+        </div>
+        <div class="dropdown-item">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Log out</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Side Navigation -->
+<aside class="side-nav">
+  <div class="side-nav-title">Main Menu</div>
+  <ul class="nav-links">
+    <li>
+      <a class="nav-link active" href="#">
+        <i class="fas fa-home"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" href="#">
+        <i class="fas fa-compact-disc"></i>
+        <span>Albums</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" href="#">
+        <i class="fas fa-microphone"></i>
+        <span>Artists</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" href="#">
+        <i class="fas fa-guitar"></i>
+        <span>Genres</span>
+      </a>
+    </li>
+    <li>
+      <a class="nav-link" href="#">
+        <i class="fas fa-list"></i>
+        <span>Playlists</span>
+      </a>
+    </li>
+  </ul>
+</aside>
+
+<!-- Main Content -->
+<main class="main-content">
+  <h1 class="page-title">Dashboard</h1>
+
+  <!-- Stats Cards -->
+  <div class="dashboard-grid">
+    <div class="stats-card">
+      <div class="stats-header">
+        <div class="stats-title">TOTAL LISTENING TIME</div>
+        <div class="stats-icon purple">
+          <i class="fas fa-clock"></i>
+        </div>
+      </div>
+      <div class="stats-value">326h</div>
+      <div class="stats-subtitle">+12% from last month</div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-header">
+        <div class="stats-title">FAVORITE GENRE</div>
+        <div class="stats-icon blue">
+          <i class="fas fa-guitar"></i>
+        </div>
+      </div>
+      <div class="stats-value">Rock</div>
+      <div class="stats-subtitle">84h total listening time</div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-header">
+        <div class="stats-title">TOP ARTIST</div>
+        <div class="stats-icon green">
+          <i class="fas fa-user"></i>
+        </div>
+      </div>
+      <div class="stats-value">The Beatles</div>
+      <div class="stats-subtitle">45h total listening time</div>
+    </div>
+
+    <div class="stats-card">
+      <div class="stats-header">
+        <div class="stats-title">SAVED PLAYLISTS</div>
+        <div class="stats-icon orange">
+          <i class="fas fa-list"></i>
+        </div>
+      </div>
+      <div class="stats-value">16</div>
+      <div class="stats-subtitle">3 new this month</div>
+    </div>
+  </div>
+
+  <!-- Most Played Songs Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2 class="section-title">Most Played Songs</h2>
+      <a class="view-all" href="#">View All</a>
+    </div>
+
+    <div class="top-items">
+      <div class="item-row">
+        <div class="item-number">1</div>
+        <div class="item-cover">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="item-info">
+          <div class="item-title">Bohemian Rhapsody</div>
+          <div class="item-artist">Queen</div>
+        </div>
+        <div class="item-stats">
+          <i class="fas fa-clock"></i>
+          <span>18h</span>
+        </div>
+        <div class="item-genre">Rock</div>
+      </div>
+
+      <div class="item-row">
+        <div class="item-number">2</div>
+        <div class="item-cover">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="item-info">
+          <div class="item-title">Billie Jean</div>
+          <div class="item-artist">Michael Jackson</div>
+        </div>
+        <div class="item-stats">
+          <i class="fas fa-clock"></i>
+          <span>15h</span>
+        </div>
+        <div class="item-genre">Pop</div>
+      </div>
+
+      <div class="item-row">
+        <div class="item-number">3</div>
+        <div class="item-cover">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="item-info">
+          <div class="item-title">Hey Jude</div>
+          <div class="item-artist">The Beatles</div>
+        </div>
+        <div class="item-stats">
+          <i class="fas fa-clock"></i>
+          <span>12h</span>
+        </div>
+        <div class="item-genre">Rock</div>
+      </div>
+
+      <div class="item-row">
+        <div class="item-number">4</div>
+        <div class="item-cover">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="item-info">
+          <div class="item-title">Imagine</div>
+          <div class="item-artist">John Lennon</div>
+        </div>
+        <div class="item-stats">
+          <i class="fas fa-clock"></i>
+          <span>10h</span>
+        </div>
+        <div class="item-genre">Rock</div>
+      </div>
+
+      <div class="item-row">
+        <div class="item-number">5</div>
+        <div class="item-cover">
+          <i class="fas fa-music"></i>
+        </div>
+        <div class="item-info">
+          <div class="item-title">Smells Like Teen Spirit</div>
+          <div class="item-artist">Nirvana</div>
+        </div>
+        <div class="item-stats">
+          <i class="fas fa-clock"></i>
+          <span>9h</span>
+        </div>
+        <div class="item-genre">Grunge</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Most Played Artists Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2 class="section-title">Most Played Artists</h2>
+      <a class="view-all" href="#">View All</a>
+    </div>
+
+    <div class="item-grid">
+      <div class="grid-item">
+        <div class="artist-image">
+          <i class="fas fa-user"></i>
+        </div>
+        <h4>The Beatles</h4>
+        <p>45h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="artist-image">
+          <i class="fas fa-user"></i>
+        </div>
+        <h4>Queen</h4>
+        <p>38h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="artist-image">
+          <i class="fas fa-user"></i>
+        </div>
+        <h4>Michael Jackson</h4>
+        <p>32h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="artist-image">
+          <i class="fas fa-user"></i>
+        </div>
+        <h4>Led Zeppelin</h4>
+        <p>28h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="artist-image">
+          <i class="fas fa-user"></i>
+        </div>
+        <h4>Pink Floyd</h4>
+        <p>25h playtime</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Top Genres Section -->
+  <section class="content-section">
+    <div class="section-header">
+      <h2 class="section-title">Top Genres</h2>
+      <a class="view-all" href="#">View All</a>
+    </div>
+
+    <div class="item-grid">
+      <div class="grid-item">
+        <div class="genre-icon" style="background: linear-gradient(135deg, #9c27b0, #673ab7);">
+          <i class="fas fa-guitar"></i>
+        </div>
+        <h4>Rock</h4>
+        <p>84h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="genre-icon" style="background: linear-gradient(135deg, #2196f3, #3f51b5);">
+          <i class="fas fa-drum"></i>
+        </div>
+        <h4>Pop</h4>
+        <p>65h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="genre-icon" style="background: linear-gradient(135deg, #4caf50, #009688);">
+          <i class="fas fa-headphones"></i>
+        </div>
+        <h4>Electronic</h4>
+        <p>42h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="genre-icon" style="background: linear-gradient(135deg, #ff9800, #f44336);">
+          <i class="fas fa-record-vinyl"></i>
+        </div>
+        <h4>Hip Hop</h4>
+        <p>38h playtime</p>
+      </div>
+
+      <div class="grid-item">
+        <div class="genre-icon" style="background: linear-gradient(135deg, #795548, #5d4037);">
+          <i class="fas fa-music"></i>
+        </div>
+        <h4>Jazz</h4>
+        <p>26h playtime</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+</body>
+</html>

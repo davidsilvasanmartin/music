@@ -89,3 +89,22 @@ Angular app
 - Pagination for albums (also back-end)
 - Specification for searching albums, inspired on https://attacomsian.com/blog/spring-data-jpa-specifications.
 - For the test project: create a fake beets database for the back-end application to use. Have a few albums/songs in it.
+
+You are developing a music albums and songs management web application. The application requires that a user is logged
+in. The main page is a dashboard page that contains:
+
+- A top navigation bar that contains:
+    - A global search box.
+    - A small place to put the application's icon.
+    - A menu with options for the currently logged-in user, such as: logout, preferences.
+- There is another navigation menu (not in the topbar) with links to access the feature pages: Albums, Artists, Genres
+  and Playlists.
+- The main space on the page should show most played songs, artists, and genres, with total hour count.
+
+Design a mockup of the dashboard page by modifying the provided file, `test-dashboard-1.html`.
+
+Make sure the app looks modern and sleek, and it is easy to use. Be perfectionist with the styling.
+
+
+
+

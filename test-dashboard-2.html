@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Harmonia - Music Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+      :root {
+          --bg-primary: #121212;
+          --bg-secondary: #1c1c1c;
+          --accent-color: #08f7fe;
+          --accent-secondary: #fe53bb;
+          --text-color: #ffffff;
+          --text-secondary: #b3b3b3;
+          --card-bg: #202020;
+          --sidebar-width: 240px;
+          --header-height: 60px;
+          --transition-speed: 0.3s;
+      }
+
+      * {
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+      }
+
+      body {
+          font-family: 'Space Grotesk', sans-serif;
+          background-color: var(--bg-primary);
+          color: var(--text-color);
+          display: grid;
+          grid-template-columns: var(--sidebar-width) 1fr;
+          grid-template-rows: 1fr;
+          height: 100vh;
+          overflow: hidden;
+      }
+
+      /* Sidebar styling */
+      .sidebar {
+          background-color: var(--bg-secondary);
+          height: 100vh;
+          padding: 2rem 0;
+          display: flex;
+          flex-direction: column;
+          position: fixed;
+          width: var(--sidebar-width);
+          z-index: 10;
+          box-shadow: 3px 0 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .app-brand {
+          display: flex;
+          align-items: center;
+          padding: 0 1.5rem 2rem;
+          margin-bottom: 2rem;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .app-logo {
+          font-size: 28px;
+          background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+          margin-right: 0.75rem;
+      }
+
+      .app-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+          letter-spacing: 0.5px;
+      }
+
+      .nav-section {
+          margin-bottom: 1.5rem;
+      }
+
+      .nav-section-title {
+          text-transform: uppercase;
+          font-size: 0.75rem;
+          letter-spacing: 1px;
+          color: var(--text-secondary);
+          padding: 0 1.5rem;
+          margin-bottom: 0.75rem;
+      }
+
+      .nav-items {
+          list-style: none;
+      }
+
+      .nav-item {
+          padding: 0.75rem 1.5rem;
+          display: flex;
+          align-items: center;
+          color: var(--text-color);
+          text-decoration: none;
+          transition: all var(--transition-speed);
+          border-left: 3px solid transparent;
+          font-weight: 500;
+      }
+
+      .nav-item:hover, .nav-item.active {
+          background-color: rgba(255, 255, 255, 0.05);
+          border-left: 3px solid var(--accent-color);
+      }
+
+      .nav-item.active {
+          color: var(--accent-color);
+      }
+
+      .nav-icon {
+          margin-right: 0.75rem;
+          font-size: 1.25rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 1.5rem;
+      }
+
+      .profile-section {
+          margin-top: auto;
+          padding: 1.5rem;
+          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          display: flex;
+          align-items: center;
+      }
+
+      .profile-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 600;
+          color: var(--bg-primary);
+          margin-right: 0.75rem;
+      }
+
+      .profile-info {
+          flex-grow: 1;
+      }
+
+      .profile-name {
+          font-weight: 600;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+      }
+
+      .profile-email {
+          color: var(--text-secondary);
+          font-size: 0.75rem;
+      }
+
+      .profile-menu {
+          cursor: pointer;
+          font-size: 1.25rem;
+          color: var(--text-secondary);
+      }
+
+      /* Main content area */
+      .main-content {
+          margin-left: var(--sidebar-width);
+          padding: 2rem;
+          overflow-y: auto;
+          height: 100vh;
+      }
+
+      /* Top section with search */
+      .top-section {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+      }
+
+      .page-title {
+          font-size: 2rem;
+          font-weight: 700;
+          background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+
+      .search-container {
+          position: relative;
+          width: 300px;
+      }
+
+      .search-input {
+          width: 100%;
+          padding: 0.75rem 1rem 0.75rem 2.5rem;
+          border-radius: 50px;
+          border: none;
+          background-color: var(--card-bg);
+          color: var(--text-color);
+          font-family: inherit;
+          font-size: 0.9rem;
+          transition: all var(--transition-speed);
+      }
+
+      .search-input:focus {
+          outline: none;
+          box-shadow: 0 0 0 2px var(--accent-color);
+      }
+
+      .search-icon {
+          position: absolute;
+          top: 50%;
+          left: 0.75rem;
+          transform: translateY(-50%);
+          color: var(--text-secondary);
+          font-size: 1rem;
+      }
+
+      /* Dashboard grid layout */
+      .dashboard-grid {
+          display: grid;
+          grid-template-columns: 2fr 1fr;
+          gap: 1.5rem;
+      }
+
+      /* Stats section */
+      .listening-stats {
+          background-color: var(--card-bg);
+          border-radius: 16px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .stats-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 1.5rem;
+      }
+
+      .stats-title {
+          font-weight: 600;
+          font-size: 1.25rem;
+      }
+
+      .time-range {
+          display: flex;
+          gap: 0.5rem;
+      }
+
+      .time-option {
+          padding: 0.35rem 0.75rem;
+          background-color: rgba(255, 255, 255, 0.1);
+          border-radius: 50px;
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all var(--transition-speed);
+      }
+
+      .time-option.active {
+          background-color: var(--accent-color);
+          color: var(--bg-primary);
+      }
+
+      .stats-content {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 1.5rem;
+      }
+
+      .stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+      }
+
+      .stat-value {
+          font-size: 2.5rem;
+          font-weight: 700;
+          margin: 0.75rem 0;
+          background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+
+      .stat-label {
+          color: var(--text-secondary);
+          font-size: 0.85rem;
+          text-transform: uppercase;
+          letter-spacing: 1px;
+      }
+
+      /* Most played section */
+      .most-played-section {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1.5rem;
+      }
+
+      .most-played-card {
+          background-color: var(--card-bg);
+          border-radius: 16px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .most-played-title {
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 1.25rem;
+          display: flex;
+          align-items: center;
+      }
+
+      .most-played-icon {
+          margin-right: 0.5rem;
+          font-size: 1.25rem;
+          color: var(--accent-color);
+      }
+
+      .most-played-list {
+          list-style: none;
+      }
+
+      .most-played-item {
+          display: flex;
+          align-items: center;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .most-played-item:last-child {
+          border-bottom: none;
+      }
+
+      .item-rank {
+          font-weight: 700;
+          font-size: 1rem;
+          margin-right: 0.75rem;
+          color: var(--text-secondary);
+          width: 24px;
+          text-align: center;
+      }
+
+      .item-image {
+          width: 40px;
+          height: 40px;
+          border-radius: 8px;
+          margin-right: 0.75rem;
+          object-fit: cover;
+          background: linear-gradient(45deg, var(--accent-color), var(--accent-secondary));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.25rem;
+          color: var(--bg-primary);
+      }
+
+      .item-image img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 8px;
+      }
+
+      .item-details {
+          flex-grow: 1;
+      }
+
+      .item-name {
+          font-weight: 600;
+          font-size: 0.9rem;
+          margin-bottom: 0.25rem;
+      }
+
+      .item-meta {
+          color: var(--text-secondary);
+          font-size: 0.75rem;
+      }
+
+      .item-hours {
+          font-weight: 600;
+          font-size: 0.85rem;
+      }
+
+      /* Right column */
+      .recently-added {
+          background-color: var(--card-bg);
+          border-radius: 16px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          margin-bottom: 1.5rem;
+      }
+
+      .recently-title {
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 1.25rem;
+          display: flex;
+          align-items: center;
+      }
+
+      .album-grid {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 0.75rem;
+      }
+
+      .album-item {
+          position: relative;
+          aspect-ratio: 1/1;
+          border-radius: 12px;
+          overflow: hidden;
+          cursor: pointer;
+      }
+
+      .album-cover {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform var(--transition-speed);
+      }
+
+      .album-item:hover .album-cover {
+          transform: scale(1.05);
+      }
+
+      .album-overlay {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          padding: 0.5rem;
+          background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+          font-size: 0.75rem;
+          font-weight: 600;
+      }
+
+      /* Recommendations */
+      .recommendations {
+          background-color: var(--card-bg);
+          border-radius: 16px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+      }
+
+      .recommendation-item {
+          display: flex;
+          align-items: center;
+          padding: 0.75rem 0;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .recommendation-item:last-child {
+          border-bottom: none;
+      }
+
+      .recommendation-btn {
+          background-color: var(--accent-color);
+          color: var(--bg-primary);
+          border: none;
+          border-radius: 50px;
+          padding: 0.35rem 0.75rem;
+          font-family: inherit;
+          font-size: 0.75rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition: all var(--transition-speed);
+      }
+
+      .recommendation-btn:hover {
+          background-color: var(--accent-secondary);
+          transform: translateY(-2px);
+      }
+
+      /* Visualizer */
+      .visualizer-card {
+          background-color: var(--card-bg);
+          border-radius: 16px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+          margin-top: 1.5rem;
+          overflow: hidden;
+          position: relative;
+          height: 250px;
+      }
+
+      .visualizer-title {
+          font-weight: 600;
+          font-size: 1.1rem;
+          margin-bottom: 1rem;
+          display: flex;
+          align-items: center;
+          position: relative;
+          z-index: 2;
+      }
+
+      .visualizer {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 70%;
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          padding: 0 1rem;
+      }
+
+      .visualizer-bar {
+          width: 4px;
+          background: linear-gradient(to top, var(--accent-color), var(--accent-secondary));
+          border-radius: 4px 4px 0 0;
+          animation: equalize 1.5s ease-in-out infinite;
+      }
+
+      @keyframes equalize {
+          0%, 100% {
+              height: calc(10% + var(--h) * 50%);
+          }
+          50% {
+              height: calc(30% + var(--h) * 30%);
+          }
+      }
+
+      @media (max-width: 1200px) {
+          .dashboard-grid {
+              grid-template-columns: 1fr;
+          }
+      }
+
+      @media (max-width: 768px) {
+          body {
+              grid-template-columns: 1fr;
+          }
+
+          .sidebar {
+              transform: translateX(-100%);
+          }
+
+          .main-content {
+              margin-left: 0;
+          }
+
+          .most-played-section {
+              grid-template-columns: 1fr;
+          }
+      }
+  </style>
+</head>
+<body>
+<!-- Sidebar navigation -->
+<aside class="sidebar">
+  <div class="app-brand">
+    <div class="app-logo"><i class="bi bi-music-note-beamed"></i></div>
+    <div class="app-title">Harmonia</div>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Browse</div>
+    <nav class="nav-items">
+      <a class="nav-item active" href="#">
+        <span class="nav-icon"><i class="bi bi-house"></i></span>
+        Dashboard
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-disc"></i></span>
+        Albums
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-person"></i></span>
+        Artists
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-tags"></i></span>
+        Genres
+      </a>
+    </nav>
+  </div>
+
+  <div class="nav-section">
+    <div class="nav-section-title">Library</div>
+    <nav class="nav-items">
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-collection"></i></span>
+        Playlists
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-heart"></i></span>
+        Favorites
+      </a>
+      <a class="nav-item" href="#">
+        <span class="nav-icon"><i class="bi bi-clock-history"></i></span>
+        Recently Played
+      </a>
+    </nav>
+  </div>
+
+  <div class="profile-section">
+    <div class="profile-avatar">JD</div>
+    <div class="profile-info">
+      <div class="profile-name">John Doe</div>
+      <div class="profile-email">john.doe@example.com</div>
+    </div>
+    <div class="profile-menu">
+      <i class="bi bi-three-dots-vertical"></i>
+    </div>
+  </div>
+</aside>
+
+<!-- Main content area -->
+<main class="main-content">
+  <div class="top-section">
+    <h1 class="page-title">Dashboard</h1>
+    <div class="search-container">
+      <i class="bi bi-search search-icon"></i>
+      <input class="search-input" placeholder="Search for artists, albums, songs..." type="text">
+    </div>
+  </div>
+
+  <div class="dashboard-grid">
+    <div class="left-column">
+      <!-- Listening stats -->
+      <div class="listening-stats">
+        <div class="stats-header">
+          <h2 class="stats-title">Listening Stats</h2>
+          <div class="time-range">
+            <div class="time-option">Week</div>
+            <div class="time-option active">Month</div>
+            <div class="time-option">Year</div>
+          </div>
+        </div>
+        <div class="stats-content">
+          <div class="stat-item">
+            <div class="stat-value">247</div>
+            <div class="stat-label">Hours Listened</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">1,893</div>
+            <div class="stat-label">Tracks Played</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">128</div>
+            <div class="stat-label">Artists Explored</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Most played section -->
+      <div class="most-played-section">
+        <div class="most-played-card">
+          <h3 class="most-played-title">
+            <i class="bi bi-music-note most-played-icon"></i>
+            Most Played Songs
+          </h3>
+          <ul class="most-played-list">
+            <li class="most-played-item">
+              <div class="item-rank">1</div>
+              <div class="item-image">
+                <i class="bi bi-music-note"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Blinding Lights</div>
+                <div class="item-meta">The Weeknd</div>
+              </div>
+              <div class="item-hours">16.5h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">2</div>
+              <div class="item-image">
+                <i class="bi bi-music-note"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">As It Was</div>
+                <div class="item-meta">Harry Styles</div>
+              </div>
+              <div class="item-hours">12.8h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">3</div>
+              <div class="item-image">
+                <i class="bi bi-music-note"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Levitating</div>
+                <div class="item-meta">Dua Lipa</div>
+              </div>
+              <div class="item-hours">10.2h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">4</div>
+              <div class="item-image">
+                <i class="bi bi-music-note"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Bad Habits</div>
+                <div class="item-meta">Ed Sheeran</div>
+              </div>
+              <div class="item-hours">9.7h</div>
+            </li>
+          </ul>
+        </div>
+        <div class="most-played-card">
+          <h3 class="most-played-title">
+            <i class="bi bi-person most-played-icon"></i>
+            Top Artists
+          </h3>
+          <ul class="most-played-list">
+            <li class="most-played-item">
+              <div class="item-rank">1</div>
+              <div class="item-image">
+                <i class="bi bi-person"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">The Weeknd</div>
+                <div class="item-meta">Pop, R&B</div>
+              </div>
+              <div class="item-hours">43.2h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">2</div>
+              <div class="item-image">
+                <i class="bi bi-person"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Dua Lipa</div>
+                <div class="item-meta">Pop, Dance</div>
+              </div>
+              <div class="item-hours">38.1h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">3</div>
+              <div class="item-image">
+                <i class="bi bi-person"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Taylor Swift</div>
+                <div class="item-meta">Pop, Country</div>
+              </div>
+              <div class="item-hours">32.5h</div>
+            </li>
+            <li class="most-played-item">
+              <div class="item-rank">4</div>
+              <div class="item-image">
+                <i class="bi bi-person"></i>
+              </div>
+              <div class="item-details">
+                <div class="item-name">Kendrick Lamar</div>
+                <div class="item-meta">Hip-Hop, Rap</div>
+              </div>
+              <div class="item-hours">29.8h</div>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Visualizer -->
+      <div class="visualizer-card">
+        <h3 class="visualizer-title">
+          <i class="bi bi-soundwave most-played-icon"></i>
+          Listening Activity
+        </h3>
+        <div class="visualizer">
+          <div class="visualizer-bar" style="--h: 0.5;"></div>
+          <div class="visualizer-bar" style="--h: 0.7;"></div>
+          <div class="visualizer-bar" style="--h: 0.3;"></div>
+          <div class="visualizer-bar" style="--h: 0.9;"></div>
+          <div class="visualizer-bar" style="--h: 0.6;"></div>
+          <div class="visualizer-bar" style="--h: 0.2;"></div>
+          <div class="visualizer-bar" style="--h: 0.8;"></div>
+          <div class="visualizer-bar" style="--h: 0.4;"></div>
+          <div class="visualizer-bar" style="--h: 0.7;"></div>
+          <div class="visualizer-bar" style="--h: 0.5;"></div>
+          <div class="visualizer-bar" style="--h: 0.3;"></div>
+          <div class="visualizer-bar" style="--h: 0.6;"></div>
+          <div class="visualizer-bar" style="--h: 0.8;"></div>
+          <div class="visualizer-bar" style="--h: 0.4;"></div>
+          <div class="visualizer-bar" style="--h: 0.7;"></div>
+          <div class="visualizer-bar" style="--h: 0.9;"></div>
+          <div class="visualizer-bar" style="--h: 0.5;"></div>
+          <div class="visualizer-bar" style="--h: 0.2;"></div>
+          <div class="visualizer-bar" style="--h: 0.6;"></div>
+          <div class="visualizer-bar" style="--h: 0.4;"></div>
+          <div class="visualizer-bar" style="--h: 0.7;"></div>
+          <div class="visualizer-bar" style="--h: 0.3;"></div>
+          <div class="visualizer-bar" style="--h: 0.5;"></div>
+          <div class="visualizer-bar" style="--h: 0.8;"></div>
+          <div class="visualizer-bar" style="--h: 0.6;"></div>
+          <div class="visualizer-bar" style="--h: 0.4;"></div>
+          <div class="visualizer-bar" style="--h: 0.2;"></div>
+          <div class="visualizer-bar" style="--h: 0.9;"></div>
+          <div class="visualizer-bar" style="--h: 0.7;"></div>
+          <div class="visualizer-bar" style="--h: 0.5;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right-column">
+      <!-- Recently added albums -->
+      <div class="recently-added">
+        <h3 class="recently-title">
+          <i class="bi bi-plus-circle most-played-icon"></i>
+          Recently Added Albums
+        </h3>
+        <div class="album-grid">
+          <div class="album-item">
+            <div class="album-cover" style="background: linear-gradient(45deg, #fe53bb, #09fbd3);"></div>
+            <div class="album-overlay">Album 1</div>
+          </div>
+          <div class="album-item">
+            <div class="album-cover" style="background: linear-gradient(45deg, #08f7fe, #09fbd3);"></div>
+            <div class="album-overlay">Album 2</div>
+          </div>
+          <div class="album-item">
+            <div class="album-cover" style="background: linear-gradient(45deg, #7a04eb, #fe53bb);"></div>
+            <div class="album-overlay">Album 3</div>
+          </div>
+          <div class="album-item">
+            <div class="album-cover" style="background: linear-gradient(45deg, #09fbd3, #fe53bb);"></div>
+            <div class="album-overlay">Album 4</div>
+          </div>
+          <div class="album-item">
+            <div class="album-cover" style="background: linear-gradient(45deg, #7a04eb, #08f7fe);"></div>
+            <div class="album-overlay">Album 5</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+</body>
+</html>
