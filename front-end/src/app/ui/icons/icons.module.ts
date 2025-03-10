@@ -13,6 +13,7 @@ import { IconPlayComponent } from './icon-play.component';
 import { IconPlayNextComponent } from './icon-play-next.component';
 import { IconPlayPreviousComponent } from './icon-play-previous.component';
 import { IconPlaylistAddComponent } from './icon-playlist-add.component';
+import { IconSearchComponent } from './icon-search.component';
 import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component';
 
 @NgModule({
@@ -30,6 +31,7 @@ import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component
     IconChevronDownComponent,
     IconPlayNextComponent,
     IconPlayPreviousComponent,
+    IconSearchComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -46,6 +48,7 @@ import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component
     IconChevronDownComponent,
     IconPlayNextComponent,
     IconPlayPreviousComponent,
+    IconSearchComponent,
   ],
 })
 export class IconsModule {}
