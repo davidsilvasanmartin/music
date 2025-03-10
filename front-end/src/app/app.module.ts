@@ -14,6 +14,7 @@ import { AuthEffects } from './auth/store/effects';
 import { authReducer } from './auth/store/reducer';
 import { ErrorHandlerService } from './error-handler.service';
 import { PlayerModule } from './player';
+import { SidebarComponent } from './ui/sidebar/sidebar.component';
 import { TopbarComponent } from './ui/topbar/topbar.component';
 import { UiModule } from './ui/ui.module';
 
@@ -29,6 +30,7 @@ import { UiModule } from './ui/ui.module';
     PlayerModule,
     UiModule,
     TopbarComponent,
+    SidebarComponent,
     StoreModule.forRoot({ auth: authReducer }),
     EffectsModule.forRoot([AuthEffects]),
     // TODO this should not be here in production
