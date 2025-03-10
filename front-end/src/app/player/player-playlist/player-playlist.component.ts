@@ -10,11 +10,11 @@ import type { Song } from '../../songs/song';
       class="pointer-events-none absolute bottom-16 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
     >
       <div
-        class="pointer-events-auto relative m-2 max-h-[32rem] flex-grow-0 basis-[64rem] overflow-hidden rounded-lg bg-white"
+        class="pointer-events-auto relative m-2 max-h-[32rem] flex-grow-0 basis-[64rem] overflow-hidden rounded-lg border border-slate-300 bg-white shadow-lg"
       >
         <div class="flex h-full flex-col flex-nowrap">
           <div
-            class="sticky top-0 z-10 border-b border-slate-200 bg-white px-4 py-2 shadow-md"
+            class="sticky top-0 z-10 border-b border-slate-200 bg-white px-4 py-2"
           >
             <div class="flex flex-row flex-nowrap items-center">
               <span class="flex-grow text-base font-bold text-slate-800"
