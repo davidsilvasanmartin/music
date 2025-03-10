@@ -10,19 +10,33 @@ import type { Song } from '../../songs/song';
       class="pointer-events-none absolute bottom-16 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
     >
       <div
-        class="pointer-events-auto relative m-2 max-h-[32rem] flex-grow-0 basis-[64rem] overflow-hidden rounded-lg bg-white shadow-lg"
+        class="pointer-events-auto relative m-2 max-h-[32rem] flex-grow-0 basis-[64rem] overflow-hidden rounded-lg bg-white"
       >
         <div class="flex h-full flex-col flex-nowrap">
-          <div class="sticky top-0 z-10 bg-emerald-200 px-3 shadow-md">
+          <div
+            class="sticky top-0 z-10 border-b border-slate-200 bg-white px-4 py-2 shadow-md"
+          >
             <div class="flex flex-row flex-nowrap items-center">
-              <span class="flex-grow text-sm font-semibold">Playlist</span>
-              <button
-                class="rounded-full p-1 hover:bg-emerald-500"
-                (click)="closePlaylist.emit()"
-                aria-label="Close playlist"
+              <span class="flex-grow text-base font-bold text-slate-800"
+                >Playlist</span
               >
-                <app-icon-cancel class="size-5" />
-              </button>
+              <div class="flex gap-2">
+                <button
+                  *ngIf="nextSongs() && nextSongs().length > 0"
+                  class="rounded-md border border-slate-300 bg-white px-2 py-1 text-xs text-slate-600 hover:bg-slate-100"
+                  (click)="clearPlaylist.emit()"
+                  aria-label="Clear playlist"
+                >
+                  Clear All
+                </button>
+                <button
+                  class="rounded-md border border-slate-300 bg-white p-1.5 text-slate-600 hover:bg-slate-100"
+                  (click)="closePlaylist.emit()"
+                  aria-label="Close playlist"
+                >
+                  <app-icon-cancel class="size-4" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -89,6 +103,7 @@ import type { Song } from '../../songs/song';
 export class PlayerPlaylistComponent {
   nextSongs = input.required<Song[]>();
   closePlaylist = output<void>();
+  clearPlaylist = output<void>();
 
   constructor(private readonly apiService: ApiService) {}
   getSongImgUrl(songId: number) {
