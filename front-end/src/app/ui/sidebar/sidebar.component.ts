@@ -1,95 +1,121 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
+import { UiModule } from '../ui.module';
+
+// TODO is it better to replace ul by <nav> for accessibility ??
+// TODO better indication of active link (thicker left bar + background color)
+// TODO need to change the accent color to emerald or whichever I choose for the app
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [],
-  template: `<aside class="side-nav">
-    <div class="side-nav-title">Main Menu</div>
-    <ul class="nav-links">
+  imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
+  template: `<aside class="h-full w-full bg-white">
+    <ul class="m-0 flex h-full w-full list-none flex-col flex-nowrap">
       <li>
-        <a class="nav-link active" href="#">
-          <i class="fas fa-home"></i>
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+          <app-icon-home class="size-6" />
           <span>Dashboard</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="#">
-          <i class="fas fa-compact-disc"></i>
+        <a class="nav-link" routerLink="/albums" routerLinkActive="active">
+          <app-icon-vynil class="size-6" />
           <span>Albums</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="#">
-          <i class="fas fa-microphone"></i>
+        <a class="nav-link" routerLink="/artists" routerLinkActive="active">
+          <app-icon-mic class="size-6" />
           <span>Artists</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="#">
-          <i class="fas fa-guitar"></i>
+        <a class="nav-link" routerLink="/genres" routerLinkActive="active">
+          <app-icon-eighth-note class="size-6" />
           <span>Genres</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" href="#">
-          <i class="fas fa-list"></i>
+        <a class="nav-link" routerLink="/playlists" routerLinkActive="active">
+          <app-icon-menu-list class="size-6" />
           <span>Playlists</span>
         </a>
       </li>
     </ul>
   </aside>`,
   styles: `
-    .side-nav {
-      position: fixed;
-      top: var(--nav-height);
-      left: 0;
-      width: var(--side-nav-width);
-      height: calc(100vh - var(--nav-height));
-      background-color: var(--background-card);
-      border-right: 1px solid var(--border-color);
-      padding: 24px 0;
-      overflow-y: auto;
+    .side-nav-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .side-nav-title {
-      padding: 0 24px;
-      margin-bottom: 16px;
-      font-size: 12px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--text-secondary);
-    }
-
-    .nav-links {
-      list-style: none;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary-color);
+      margin: 0;
     }
 
     .nav-link {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 24px;
+      padding: 14px 20px;
       color: var(--text-primary);
       text-decoration: none;
-      transition: all 0.2s;
+      transition: all 0.2s ease;
       border-left: 3px solid transparent;
+      font-weight: 500;
     }
 
     .nav-link.active {
-      background-color: var(--hover-color);
+      background-color: rgba(var(--primary-color-rgb), 0.1);
       color: var(--primary-color);
       border-left-color: var(--primary-color);
     }
 
-    .nav-link:hover {
+    .nav-link:hover:not(.active) {
       background-color: var(--hover-color);
+      border-left-color: var(--border-color);
     }
 
-    .nav-link i {
+    .nav-icon {
       width: 20px;
-      text-align: center;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    li:last-child {
+      margin-bottom: 0;
+    }
+
+    @media (max-width: 768px) {
+      .nav-link span {
+        display: none;
+      }
+
+      .side-nav {
+        width: 60px;
+      }
+
+      .side-nav-header {
+        display: none;
+      }
+
+      .nav-link {
+        justify-content: center;
+        padding: 14px 0;
+      }
+
+      .nav-icon {
+        margin: 0;
+      }
     }
   `,
 })

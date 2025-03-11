@@ -12,17 +12,17 @@ import { IconsModule } from '../icons/icons.module';
   >
     <div class="flex items-center gap-3">
       <div
-        class="flex h-8 w-8 items-center justify-center rounded bg-emerald-600 font-bold text-white"
+        class="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-600 p-1.5"
       >
-        M
+        <app-icon-eighth-note class="size-6 text-white" />
       </div>
       <div class="text-lg font-bold text-emerald-600">Music App</div>
     </div>
     <div
-      class="hidden min-w-0 max-w-[40%] grow items-center rounded-full bg-slate-50 px-3 py-2 transition-all duration-200 ease-in-out focus-within:ring-2 focus-within:ring-emerald-500 hover:bg-white hover:shadow-sm md:flex"
+      class="hidden min-w-0 max-w-[40%] grow items-center rounded-full bg-slate-100 px-4 py-2.5 transition-all duration-200 ease-in-out focus-within:bg-white focus-within:shadow-md focus-within:ring-2 focus-within:ring-emerald-500 hover:bg-white hover:shadow-md md:flex"
     >
-      <div class="mr-2 text-emerald-500">
-        <app-icon-search class="size-4" />
+      <div class="mr-3 text-emerald-500">
+        <app-icon-search class="size-6" />
       </div>
       <!-- TODO implement global search -->
       <input
@@ -43,15 +43,6 @@ import { IconsModule } from '../icons/icons.module';
   styles: `
     :host {
       display: contents;
-    }
-
-    input::placeholder {
-      opacity: 0.6;
-      transition: opacity 0.2s ease;
-    }
-
-    input:focus::placeholder {
-      opacity: 0.4;
     }
   `,
 })

@@ -8,14 +8,20 @@ import { IconChevronDownComponent } from './icon-chevron-down.component';
 import { IconChevronLeftComponent } from './icon-chevron-left.component';
 import { IconChevronRightComponent } from './icon-chevron-right.component';
 import { IconChevronUpComponent } from './icon-chevron-up.component';
+import { IconEighthNoteComponent } from './icon-eighth-note.component';
 import { IconEyeComponent } from './icon-eye.component';
+import { IconHomeComponent } from './icon-home';
+import { IconMenuListComponent } from './icon-menu-list';
+import { IconMicComponent } from './icon-mic';
 import { IconPlayComponent } from './icon-play.component';
 import { IconPlayNextComponent } from './icon-play-next.component';
 import { IconPlayPreviousComponent } from './icon-play-previous.component';
 import { IconPlaylistAddComponent } from './icon-playlist-add.component';
 import { IconSearchComponent } from './icon-search.component';
 import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component';
+import { IconVynilComponent } from './icon-vynil';
 
+// Some are Feather Icons, others are random open source icons I found
 @NgModule({
   declarations: [
     IconEyeComponent,
@@ -32,6 +38,11 @@ import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component
     IconPlayNextComponent,
     IconPlayPreviousComponent,
     IconSearchComponent,
+    IconEighthNoteComponent,
+    IconMenuListComponent,
+    IconHomeComponent,
+    IconVynilComponent,
+    IconMicComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -49,6 +60,11 @@ import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component
     IconPlayNextComponent,
     IconPlayPreviousComponent,
     IconSearchComponent,
+    IconEighthNoteComponent,
+    IconMenuListComponent,
+    IconHomeComponent,
+    IconVynilComponent,
+    IconMicComponent,
   ],
 })
 export class IconsModule {}
