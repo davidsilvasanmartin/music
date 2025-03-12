@@ -32,26 +32,95 @@
           </div>
         }
       </div>
-      <button
-        class="btn rounded-full bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
-        aria-label="Next song"
-        (click)="goToNextSong()"
-      >
-        <app-icon-play-next class="size-5" />
-      </button>
+
+      <!-- Custom Audio Player Controls -->
+      <div class="mx-2 flex items-center space-x-2">
+        <button
+          class="btn rounded-full bg-emerald-500 p-2 text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+          aria-label="Previous song"
+          (click)="goToPreviousSong()"
+        >
+          <app-icon-play-previous class="size-4" />
+        </button>
+
+        <button
+          class="btn rounded-full bg-emerald-500 p-2 text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+          attr.aria-label="{{ isPlaying ? 'Pause' : 'Play' }}"
+          (click)="togglePlayPause()"
+        >
+          <!-- Conditionally show play/pause icon -->
+          <!-- TODO pause icon -->
+          @if (isPlaying) {
+            <app-icon-cancel class="size-4" />
+          } @else {
+            <app-icon-play class="size-4" />
+          }
+        </button>
+
+        <button
+          class="btn rounded-full bg-emerald-500 p-2 text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-600"
+          aria-label="Next song"
+          (click)="goToNextSong()"
+        >
+          <app-icon-play-next class="size-4" />
+        </button>
+
+        <!-- Custom progress bar -->
+        <div
+          class="relative h-1.5 w-32 cursor-pointer rounded bg-emerald-100"
+          (click)="seek($event)"
+          #progressContainer
+        >
+          <div
+            class="absolute left-0 top-0 h-full rounded bg-emerald-600"
+            [style.width.%]="(currentTime / duration) * 100"
+          ></div>
+        </div>
+
+        <!-- Time indicators -->
+        <div class="text-xs text-gray-700">
+          {{ formatTime(currentTime) }} / {{ formatTime(duration) }}
+        </div>
+
+        <!-- Volume control -->
+        <div class="flex items-center">
+          <button
+            class="text-gray-700 hover:text-emerald-600"
+            (click)="toggleMute()"
+          >
+            <!-- Conditionally show volume icon based on muted state -->
+            <!-- TODO: Replace with mute/volume icon -->
+            <app-icon-eye class="size-4" />
+          </button>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.05"
+            [value]="volume"
+            (input)="setVolume($event)"
+            class="ml-1 h-1.5 w-16 cursor-pointer appearance-none rounded bg-emerald-100"
+          />
+        </div>
+      </div>
+
+      <!-- Keep the original audio element but hide controls -->
       <audio
         #audioElement
         (ended)="goToNextSong()"
         [autoplay]="true"
         [src]="currentSongAudioUrl()"
         type="audio/*"
-        controls
+        (timeupdate)="updateProgress()"
+        (loadedmetadata)="onMetadataLoaded()"
+        hidden
       >
         Your browser does not support the
         <code>audio</code> element.
       </audio>
+
       <button
-        class="btn ml-4 rounded-full bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
+        class="btn ml-4 rounded-full bg-emerald-500 p-2 font-bold text-white hover:bg-emerald-700"
         aria-label="Toggle playlist"
         (click)="togglePlaylist()"
       >

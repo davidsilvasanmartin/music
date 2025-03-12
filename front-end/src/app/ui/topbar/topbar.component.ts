@@ -33,7 +33,7 @@ import { IconsModule } from '../icons/icons.module';
     <div class="flex items-center">
       <a
         routerLink="/profile"
-        class="group flex h-9 w-9 items-center justify-center rounded-full border border-transparent text-gray-700 transition-all hover:border-emerald-600 hover:bg-emerald-50 hover:text-emerald-600"
+        class="group flex h-9 w-9 items-center justify-center rounded-full border border-transparent text-gray-700 transition-all hover:bg-emerald-50 hover:text-emerald-600"
         aria-label="User Profile"
         title="Profile"
       >

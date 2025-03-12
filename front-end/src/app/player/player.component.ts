@@ -42,6 +42,11 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   currentSongAlbum$: Observable<Album>;
   nextSongs: Signal<Song[]>;
   isPlaylistOpen = signal(false);
+  @ViewChild('progressContainer') progressContainer!: ElementRef;
+  isPlaying = false;
+  currentTime = 0;
+  duration = 0;
+  volume = 1;
 
   constructor(
     private readonly _store: Store<PlaylistRootState>,
@@ -97,5 +102,59 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
         console.log('------------------');
       }
     }, 3000);
+  }
+
+  togglePlayPause() {
+    if (this.audioElement?.nativeElement.paused) {
+      this.audioElement.nativeElement.play();
+      this.isPlaying = true;
+    } else {
+      this.audioElement?.nativeElement.pause();
+      this.isPlaying = false;
+    }
+  }
+
+  updateProgress() {
+    this.currentTime = this.audioElement?.nativeElement.currentTime;
+    this.duration = this.audioElement?.nativeElement.duration || 0;
+  }
+
+  onMetadataLoaded() {
+    this.duration = this.audioElement?.nativeElement.duration;
+    this.isPlaying = !this.audioElement?.nativeElement.paused;
+  }
+
+  seek(event: MouseEvent) {
+    const rect = this.progressContainer.nativeElement.getBoundingClientRect();
+    const percent = (event.clientX - rect.left) / rect.width;
+    if (this.audioElement?.nativeElement) {
+      this.audioElement.nativeElement.currentTime = percent * this.duration;
+    }
+  }
+
+  formatTime(seconds: number): string {
+    const min = Math.floor(seconds / 60);
+    const sec = Math.floor(seconds % 60);
+    return `${min}:${sec < 10 ? '0' + sec : sec}`;
+  }
+
+  setVolume(event: Event) {
+    const input = event.target as HTMLInputElement;
+    this.volume = parseFloat(input.value);
+    if (this.audioElement?.nativeElement) {
+      this.audioElement.nativeElement.volume = this.volume;
+    }
+  }
+
+  toggleMute() {
+    if (this.audioElement?.nativeElement) {
+      this.audioElement.nativeElement.muted =
+        !this.audioElement?.nativeElement.muted;
+    }
+  }
+
+  // You'll need to add this method if not already present
+  goToPreviousSong() {
+    // Implement previous song logic
   }
 }
