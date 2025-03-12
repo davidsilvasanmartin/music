@@ -8,7 +8,7 @@ import { IconsModule } from '../icons/icons.module';
   standalone: true,
   imports: [IconsModule, RouterModule],
   template: `<nav
-    class="flex h-16 w-full flex-row flex-nowrap items-center justify-between bg-white px-4 shadow-md"
+    class="z-20 flex w-full flex-row flex-nowrap items-center justify-between bg-white px-4 shadow-md"
   >
     <div class="flex items-center gap-3">
       <div
@@ -40,10 +40,6 @@ import { IconsModule } from '../icons/icons.module';
       >
     </div>
   </nav>`,
-  styles: `
-    :host {
-      display: contents;
-    }
-  `,
+  styles: ':host {display: contents; }',
 })
 export class TopbarComponent {}

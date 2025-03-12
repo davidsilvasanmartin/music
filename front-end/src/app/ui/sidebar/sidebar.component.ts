@@ -11,111 +11,67 @@ import { UiModule } from '../ui.module';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
-  template: `<aside class="h-full w-full bg-white">
-    <ul class="m-0 flex h-full w-full list-none flex-col flex-nowrap">
+  template: `<aside
+    class="duration-400 m-0 h-full w-16 shrink-0 bg-white transition-all lg:w-64"
+  >
+    <ul
+      class="z-10 m-0 flex h-full w-full list-none flex-col flex-nowrap overflow-y-auto"
+    >
       <li>
-        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">
+        <a
+          class="flex flex-row flex-nowrap"
+          routerLink="/dashboard"
+          routerLinkActive="active"
+        >
           <app-icon-home class="size-6" />
-          <span>Dashboard</span>
+          <span class="hidden lg:inline-block">Dashboard</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/albums" routerLinkActive="active">
+        <a
+          class="flex flex-row flex-nowrap"
+          routerLink="/albums"
+          routerLinkActive="active"
+        >
           <app-icon-vynil class="size-6" />
-          <span>Albums</span>
+          <span class="hidden lg:inline-block">Albums</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/artists" routerLinkActive="active">
+        <a
+          class="flex flex-row flex-nowrap"
+          routerLink="/artists"
+          routerLinkActive="active"
+        >
           <app-icon-mic class="size-6" />
-          <span>Artists</span>
+          <span class="hidden lg:inline-block">Artists</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/genres" routerLinkActive="active">
+        <a
+          class="flex flex-row flex-nowrap"
+          routerLink="/genres"
+          routerLinkActive="active"
+        >
           <app-icon-eighth-note class="size-6" />
-          <span>Genres</span>
+          <span class="hidden lg:inline-block">Genres</span>
         </a>
       </li>
       <li>
-        <a class="nav-link" routerLink="/playlists" routerLinkActive="active">
+        <a
+          class="flex flex-row flex-nowrap"
+          routerLink="/playlists"
+          routerLinkActive="active"
+        >
           <app-icon-menu-list class="size-6" />
-          <span>Playlists</span>
+          <span class="hidden lg:inline-block">Playlists</span>
         </a>
       </li>
     </ul>
   </aside>`,
   styles: `
-    .side-nav-header {
-      padding: 24px;
-      border-bottom: 1px solid var(--border-color);
-    }
-
-    .side-nav-title {
-      font-size: 18px;
-      font-weight: 700;
-      color: var(--primary-color);
-      margin: 0;
-    }
-
-    .nav-link {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 14px 20px;
-      color: var(--text-primary);
-      text-decoration: none;
-      transition: all 0.2s ease;
-      border-left: 3px solid transparent;
-      font-weight: 500;
-    }
-
-    .nav-link.active {
-      background-color: rgba(var(--primary-color-rgb), 0.1);
-      color: var(--primary-color);
-      border-left-color: var(--primary-color);
-    }
-
-    .nav-link:hover:not(.active) {
-      background-color: var(--hover-color);
-      border-left-color: var(--border-color);
-    }
-
-    .nav-icon {
-      width: 20px;
-      height: 20px;
-      flex-shrink: 0;
-    }
-
-    li {
-      margin-bottom: 4px;
-    }
-
-    li:last-child {
-      margin-bottom: 0;
-    }
-
-    @media (max-width: 768px) {
-      .nav-link span {
-        display: none;
-      }
-
-      .side-nav {
-        width: 60px;
-      }
-
-      .side-nav-header {
-        display: none;
-      }
-
-      .nav-link {
-        justify-content: center;
-        padding: 14px 0;
-      }
-
-      .nav-icon {
-        margin: 0;
-      }
+    :host {
+      display: contents;
     }
   `,
 })

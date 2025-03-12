@@ -9,26 +9,18 @@ import { AuthRootState } from './auth/store/state';
 @Component({
   selector: 'app-root',
   template: `<div
-    class="flex min-h-screen w-full flex-col flex-nowrap bg-gray-200"
+    class="m-0 flex h-screen w-screen flex-col flex-nowrap overflow-hidden bg-gray-200"
   >
     @if (isAuthenticated$ | async) {
-      <div class="sticky top-0 z-10 w-full">
-        <app-topbar></app-topbar>
-      </div>
-      <div class="flex w-full flex-grow flex-row flex-nowrap">
-        <div class="w-64 min-w-64 border-r border-gray-300 bg-white shadow-sm">
-          <app-sidebar></app-sidebar>
-        </div>
-        <div
-          class="flex min-h-0 w-full flex-shrink flex-grow flex-col flex-nowrap overflow-y-auto p-4"
-          style="max-width: 1500px"
-        >
+      <!-- TODO The footer is taking space from the sidebar right now. It should not be like that -->
+      <app-topbar></app-topbar>
+      <div class="flex flex-1 flex-row flex-nowrap overflow-hidden">
+        <app-sidebar></app-sidebar>
+        <div class="flex-1 overflow-y-auto p-2 lg:p-4">
           <router-outlet></router-outlet>
         </div>
       </div>
-      <div class="sticky bottom-0 z-10 self-stretch">
-        <app-player />
-      </div>
+      <app-player />
     } @else {
       <router-outlet></router-outlet>
     }

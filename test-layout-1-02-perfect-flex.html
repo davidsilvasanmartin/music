@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html class="h-full" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+</head>
+<body class="flex flex-col h-screen m-0 overflow-hidden">
+<div class="h-14 bg-blue-600 text-white p-4 shadow-md z-10 shrink-0" id="topbar">Topbar</div>
+<div class="flex flex-1 overflow-hidden">
+    <div class="w-64 bg-gray-100 overflow-y-auto p-4 shrink-0" id="sidebar">
+        <!-- Adding placeholder content to demonstrate scrolling -->
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 1</div>
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 2</div>
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 3</div>
+    </div>
+    <div class="p-4 flex-1 overflow-y-auto" id="content">
+        Content
+        <!-- Adding placeholder content to demonstrate scrolling -->
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 1</div>
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 2</div>
+        <div class="h-screen bg-gray-50 p-4 my-4 rounded">Scroll content 3</div>
+    </div>
+</div>
+<div class="h-14 bg-gray-800 text-white p-4 shadow-md z-10 shrink-0" id="footer">Footer</div>
+</body>
+</html>

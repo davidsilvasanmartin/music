@@ -26,6 +26,7 @@ import { PlaylistRootState } from './store/state';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
+  styles: ':host { display: contents; }',
 })
 export class PlayerComponent implements OnDestroy, AfterViewInit {
   @ViewChild('audioElement', { static: false })
