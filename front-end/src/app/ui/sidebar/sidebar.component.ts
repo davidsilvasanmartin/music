@@ -4,16 +4,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { UiModule } from '../ui.module';
 
-// TODO is it better to replace ul by <nav> for accessibility ??
-// TODO better indication of active link (thicker left bar + background color)
-// TODO need to change the accent color to emerald or whichever I choose for the app
-
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
+  // Width of 60px is calculated so that the icons are centered when the sidebar is collapsed
   template: `<nav
-    class="duration-400 h-full w-14 shrink-0 bg-white shadow-sm transition-all lg:w-64"
+    class="duration-400 h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-sm transition-all lg:w-36"
   >
     <ul class="m-0 flex h-full w-full flex-col p-0">
       <li>
@@ -101,14 +98,6 @@ import { UiModule } from '../ui.module';
 
     .active-link {
       @apply border-emerald-500 bg-emerald-50 text-emerald-600;
-    }
-
-    .active-link app-icon-home,
-    .active-link app-icon-vynil,
-    .active-link app-icon-mic,
-    .active-link app-icon-eighth-note,
-    .active-link app-icon-menu-list {
-      @apply text-emerald-600;
     }
   `,
 })
