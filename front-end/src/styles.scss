@@ -56,7 +56,8 @@ body {
   // https://tailwindcss.com/docs/list-style-type
   // https://runebook.dev/en/articles/tailwindcss/list-style-type
   ul {
-    @apply ml-4 list-inside list-disc;
+    // I'm disabling this because I use <ul> in my sidebar. Add it back if/when needed
+    //@apply ml-4 list-inside list-disc;
   }
 
   ol {
