@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
@@ -15,6 +16,7 @@ import { playlistReducer } from './store/reducers';
   imports: [
     CommonModule,
     UiModule,
+    RouterModule,
     StoreModule.forFeature('playlist', playlistReducer),
     EffectsModule.forFeature([PlayerEffects]),
   ],

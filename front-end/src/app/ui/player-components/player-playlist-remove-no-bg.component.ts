@@ -9,7 +9,7 @@ import type { PlaylistRootState } from '../../player/store/state';
   selector: 'app-player-playlist-remove-no-bg',
   template: `
     <button
-      class="btn rounded-full p-1 font-bold text-slate-500 hover:bg-slate-300"
+      class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
       aria-label="Remove from playlist"
       title="Remove from playlist"
       (click)="removeSongFromPlaylist()"

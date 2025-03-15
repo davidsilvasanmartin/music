@@ -9,7 +9,7 @@ import type { Song } from '../../songs/song';
   selector: 'app-player-user-playlist-add-no-bg',
   template: `
     <button
-      class="btn rounded-full p-1 font-bold text-slate-500 hover:bg-slate-300"
+      class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
       aria-label="Add to saved playlist"
       title="Add to saved playlist"
       (click)="addToUserPlaylist()"

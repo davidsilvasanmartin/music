@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-icon-play',
+  selector: 'app-icon-pause',
   template: `
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -12,9 +12,10 @@ import { Component } from '@angular/core';
       stroke-linecap="round"
       stroke-linejoin="round"
     >
-      <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      <rect x="6" y="4" width="4" height="16"></rect>
+      <rect x="14" y="4" width="4" height="16"></rect>
     </svg>
   `,
-  styles: ':host { display:flex; }',
+  styles: ':host { display: flex; }',
 })
-export class IconPlayComponent {}
+export class IconPauseComponent {}

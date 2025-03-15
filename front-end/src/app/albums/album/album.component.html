@@ -48,14 +48,14 @@
       <div class="flex flex-row flex-wrap justify-end">
         <button
           (click)="toggleDetails()"
-          [title]="isDetailsOpen() ? 'Collapse' : 'Expand'"
           aria-label="Toggle album details"
-          class="btn rounded-full border-[1px] border-slate-600 p-1 font-bold text-slate-600 hover:border-slate-400 hover:text-slate-400"
+          class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
+          title="Toggle album details"
         >
           @if (isDetailsOpen()) {
-            <app-icon-chevron-up class="size-5" />
+            <app-icon-chevron-up class="size-6" />
           } @else {
-            <app-icon-chevron-down class="size-5" />
+            <app-icon-chevron-down class="size-6" />
           }
         </button>
       </div>
