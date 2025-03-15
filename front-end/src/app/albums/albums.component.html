@@ -14,10 +14,7 @@
   }
 
   <app-card *ngFor="let album of albums$ | async" class="album">
-    <app-album [album]="album">
-      <app-player-playlist-replace [songs]="album.songs" />
-      <app-player-playlist-add [songs]="album.songs" />
-    </app-album>
+    <app-album [album]="album" />
   </app-card>
 
   @if (params$ | async; as params) {

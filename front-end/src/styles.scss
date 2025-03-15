@@ -67,17 +67,4 @@ body {
   p {
     @apply my-2;
   }
-
-  a {
-    @apply text-blue-600;
-  }
-
-  a:visited {
-    @apply text-purple-900;
-  }
-
-  // Theming config below
-  * {
-    @apply transition-colors duration-500 ease-in-out;
-  }
 }

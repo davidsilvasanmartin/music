@@ -3,7 +3,9 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'app-card',
   template: `
-    <div class="rounded-md bg-white p-2 shadow-md">
+    <div
+      class="rounded-lg border border-slate-200 bg-white p-4 shadow-md transition-shadow hover:shadow-lg"
+    >
       <ng-content></ng-content>
     </div>
   `,

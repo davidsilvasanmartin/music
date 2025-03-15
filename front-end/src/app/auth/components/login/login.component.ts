@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
           this.isAuthCheckInProgress.set(false);
         }
       });
-    }, 2000);
+    }, 200);
   }
 
   onSubmit() {

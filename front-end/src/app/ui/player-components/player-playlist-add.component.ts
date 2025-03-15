@@ -10,11 +10,12 @@ import type { Song } from '../../songs/song';
   selector: 'app-player-playlist-add',
   template: `
     <button
-      class="btn rounded-full bg-blue-500 p-2 text-white hover:bg-blue-700"
+      class="btn rounded-full border-[1px] border-slate-600 p-1 font-bold text-slate-600 hover:border-slate-400 hover:text-slate-400"
       aria-label="Add to playlist"
+      title="Add to playlist"
       (click)="addToPlaylist()"
     >
-      <app-icon-playlist-add class="size-4" />
+      <app-icon-playlist-add class="size-5" />
     </button>
   `,
 })

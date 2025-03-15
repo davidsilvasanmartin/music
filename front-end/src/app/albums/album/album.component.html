@@ -1,66 +1,73 @@
-<div class="flex flex-col flex-nowrap gap-2">
-  <div class="relative flex flex-row flex-nowrap gap-2">
+<div class="flex flex-col flex-nowrap gap-3">
+  <div class="relative flex flex-row flex-nowrap gap-4">
     <img
       [src]="album().artPathUrl"
       alt="Album art"
-      class="h-24 w-full flex-shrink-0 flex-grow-0 basis-24 object-contain"
+      class="h-28 w-full flex-shrink-0 flex-grow-0 basis-28 rounded-md object-cover shadow-md"
       loading="lazy"
     />
-    <div class="flex flex-shrink flex-grow basis-auto flex-col flex-nowrap">
-      <div>
-        <span class="text-2xl"
-          ><a
-            [queryParams]="
-              getSearchQueryParamsForAlbumArtist(album().albumArtist)
-            "
-            [routerLink]="['.']"
-            queryParamsHandling="merge"
-            >{{ album().albumArtist }}</a
-          >
-          /
-        </span>
-        <span class="text-xl font-bold text-gray-800">
-          {{ album().album }}</span
+    <div
+      class="flex flex-shrink flex-grow basis-auto flex-col flex-nowrap justify-between gap-2"
+    >
+      <div class="flex flex-row flex-wrap items-center gap-2">
+        <a
+          [queryParams]="
+            getSearchQueryParamsForAlbumArtist(album().albumArtist)
+          "
+          [routerLink]="['.']"
+          class="text-xl text-blue-600 hover:text-blue-400 hover:underline"
+          queryParamsHandling="merge"
+          >{{ album().albumArtist }}</a
+        >
+        <span class="text-xl">/</span>
+        <a
+          [routerLink]="['.']"
+          class="text-xl text-emerald-700 hover:text-emerald-500 hover:underline"
+        >
+          {{ album().album }}</a
         >
       </div>
-      <div>
-        <span> [{{ album().year }}] </span>
-      </div>
-      <div>
-        <span>
-          @for (genre of album().genres; track genre; let isLast = $last) {
-            <a
-              [routerLink]="['.']"
-              [queryParams]="getSearchQueryParamsForGenre(genre)"
-              queryParamsHandling="merge"
-              >{{ genre }}</a
-            >{{ isLast ? "" : ", " }}
-          }
-        </span>
+      <div class="flex flex-row flex-wrap items-center gap-2">
+        <a
+          [routerLink]="['.']"
+          class="rounded-md border-[1px] border-slate-700 bg-slate-50 px-2 py-0.5 text-sm text-slate-700 hover:border-slate-500 hover:text-slate-500 hover:underline"
+          >{{ album().year }}</a
+        >
+        @for (genre of album().genres; track genre; let isLast = $last) {
+          <a
+            [routerLink]="['.']"
+            [queryParams]="getSearchQueryParamsForGenre(genre)"
+            queryParamsHandling="merge"
+            class="rounded-md border-[1px] border-amber-700 bg-amber-50 px-2 py-0.5 text-sm text-amber-700 hover:border-amber-500 hover:text-amber-500 hover:underline"
+            >{{ genre }}</a
+          >{{ isLast ? "" : " " }}
+        }
       </div>
     </div>
     <div class="flex flex-col flex-nowrap gap-2">
       <div class="flex flex-row flex-wrap justify-end">
         <button
           (click)="toggleDetails()"
-          aria-label="Remove from playlist"
-          class="btn rounded-full bg-transparent p-1 font-bold text-blue-500 hover:text-blue-700"
+          [title]="isDetailsOpen() ? 'Collapse' : 'Expand'"
+          aria-label="Toggle album details"
+          class="btn rounded-full border-[1px] border-slate-600 p-1 font-bold text-slate-600 hover:border-slate-400 hover:text-slate-400"
         >
           @if (isDetailsOpen()) {
-            <app-icon-chevron-up class="size-8" />
+            <app-icon-chevron-up class="size-5" />
           } @else {
-            <app-icon-chevron-down class="size-8" />
+            <app-icon-chevron-down class="size-5" />
           }
         </button>
       </div>
-      <div class="flex grow flex-row flex-wrap content-end gap-1">
-        <ng-content></ng-content>
+      <div class="flex grow flex-row flex-wrap content-end gap-2">
+        <app-player-playlist-replace [songs]="album().songs" />
+        <app-player-playlist-add [songs]="album().songs" />
       </div>
     </div>
   </div>
   @if (isDetailsOpen()) {
-    <div class="h-0.5 bg-gray-200"></div>
-    <div>
+    <div class="h-0.5 bg-slate-200"></div>
+    <div class="pt-2">
       <app-album-details [album]="album()" />
     </div>
   }

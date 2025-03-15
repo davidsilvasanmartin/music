@@ -10,11 +10,12 @@ import type { Song } from '../../songs/song';
   selector: 'app-player-playlist-replace',
   template: `
     <button
-      class="btn rounded-full bg-blue-500 p-2 font-bold text-white hover:bg-blue-700"
-      aria-label="Add to playlist"
+      class="btn rounded-full border-[1px] border-slate-600 p-1 font-bold text-slate-600 hover:border-slate-400 hover:text-slate-400"
+      aria-label="Play"
+      title="Play"
       (click)="replacePlaylist()"
     >
-      <app-icon-play class="size-4" />
+      <app-icon-play class="size-5" />
     </button>
   `,
 })
