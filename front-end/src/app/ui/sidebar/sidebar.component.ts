@@ -26,104 +26,78 @@ import { UiModule } from '../ui.module';
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
-  // Width of 60px is calculated so that the icons are centered when the sidebar is collapsed
+  // Width is calculated so that the icons look more or less centered when the sidebar is collapsed
   template: `<nav
-    class="duration-400 h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-sm transition-all lg:w-40"
+    class="duration-400 h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-md transition-all lg:w-40"
     aria-label="Main navigation"
   >
     <ul class="m-0 flex h-full w-full flex-col p-0" role="menubar">
-      <li role="none">
+      <li role="none" class="mt-2">
         <a
-          class="group flex items-center border-l-8 border-transparent px-3 py-3 text-gray-700 transition-all hover:bg-emerald-50"
+          class="slate"
           routerLink="/dashboard"
-          routerLinkActive="active-link"
+          routerLinkActive="border-slate-400"
           [routerLinkActiveOptions]="{ exact: true }"
           title="Dashboard"
           role="menuitem"
           aria-label="Dashboard"
         >
-          <app-icon-home
-            class="size-5 transition-colors group-hover:text-emerald-600"
-            aria-hidden="true"
-          />
-          <span
-            class="ml-3 hidden text-sm font-medium group-hover:text-emerald-600 lg:block"
+          <app-icon-home class="size-6" aria-hidden="true" />
+          <span class="ml-3 hidden text-sm font-medium lg:block"
             >Dashboard</span
           >
         </a>
       </li>
       <li role="none">
         <a
-          class="group flex items-center border-l-8 border-transparent px-3 py-3 text-gray-700 transition-all hover:bg-emerald-50"
+          class="emerald"
           routerLink="/albums"
           routerLinkActive="active-link"
           title="Albums"
           role="menuitem"
           aria-label="Albums"
         >
-          <app-icon-vynil
-            class="size-5 transition-colors group-hover:text-emerald-600"
-            aria-hidden="true"
-          />
-          <span
-            class="ml-3 hidden text-sm font-medium group-hover:text-emerald-600 lg:block"
-            >Albums</span
-          >
+          <app-icon-vynil class="size-6" aria-hidden="true" />
+          <span class="ml-3 hidden text-sm font-medium lg:block">Albums</span>
         </a>
       </li>
       <li role="none">
         <a
-          class="group flex items-center border-l-8 border-transparent px-3 py-3 text-gray-700 transition-all hover:bg-emerald-50"
+          class="blue"
           routerLink="/artists"
-          routerLinkActive="active-link"
+          routerLinkActive="bg-blue-50 border-blue-500 text-blue-800"
           title="Artists"
           role="menuitem"
           aria-label="Artists"
         >
-          <app-icon-mic
-            class="size-5 transition-colors group-hover:text-emerald-600"
-            aria-hidden="true"
-          />
-          <span
-            class="ml-3 hidden text-sm font-medium group-hover:text-emerald-600 lg:block"
-            >Artists</span
-          >
+          <app-icon-mic class="size-6" aria-hidden="true" />
+          <span class="ml-3 hidden text-sm font-medium lg:block">Artists</span>
         </a>
       </li>
       <li role="none">
         <a
-          class="group flex items-center border-l-8 border-transparent px-3 py-3 text-gray-700 transition-all hover:bg-emerald-50"
+          class="amber"
           routerLink="/genres"
-          routerLinkActive="active-link"
+          routerLinkActive="bg-amber-50 border-amber-500 text-amber-800"
           title="Genres"
           role="menuitem"
           aria-label="Genres"
         >
-          <app-icon-eighth-note
-            class="size-5 transition-colors group-hover:text-emerald-600"
-            aria-hidden="true"
-          />
-          <span
-            class="ml-3 hidden text-sm font-medium group-hover:text-emerald-600 lg:block"
-            >Genres</span
-          >
+          <app-icon-eighth-note class="size-6" aria-hidden="true" />
+          <span class="ml-3 hidden text-sm font-medium lg:block">Genres</span>
         </a>
       </li>
       <li role="none">
         <a
-          class="group flex items-center border-l-8 border-transparent px-3 py-3 text-gray-700 transition-all hover:bg-emerald-50"
+          class="slate"
           routerLink="/playlists"
-          routerLinkActive="active-link"
+          routerLinkActive="bg-slate-100 border-slate-500 text-slate-800"
           title="Playlists"
           role="menuitem"
           aria-label="Playlists"
         >
-          <app-icon-menu-list
-            class="size-5 transition-colors group-hover:text-emerald-600"
-            aria-hidden="true"
-          />
-          <span
-            class="ml-3 hidden text-sm font-medium group-hover:text-emerald-600 lg:block"
+          <app-icon-user-playlist-add class="size-6" aria-hidden="true" />
+          <span class="ml-3 hidden text-sm font-medium lg:block"
             >Playlists</span
           >
         </a>
@@ -135,8 +109,36 @@ import { UiModule } from '../ui.module';
       display: contents;
     }
 
-    .active-link {
-      @apply border-emerald-500 bg-emerald-50 text-emerald-600;
+    li a {
+      @apply flex items-center border-l-8 border-transparent px-3 py-3 text-slate-700 transition-all;
+
+      &.emerald {
+        @apply hover:bg-emerald-50 hover:text-emerald-600;
+        &.active-link {
+          @apply border-emerald-600 bg-emerald-50 text-emerald-600;
+        }
+      }
+
+      &.blue {
+        @apply hover:bg-blue-50 hover:text-blue-600;
+        &.active-link {
+          @apply border-blue-600 bg-blue-50 text-blue-600;
+        }
+      }
+
+      &.amber {
+        @apply hover:bg-amber-50 hover:text-amber-600;
+        &.active-link {
+          @apply border-amber-600 bg-amber-50 text-amber-600;
+        }
+      }
+
+      &.slate {
+        @apply hover:bg-slate-50 hover:text-slate-500;
+        &.active-link {
+          @apply border-slate-500 bg-slate-50 text-slate-500;
+        }
+      }
     }
   `,
 })
