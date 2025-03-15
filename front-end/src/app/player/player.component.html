@@ -60,10 +60,10 @@
         <div class="flex items-center gap-3">
           <button
             class="btn rounded-full bg-slate-500 p-2.5 text-white hover:bg-slate-300"
-            attr.aria-label="{{ isPlaying ? 'Pause' : 'Play' }}"
+            attr.aria-label="{{ isPlaying() ? 'Pause' : 'Play' }}"
             (click)="togglePlayPause()"
           >
-            @if (isPlaying) {
+            @if (isPlaying()) {
               <app-icon-pause class="size-5" />
             } @else {
               <app-icon-play class="size-5" />
@@ -89,27 +89,20 @@
           >
             <div
               class="absolute left-0 top-0 h-full rounded-full bg-slate-500 shadow-sm"
-              [style.width.%]="(currentTime / duration) * 100"
+              [style.width.%]="progressPercentage()"
             ></div>
           </div>
 
           <!-- Time indicators -->
           <div class="flex justify-between text-xs font-medium text-slate-500">
-            <span>{{ formatTime(currentTime) }}</span>
-            <span>{{ formatTime(duration) }}</span>
+            <span>{{ formatTime(currentTime()) }}</span>
+            <span>{{ formatTime(duration()) }}</span>
           </div>
         </div>
 
         <!-- Volume control -->
         <div class="flex items-center gap-2">
-          <button
-            class="p-1 text-slate-600 hover:text-emerald-600 focus:text-emerald-600 focus:outline-none"
-            (click)="toggleMute()"
-            aria-label="Toggle mute"
-          >
-            <!-- TODO: Replace with proper mute/volume icon -->
-            <app-icon-eye class="size-4" />
-          </button>
+          <app-icon-volume class="size-4 text-slate-600" />
           <input
             type="range"
             min="0"
@@ -130,6 +123,8 @@
           type="audio/*"
           (timeupdate)="updateProgress()"
           (loadedmetadata)="onMetadataLoaded()"
+          (play)="onPlay()"
+          (pause)="onPause()"
           hidden
         >
           Your browser does not support the

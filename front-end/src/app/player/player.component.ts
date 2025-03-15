@@ -43,9 +43,12 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   nextSongs: Signal<Song[]>;
   isPlaylistOpen = signal(false);
   @ViewChild('progressContainer') progressContainer!: ElementRef;
-  isPlaying = false;
-  currentTime = 0;
-  duration = 0;
+  isPlaying = signal(false);
+  currentTime = signal(0);
+  duration = signal(0);
+  progressPercentage = computed(
+    () => (this.currentTime() / this.duration()) * 100,
+  );
   volume = 1;
 
   constructor(
@@ -107,28 +110,38 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   togglePlayPause() {
     if (this.audioElement?.nativeElement.paused) {
       this.audioElement.nativeElement.play();
-      this.isPlaying = true;
+      this.isPlaying.set(true);
     } else {
       this.audioElement?.nativeElement.pause();
-      this.isPlaying = false;
+      this.isPlaying.set(false);
     }
   }
 
   updateProgress() {
-    this.currentTime = this.audioElement?.nativeElement.currentTime;
-    this.duration = this.audioElement?.nativeElement.duration || 0;
+    console.log('updateProgress');
+    this.currentTime.set(this.audioElement?.nativeElement.currentTime || 0);
   }
 
   onMetadataLoaded() {
-    this.duration = this.audioElement?.nativeElement.duration;
-    this.isPlaying = !this.audioElement?.nativeElement.paused;
+    console.log('onMetadataLoaded');
+    this.duration.set(this.audioElement?.nativeElement.duration || 0);
+  }
+
+  onPlay() {
+    console.log('onPlay');
+    this.isPlaying.set(true);
+  }
+
+  onPause() {
+    console.log('onPause');
+    this.isPlaying.set(false);
   }
 
   seek(event: MouseEvent) {
     const rect = this.progressContainer.nativeElement.getBoundingClientRect();
     const percent = (event.clientX - rect.left) / rect.width;
     if (this.audioElement?.nativeElement) {
-      this.audioElement.nativeElement.currentTime = percent * this.duration;
+      this.audioElement.nativeElement.currentTime = percent * this.duration();
     }
   }
 

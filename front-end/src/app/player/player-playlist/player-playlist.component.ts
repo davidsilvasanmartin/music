@@ -30,7 +30,7 @@ import type { Song } from '../../songs/song';
                   (click)="closePlaylist.emit()"
                   aria-label="Close playlist"
                 >
-                  <app-icon-cancel class="size-5" />
+                  <app-icon-chevron-down class="size-5" />
                 </button>
               </div>
             </div>

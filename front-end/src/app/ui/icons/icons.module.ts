@@ -21,6 +21,7 @@ import { IconPlaylistAddComponent } from './icon-playlist-add.component';
 import { IconSearchComponent } from './icon-search.component';
 import { IconUserComponent } from './icon-user.component.';
 import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component';
+import { IconVolumeComponent } from './icon-volume.component';
 import { IconVynilComponent } from './icon-vynil.component';
 
 // Some are Feather Icons, others are random open source icons I found
@@ -47,6 +48,7 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconMicComponent,
     IconUserComponent,
     IconPauseComponent,
+    IconVolumeComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -71,6 +73,7 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconMicComponent,
     IconUserComponent,
     IconPauseComponent,
+    IconVolumeComponent,
   ],
 })
 export class IconsModule {}
