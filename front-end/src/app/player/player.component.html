@@ -102,17 +102,52 @@
 
         <!-- Volume control -->
         <div class="flex items-center gap-2">
-          <app-icon-volume class="size-4 text-slate-600" />
-          <input
-            type="range"
-            min="0"
-            max="1"
-            step="0.05"
-            [value]="volume"
-            (input)="setVolume($event)"
-            class="h-2 w-20 cursor-pointer appearance-none rounded-full bg-slate-200 accent-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-            aria-label="Volume"
-          />
+          <button
+            class="flex items-center justify-center"
+            (click)="toggleMute()"
+          >
+            @if (volume() === 0) {
+              <app-icon-volume-muted class="size-4 text-slate-600" />
+            } @else if (volume() < 0.3333) {
+              <app-icon-volume-0 class="size-4 text-slate-600" />
+            } @else if (volume() < 0.6666) {
+              <app-icon-volume-1 class="size-4 text-slate-600" />
+            } @else {
+              <app-icon-volume-2 class="size-4 text-slate-600" />
+            }
+          </button>
+          <div class="relative w-20">
+            <!-- TODO remove default browser styles which are still there at least in Firefox -->
+            <!-- TODO bug: volume still changeable while muted -->
+            <input
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              [value]="volume()"
+              (input)="setVolume($event)"
+              class="h-2.5 w-full cursor-pointer appearance-none bg-transparent"
+              style="-webkit-appearance: none; margin: 0"
+            />
+            <!-- Custom track and thumb using absolute positioning -->
+            <div class="pointer-events-none absolute inset-0">
+              <!-- Track background -->
+              <div
+                class="absolute left-0 right-0 top-1/2 h-2.5 -translate-y-1/2 rounded-full bg-slate-200"
+              ></div>
+              <!-- Filled portion -->
+              <div
+                class="absolute left-0 top-1/2 h-2.5 -translate-y-1/2 rounded-full bg-slate-500 shadow-sm"
+                [style.width.%]="volume() * 100"
+              ></div>
+              <!-- Thumb -->
+              <div
+                class="absolute top-1/2 size-3.5 -translate-y-1/2 rounded-full border border-slate-300 bg-white shadow-md"
+                [style.left.%]="volume() * 100"
+                style="transform: translate(-50%, -50%)"
+              ></div>
+            </div>
+          </div>
         </div>
 
         <audio
@@ -123,6 +158,7 @@
           type="audio/*"
           (timeupdate)="updateProgress()"
           (loadedmetadata)="onMetadataLoaded()"
+          (volumechange)="onVolumeChange()"
           (play)="onPlay()"
           (pause)="onPause()"
           hidden

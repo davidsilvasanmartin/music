@@ -21,7 +21,10 @@ import { IconPlaylistAddComponent } from './icon-playlist-add.component';
 import { IconSearchComponent } from './icon-search.component';
 import { IconUserComponent } from './icon-user.component.';
 import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component';
-import { IconVolumeComponent } from './icon-volume.component';
+import { IconVolume0Component } from './icon-volume-0.component';
+import { IconVolume1Component } from './icon-volume-1.component';
+import { IconVolume2Component } from './icon-volume-2.component';
+import { IconVolumeMutedComponent } from './icon-volume-muted.component';
 import { IconVynilComponent } from './icon-vynil.component';
 
 // Some are Feather Icons, others are random open source icons I found
@@ -48,7 +51,10 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconMicComponent,
     IconUserComponent,
     IconPauseComponent,
-    IconVolumeComponent,
+    IconVolumeMutedComponent,
+    IconVolume0Component,
+    IconVolume1Component,
+    IconVolume2Component,
   ],
   imports: [CommonModule],
   exports: [
@@ -73,7 +79,10 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconMicComponent,
     IconUserComponent,
     IconPauseComponent,
-    IconVolumeComponent,
+    IconVolumeMutedComponent,
+    IconVolume0Component,
+    IconVolume1Component,
+    IconVolume2Component,
   ],
 })
 export class IconsModule {}

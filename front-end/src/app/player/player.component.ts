@@ -49,7 +49,7 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   progressPercentage = computed(
     () => (this.currentTime() / this.duration()) * 100,
   );
-  volume = 1;
+  volume = signal(1);
 
   constructor(
     private readonly _store: Store<PlaylistRootState>,
@@ -153,9 +153,8 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
 
   setVolume(event: Event) {
     const input = event.target as HTMLInputElement;
-    this.volume = parseFloat(input.value);
     if (this.audioElement?.nativeElement) {
-      this.audioElement.nativeElement.volume = this.volume;
+      this.audioElement.nativeElement.volume = input.value;
     }
   }
 
@@ -163,6 +162,21 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
     if (this.audioElement?.nativeElement) {
       this.audioElement.nativeElement.muted =
         !this.audioElement?.nativeElement.muted;
+    }
+  }
+
+  /**
+   * This function gets called when the "volume" or "muted" properties of the
+   * audio element change. Note that when the "muted" property is set to true
+   * on the audio element, its "volume" property does not change
+   */
+  onVolumeChange() {
+    if (this.audioElement?.nativeElement) {
+      if (this.audioElement?.nativeElement.muted) {
+        this.volume.set(0);
+      } else {
+        this.volume.set(this.audioElement?.nativeElement.volume);
+      }
     }
   }
 
