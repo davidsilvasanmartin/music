@@ -41,8 +41,10 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   );
   currentSongAlbum$: Observable<Album>;
   nextSongs: Signal<Song[]>;
+
   isPlaylistOpen = signal(false);
   @ViewChild('progressContainer') progressContainer!: ElementRef;
+
   isPlaying = signal(false);
   currentTime = signal(0);
   duration = signal(0);
@@ -178,10 +180,5 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
         this.volume.set(this.audioElement?.nativeElement.volume);
       }
     }
-  }
-
-  // You'll need to add this method if not already present
-  goToPreviousSong() {
-    // Implement previous song logic
   }
 }
