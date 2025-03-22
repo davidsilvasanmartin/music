@@ -1,7 +1,6 @@
 package dev.davidsilva.music.security.auth;
 
-import dev.davidsilva.music.security.user.UserDto;
-import dev.davidsilva.music.security.user.UserService;
+import dev.davidsilva.music.security.user.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +21,8 @@ public class AuthService {
     //    private final SessionRegistry sessionRegistry;
 //    private final RedisIndexedSessionRepository redisIndexedSessionRepository;
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final UserDtoMapper userDtoMapper;
 
     public void authenticate(AuthenticationRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         Authentication authenticationRequest =
@@ -39,9 +40,15 @@ public class AuthService {
         securityContextRepository.saveContext(context, httpRequest, httpResponse);
     }
 
-    public UserDto getLoggedInUser() {
+    public UserDto getLoggedInUserDto() {
         DbUserDetails userDetails = (DbUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userService.findByUsername(userDetails.getUsername());
+    }
+
+    // TODO not sure if we could write a method in UserService for this, to remove dependency on UserRepository
+    public User getLoggedInUser() {
+        DbUserDetails userDetails = (DbUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findByUsername(userDetails.getUsername()).orElseThrow(() -> new UserNotFoundException(userDetails.getUsername()));
     }
 
     /**

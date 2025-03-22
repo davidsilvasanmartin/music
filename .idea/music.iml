@@ -5,4 +5,18 @@
       <excludeFolder url="file://$MODULE_DIR$/music/.venv" />
     </content>
   </component>
+  <component name="FacetManager">
+    <facet type="jpa" name="JPA">
+      <configuration>
+        <setting name="validation-enabled" value="true" />
+        <setting name="provider-name" value="Hibernate" />
+        <datasource-mapping>
+          <factory-entry name="appDbEntityManagerFactory" value="b46b547f-6d9c-4d71-b996-ad17e65f35fd" />
+          <factory-entry name="beetsDbEntityManagerFactory" value="dbb49dfe-8330-4dbb-9b2b-9145d1f68a8c" />
+          <factory-entry name="entityManagerFactory" />
+        </datasource-mapping>
+        <naming-strategy-map />
+      </configuration>
+    </facet>
+  </component>
 </module>

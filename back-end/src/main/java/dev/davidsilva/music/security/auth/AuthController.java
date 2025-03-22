@@ -26,7 +26,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthenticationRequest request, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
         authService.authenticate(request, httpRequest, httpResponse);
-        return ResponseEntity.ok(authService.getLoggedInUser());
+        return ResponseEntity.ok(authService.getLoggedInUserDto());
     }
 
     /**
@@ -36,7 +36,7 @@ public class AuthController {
      */
     @GetMapping("/user")
     public ResponseEntity<UserDto> user() {
-        return ResponseEntity.ok(authService.getLoggedInUser());
+        return ResponseEntity.ok(authService.getLoggedInUserDto());
     }
 
 }

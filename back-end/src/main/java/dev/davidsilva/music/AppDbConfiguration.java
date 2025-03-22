@@ -42,12 +42,15 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"dev.davidsilva.music.audit", "dev.davidsilva.music.security"},
+        basePackages = {AppDbConfiguration.AUDIT_PACKAGE, AppDbConfiguration.SECURITY_PACKAGE, AppDbConfiguration.PLAYLIST_PACKAGE},
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
 @RequiredArgsConstructor
 public class AppDbConfiguration {
+    public static final String AUDIT_PACKAGE = "dev.davidsilva.music.audit";
+    public static final String SECURITY_PACKAGE = "dev.davidsilva.music.security";
+    public static final String PLAYLIST_PACKAGE = "dev.davidsilva.music.playlist";
     private final Environment env;
 
     @Bean(name = "appDbDataSource")
@@ -70,7 +73,10 @@ public class AppDbConfiguration {
     public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.audit", "dev.davidsilva.music.security").properties(propertiesMap).build();
+        return builder.dataSource(dataSource)
+                .packages(AUDIT_PACKAGE, SECURITY_PACKAGE, PLAYLIST_PACKAGE)
+                .properties(propertiesMap)
+                .build();
     }
 
     @Bean(name = "appDbEntityManager")
