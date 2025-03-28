@@ -83,6 +83,8 @@ Angular app
 
 - Replace search for ElasticSearch https://reflectoring.io/hibernate-search/
 - Redis cache
+- SEE THE
+  FOLLOWING https://softwareengineering.stackexchange.com/questions/288370/best-way-to-synchronize-data-between-two-different-databases
 
 ### DONE
 
