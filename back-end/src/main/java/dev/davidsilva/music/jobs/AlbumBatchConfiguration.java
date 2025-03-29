@@ -11,31 +11,30 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.data.RepositoryItemReader;
 import org.springframework.batch.item.data.builder.RepositoryItemReaderBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionManager;
 
 import java.util.Collections;
-import java.util.List;
 
 @Configuration
 public class AlbumBatchConfiguration {
+    private final TransactionManager transactionManager;
+    private final AlbumRepository albumRepository;
+    private final JobRepository jobRepository;
 
-    @Autowired
-    private AlbumRepository albumRepository;
-
-    @Autowired
-    private JobRepository jobRepository;
-
-    @Autowired
-    private PlatformTransactionManager transactionManager;
+    public AlbumBatchConfiguration(AlbumRepository albumRepository, JobRepository jobRepository, @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager) {
+        this.albumRepository = albumRepository;
+        this.jobRepository = jobRepository;
+        this.transactionManager = transactionManager;
+    }
 
     @Bean
     public RepositoryItemReader<Album> albumReader() {
@@ -68,7 +67,7 @@ public class AlbumBatchConfiguration {
     @Bean
     public Step printAlbumIdsStep() {
         return new StepBuilder("printAlbumIdsStep", jobRepository)
-                .<Album, Album>chunk(10, transactionManager)
+                .<Album, Album>chunk(10, (PlatformTransactionManager) transactionManager)
                 .reader(albumReader())
                 .processor(albumProcessor())
                 .writer(albumWriter())
