@@ -1,4 +1,4 @@
-package dev.davidsilva.music.jobs;
+package dev.davidsilva.music.job;
 
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;

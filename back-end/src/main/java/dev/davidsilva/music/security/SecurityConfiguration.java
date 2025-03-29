@@ -63,6 +63,7 @@ public class SecurityConfiguration {
                         // .requestMatchers("/playlists").authenticated()
                         // Endpoints that have to be restricted, such as user admin or system configuration
                         .requestMatchers("/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers("/jobs/**").permitAll() // TODO allow only for admins
                         .requestMatchers(HttpMethod.GET, "/**").hasAnyAuthority("READ")
                         .requestMatchers(HttpMethod.POST, "/**").hasAnyAuthority("CREATE")
                         .requestMatchers(HttpMethod.PATCH, "/**").hasAnyAuthority("UPDATE")
