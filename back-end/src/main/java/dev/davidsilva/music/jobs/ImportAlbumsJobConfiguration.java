@@ -24,13 +24,13 @@ import org.springframework.transaction.PlatformTransactionManager;
 import java.util.Collections;
 
 @Configuration
-public class PrintAlbumJobConfiguration {
+public class ImportAlbumsJobConfiguration {
     private final PlatformTransactionManager transactionManager;
     private final AlbumRepository albumRepository;
     private final JobRepository jobRepository;
     private final JobLauncher jobLauncher;
 
-    public PrintAlbumJobConfiguration(
+    public ImportAlbumsJobConfiguration(
             AlbumRepository albumRepository,
             JobRepository jobRepository,
             @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager,
@@ -41,7 +41,6 @@ public class PrintAlbumJobConfiguration {
         this.jobLauncher = jobLauncher;
     }
 
-    @Bean
     public RepositoryItemReader<Album> printAlbumReader() {
         return new RepositoryItemReaderBuilder<Album>()
                 .name("printAlbumReader")
@@ -52,12 +51,10 @@ public class PrintAlbumJobConfiguration {
                 .build();
     }
 
-    @Bean
     public ItemProcessor<Album, Album> printAlbumProcessor() {
         return album -> album; // Pass through
     }
 
-    @Bean
     public ItemWriter<Album> printAlbumWriter() {
         return items -> {
             for (Album album : items) {
@@ -66,7 +63,6 @@ public class PrintAlbumJobConfiguration {
         };
     }
 
-    @Bean
     public Step printAlbumIdsStep() {
         return new StepBuilder("printAlbumIdsStep", jobRepository)
                 .<Album, Album>chunk(10, transactionManager)
@@ -76,7 +72,6 @@ public class PrintAlbumJobConfiguration {
                 .build();
     }
 
-    @Bean
     public Job printAlbumIdsJob() {
         return new JobBuilder("printAlbumIdsJob", jobRepository)
                 .start(printAlbumIdsStep())
