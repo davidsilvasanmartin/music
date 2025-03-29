@@ -13,13 +13,8 @@ public class JobController {
     private final JobService jobService;
 
     @PostMapping("/import-albums")
-    public ResponseEntity<Void> runImportAlbumsJob() {
-        try {
-            jobService.launchGetImportAlbumsJob();
-            return ResponseEntity.ok().build();
-        } catch (Exception e) {
-            // In a production scenario, you'd want to return a more meaningful error message.
-            return ResponseEntity.status(500).build();
-        }
+    public ResponseEntity<Void> runImportAlbumsJob() throws Exception {
+        jobService.launchGetImportAlbumsJob();
+        return ResponseEntity.ok().build();
     }
 }
