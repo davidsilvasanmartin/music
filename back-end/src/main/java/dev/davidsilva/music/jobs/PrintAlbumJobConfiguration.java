@@ -20,26 +20,31 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.Sort;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionManager;
 
 import java.util.Collections;
 
 @Configuration
-public class AlbumBatchConfiguration {
-    private final TransactionManager transactionManager;
+public class PrintAlbumJobConfiguration {
+    private final PlatformTransactionManager transactionManager;
     private final AlbumRepository albumRepository;
     private final JobRepository jobRepository;
+    private final JobLauncher jobLauncher;
 
-    public AlbumBatchConfiguration(AlbumRepository albumRepository, JobRepository jobRepository, @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager) {
+    public PrintAlbumJobConfiguration(
+            AlbumRepository albumRepository,
+            JobRepository jobRepository,
+            @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager,
+            JobLauncher jobLauncher) {
         this.albumRepository = albumRepository;
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
+        this.jobLauncher = jobLauncher;
     }
 
     @Bean
-    public RepositoryItemReader<Album> albumReader() {
+    public RepositoryItemReader<Album> printAlbumReader() {
         return new RepositoryItemReaderBuilder<Album>()
-                .name("albumReader")
+                .name("printAlbumReader")
                 .repository(albumRepository)
                 .methodName("findAll")
                 .pageSize(100)
@@ -48,15 +53,12 @@ public class AlbumBatchConfiguration {
     }
 
     @Bean
-    public ItemProcessor<Album, Album> albumProcessor() {
-        return album -> {
-            // Just pass through the album, no processing needed
-            return album;
-        };
+    public ItemProcessor<Album, Album> printAlbumProcessor() {
+        return album -> album; // Pass through
     }
 
     @Bean
-    public ItemWriter<Album> albumWriter() {
+    public ItemWriter<Album> printAlbumWriter() {
         return items -> {
             for (Album album : items) {
                 System.out.println("Album ID: " + album.getId());
@@ -67,10 +69,10 @@ public class AlbumBatchConfiguration {
     @Bean
     public Step printAlbumIdsStep() {
         return new StepBuilder("printAlbumIdsStep", jobRepository)
-                .<Album, Album>chunk(10, (PlatformTransactionManager) transactionManager)
-                .reader(albumReader())
-                .processor(albumProcessor())
-                .writer(albumWriter())
+                .<Album, Album>chunk(10, transactionManager)
+                .reader(printAlbumReader())
+                .processor(printAlbumProcessor())
+                .writer(printAlbumWriter())
                 .build();
     }
 
@@ -82,12 +84,12 @@ public class AlbumBatchConfiguration {
     }
 
     @Bean
-    public CommandLineRunner jobRunner(JobLauncher jobLauncher, Job printAlbumIdsJob) {
+    public CommandLineRunner printAlbumJobRunner() {
         return args -> {
             JobParameters jobParameters = new JobParametersBuilder()
                     .addLong("time", System.currentTimeMillis())
                     .toJobParameters();
-            jobLauncher.run(printAlbumIdsJob, jobParameters);
+            jobLauncher.run(printAlbumIdsJob(), jobParameters);
         };
     }
 }
