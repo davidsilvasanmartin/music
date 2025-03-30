@@ -1,5 +1,8 @@
 # Spring Batch
 
+- See this informational comment about the proper use of Spring Batch
+  tables https://stackoverflow.com/a/47853529/10997015.
+
 ## Is manually creating Spring Batch tables a good practice?
 
 Manually creating Spring Batch tables is actually a common and valid approach in several scenarios.

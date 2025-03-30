@@ -4,6 +4,8 @@ import dev.davidsilva.music.album.Album;
 import dev.davidsilva.music.album.AlbumRepository;
 import dev.davidsilva.music.beets.album.BeetsAlbum;
 import dev.davidsilva.music.beets.album.BeetsAlbumRepository;
+import dev.davidsilva.music.genres.Genre;
+import dev.davidsilva.music.genres.GenreRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -18,7 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import java.util.Collections;
+import java.util.*;
 
 @Component
 public class ImportAlbumsJob {
@@ -26,17 +28,19 @@ public class ImportAlbumsJob {
     private final AlbumRepository albumRepository;
     private final JobRepository jobRepository;
     private final BeetsAlbumRepository beetsAlbumRepository;
+    private final GenreRepository genreRepository;
 
     public ImportAlbumsJob(
             AlbumRepository albumRepository,
             JobRepository jobRepository,
             @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager,
-            BeetsAlbumRepository beetsAlbumRepository
+            BeetsAlbumRepository beetsAlbumRepository, GenreRepository genreRepository
     ) {
         this.albumRepository = albumRepository;
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
         this.beetsAlbumRepository = beetsAlbumRepository;
+        this.genreRepository = genreRepository;
     }
 
     private RepositoryItemReader<BeetsAlbum> reader() {
@@ -51,17 +55,41 @@ public class ImportAlbumsJob {
 
     private ItemProcessor<BeetsAlbum, Album> processor() {
         return beetsAlbum -> {
+            if (albumRepository.existsByBeetsId(beetsAlbum.getId())) {
+                // Return null to indicate that this item should be filtered out
+                // and not passed to the writer
+                return null;
+            }
+
             Album album = new Album();
-            // TODO test the id field
-            // TODO see if missing properties
             // TODO songs
-            album.setId(beetsAlbum.getId());
+            album.setBeetsId(beetsAlbum.getId());
+            album.setMbAlbumId(beetsAlbum.getMbAlbumId());
             album.setArtPath(beetsAlbum.getArtPath());
             album.setAlbumArtist(beetsAlbum.getAlbumArtist());
             album.setAlbum(beetsAlbum.getAlbum());
-            // TODO split genres into another table
-            album.setGenre(beetsAlbum.getGenre());
             album.setYear(beetsAlbum.getYear());
+
+            if (beetsAlbum.getGenre() != null && !beetsAlbum.getGenre().isEmpty()) {
+                List<String> genreNames = Arrays.stream(beetsAlbum.getGenre().split(","))
+                        .map(String::trim)
+                        .filter(name -> !name.isEmpty())
+                        .toList();
+                Set<Genre> genres = new HashSet<>();
+
+                for (String genreName : genreNames) {
+                    Genre genre = genreRepository.findByNameIgnoreCase(genreName)
+                            .orElseGet(() -> {
+                                Genre newGenre = new Genre();
+                                newGenre.setName(genreName);
+                                return genreRepository.save(newGenre);
+                            });
+                    genres.add(genre);
+                }
+
+                album.setGenres(genres);
+            }
+
             return album;
         };
     }
