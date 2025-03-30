@@ -2,6 +2,8 @@ package dev.davidsilva.music.job;
 
 import dev.davidsilva.music.album.Album;
 import dev.davidsilva.music.album.AlbumRepository;
+import dev.davidsilva.music.beets.album.BeetsAlbum;
+import dev.davidsilva.music.beets.album.BeetsAlbumRepository;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -23,42 +25,54 @@ public class ImportAlbumsJob {
     private final PlatformTransactionManager transactionManager;
     private final AlbumRepository albumRepository;
     private final JobRepository jobRepository;
+    private final BeetsAlbumRepository beetsAlbumRepository;
 
     public ImportAlbumsJob(
             AlbumRepository albumRepository,
             JobRepository jobRepository,
-            @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager
+            @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager,
+            BeetsAlbumRepository beetsAlbumRepository
     ) {
         this.albumRepository = albumRepository;
         this.jobRepository = jobRepository;
         this.transactionManager = transactionManager;
+        this.beetsAlbumRepository = beetsAlbumRepository;
     }
 
-    private RepositoryItemReader<Album> reader() {
-        return new RepositoryItemReaderBuilder<Album>()
-                .name("printAlbumReader")
-                .repository(albumRepository)
+    private RepositoryItemReader<BeetsAlbum> reader() {
+        return new RepositoryItemReaderBuilder<BeetsAlbum>()
+                .name("beetsAlbumReader")
+                .repository(beetsAlbumRepository)
                 .methodName("findAll")
                 .pageSize(100)
                 .sorts(Collections.singletonMap("id", Sort.Direction.ASC))
                 .build();
     }
 
-    private ItemProcessor<Album, Album> processor() {
-        return album -> album; // Pass through
+    private ItemProcessor<BeetsAlbum, Album> processor() {
+        return beetsAlbum -> {
+            Album album = new Album();
+            // TODO test the id field
+            // TODO see if missing properties
+            // TODO songs
+            album.setId(beetsAlbum.getId());
+            album.setArtPath(beetsAlbum.getArtPath());
+            album.setAlbumArtist(beetsAlbum.getAlbumArtist());
+            album.setAlbum(beetsAlbum.getAlbum());
+            // TODO split genres into another table
+            album.setGenre(beetsAlbum.getGenre());
+            album.setYear(beetsAlbum.getYear());
+            return album;
+        };
     }
 
     private ItemWriter<Album> writer() {
-        return items -> {
-            for (Album album : items) {
-                System.out.println("Album ID: " + album.getId());
-            }
-        };
+        return albumRepository::saveAll;
     }
 
     private Step step() {
         return new StepBuilder("printAlbumIdsStep", jobRepository)
-                .<Album, Album>chunk(10, transactionManager)
+                .<BeetsAlbum, Album>chunk(10, transactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())
@@ -66,7 +80,7 @@ public class ImportAlbumsJob {
     }
 
     public Job getImportAlbumsJob() {
-        return new JobBuilder("printAlbumIdsJob", jobRepository)
+        return new JobBuilder("importAlbumsJob", jobRepository)
                 .start(step())
                 .build();
     }

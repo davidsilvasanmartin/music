@@ -1,6 +1,6 @@
 CREATE TABLE log_audit
 (
-    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    id          SERIAL PRIMARY KEY,
     action      VARCHAR(255) NOT NULL,
     entity_type VARCHAR(255),
     entity_id   VARCHAR(255),
