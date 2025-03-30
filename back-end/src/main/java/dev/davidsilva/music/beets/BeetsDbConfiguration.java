@@ -24,12 +24,11 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"dev.davidsilva.music.song", "dev.davidsilva.music.beets"},
+        basePackages = {
+                "dev.davidsilva.music.beets.album",
+                "dev.davidsilva.music.beets.item"
+        },
         entityManagerFactoryRef = "beetsDbEntityManagerFactory",
-        /*
-         * TODO the following seems like it should be beetsDbTransactionManager. This could be a bug, but when replacing
-         *  it by the beets one, the app does not work. Need to fix this
-        */
         transactionManagerRef = "beetsDbTransactionManager"
 )
 @RequiredArgsConstructor
@@ -45,10 +44,13 @@ public class BeetsDbConfiguration {
     }
 
     @Bean(name = "beetsDbEntityManagerFactory")
-    public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDbDataSource") DataSource dataSource) {
+    public LocalContainerEntityManagerFactoryBean beetsEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.song", "dev.davidsilva.music.beets").properties(propertiesMap).build();
+        return builder.dataSource(dataSource).packages(
+                "dev.davidsilva.music.beets.album",
+                "dev.davidsilva.music.beets.item"
+        ).persistenceUnit("beetsPersistenceUnit").properties(propertiesMap).build();
     }
 
     @Bean(name = "beetsDbTransactionManager")

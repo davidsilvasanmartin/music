@@ -1,15 +1,13 @@
 package dev.davidsilva.music.beets.album;
 
+import dev.davidsilva.music.beets.item.BeetsItem;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.List;
 
-/**
- * TODO this is a copy to Album. Needs to be updated with the properties from beets
- *  that we want to transfer, for example the MusicBrainz id
- */
 @Setter
 @Getter
 @Entity
@@ -17,7 +15,6 @@ import java.io.Serializable;
 public
 class BeetsAlbum implements Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private int id;
 
@@ -38,4 +35,7 @@ class BeetsAlbum implements Serializable {
 
     @Column(name = "original_year")
     private int year;
+
+    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
+    private List<BeetsItem> songs;
 }

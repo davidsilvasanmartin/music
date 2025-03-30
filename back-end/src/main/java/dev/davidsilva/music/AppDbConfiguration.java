@@ -18,24 +18,8 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Objects;
 
-
-/**
- * TODO
- * <p>
- * This is Claude on the "log not working" incident
- * You're welcome! Yes, the switch from `DataSourceTransactionManager` to `JpaTransactionManager` was crucial here since you're using Spring Data JPA repositories.
- * Just for future reference, this is a common gotcha when working with Spring transactions. Here's a quick rule of thumb:
- * - Use `JpaTransactionManager` when working with JPA/Hibernate (like with `@Repository` and Spring Data JPA)
- * - Use `DataSourceTransactionManager` when working with plain JDBC or Spring's JdbcTemplate
- * - If you mix both JPA and JDBC operations, use `JpaTransactionManager` as it can handle both
- * <p>
- * TODO I need to propagate this change to BeetsDbConfiguration
- */
-
 /**
  * Configuration class for the primary application database
- * <p>
- * Note that database type (sqlite) as well as its path are hardcoded because they will not change
  */
 @Configuration
 @EnableTransactionManagement
@@ -44,7 +28,8 @@ import java.util.Objects;
                 "dev.davidsilva.music.audit",
                 "dev.davidsilva.music.security",
                 "dev.davidsilva.music.album",
-                "dev.davidsilva.music.genre"
+                "dev.davidsilva.music.genre",
+                "dev.davidsilva.music.song"
         },
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
@@ -74,8 +59,10 @@ public class AppDbConfiguration {
                         "dev.davidsilva.music.audit",
                         "dev.davidsilva.music.security",
                         "dev.davidsilva.music.album",
-                        "dev.davidsilva.music.genre"
+                        "dev.davidsilva.music.genre",
+                        "dev.davidsilva.music.song"
                 )
+                .persistenceUnit("appPersistenceUnit")
                 .properties(propertiesMap)
                 .build();
     }

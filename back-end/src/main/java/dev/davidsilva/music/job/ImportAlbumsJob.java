@@ -24,7 +24,8 @@ import java.util.*;
 
 @Component
 public class ImportAlbumsJob {
-    private final PlatformTransactionManager transactionManager;
+    private final PlatformTransactionManager appDbTransactionManager;
+    private final PlatformTransactionManager beetsDbTransactionManager;
     private final AlbumRepository albumRepository;
     private final JobRepository jobRepository;
     private final BeetsAlbumRepository beetsAlbumRepository;
@@ -33,12 +34,14 @@ public class ImportAlbumsJob {
     public ImportAlbumsJob(
             AlbumRepository albumRepository,
             JobRepository jobRepository,
-            @Qualifier("appDbTransactionManager") PlatformTransactionManager transactionManager,
+            @Qualifier("appDbTransactionManager") PlatformTransactionManager appDbTransactionManager,
+            @Qualifier("beetsDbTransactionManager") PlatformTransactionManager beetsDbTransactionManager,
             BeetsAlbumRepository beetsAlbumRepository, GenreRepository genreRepository
     ) {
         this.albumRepository = albumRepository;
         this.jobRepository = jobRepository;
-        this.transactionManager = transactionManager;
+        this.appDbTransactionManager = appDbTransactionManager;
+        this.beetsDbTransactionManager = beetsDbTransactionManager;
         this.beetsAlbumRepository = beetsAlbumRepository;
         this.genreRepository = genreRepository;
     }
@@ -100,7 +103,7 @@ public class ImportAlbumsJob {
 
     private Step step() {
         return new StepBuilder("printAlbumIdsStep", jobRepository)
-                .<BeetsAlbum, Album>chunk(10, transactionManager)
+                .<BeetsAlbum, Album>chunk(10, appDbTransactionManager)
                 .reader(reader())
                 .processor(processor())
                 .writer(writer())

@@ -10,16 +10,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Transactional
 public class SongService {
-    private final SongRepository songRepository;
+    //    private final SongRepository songRepository;
     private final SongDtoMapper songDtoMapper;
     private final AlbumRepository albumRepository;
     private final AlbumDtoMapper albumDtoMapper;
 
-    public SongDto findSongById(int id) {
-        Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException(id));
-        return songDtoMapper.toDto(song);
-    }
+//    public SongDto findSongById(int id) {
+//        Song song = songRepository.findById(id).orElseThrow(() ->
+//                new SongNotFoundException(id));
+//        return songDtoMapper.toDto(song);
+//    }
 
     // TODO: test
 //    public AlbumDto findAlbumBySongId(int songId) {
@@ -37,9 +37,9 @@ public class SongService {
 //        return song.getAlbum().getArtPath();
 //    }
 
-    public String getSongFilePathById(int id) {
-        Song song = songRepository.findById(id).orElseThrow(() ->
-                new SongNotFoundException(id));
-        return song.getPath();
-    }
+//    public String getSongFilePathById(int id) {
+//        Song song = songRepository.findById(id).orElseThrow(() ->
+//                new SongNotFoundException(id));
+//        return song.getPath();
+//    }
 }
