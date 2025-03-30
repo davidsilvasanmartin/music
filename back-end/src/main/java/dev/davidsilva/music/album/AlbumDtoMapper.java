@@ -5,8 +5,6 @@ import dev.davidsilva.music.song.SongDto;
 import dev.davidsilva.music.utils.DtoMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
 @Component
 public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
     @Override
@@ -20,9 +18,9 @@ public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
         albumDto.setId(album.getId());
         albumDto.setAlbumArtist(album.getAlbumArtist());
         albumDto.setAlbum(album.getAlbum());
-        albumDto.setGenres(Arrays.stream(album.getGenre().split(",")).map(String::trim).toList());
+        // albumDto.setGenres(Arrays.stream(album.getGenre().split(",")).map(String::trim).toList());
         albumDto.setYear(album.getYear());
-        albumDto.setSongs(album.getSongs().stream().map(this::toSongDto).toList());
+        // albumDto.setSongs(album.getSongs().stream().map(this::toSongDto).toList());
         return albumDto;
     }
 

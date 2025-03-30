@@ -1,4 +1,4 @@
-package dev.davidsilva.music.genres;
+package dev.davidsilva.music.genre;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

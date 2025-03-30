@@ -1,15 +1,16 @@
 package dev.davidsilva.music.song;
 
-import dev.davidsilva.music.album.AlbumDto;
 import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.*;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.time.Duration;
 import java.util.Objects;
 
 @RestController
@@ -26,22 +27,22 @@ public class SongController {
         return new ResponseEntity<>(song, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/album")
-    public ResponseEntity<AlbumDto> getAlbumBySongId(@PathVariable("id") int id) {
-        AlbumDto album = songService.findAlbumBySongId(id);
-        return new ResponseEntity<>(album, HttpStatus.OK);
-    }
+//    @GetMapping("/{id}/album")
+//    public ResponseEntity<AlbumDto> getAlbumBySongId(@PathVariable("id") int id) {
+//        AlbumDto album = songService.findAlbumBySongId(id);
+//        return new ResponseEntity<>(album, HttpStatus.OK);
+//    }
 
-    @CrossOrigin
-    @GetMapping("{id}/albumArt")
-    @ResponseBody
-    public ResponseEntity<FileSystemResource> getAlbumArtById(@PathVariable("id") int id) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(60)).cachePublic());
-        // TODO I think artPath can be null
-        FileSystemResource resource = new FileSystemResource(songService.getSongAlbumArtPathById(id));
-        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
-    }
+//    @CrossOrigin
+//    @GetMapping("{id}/albumArt")
+//    @ResponseBody
+//    public ResponseEntity<FileSystemResource> getAlbumArtById(@PathVariable("id") int id) {
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(60)).cachePublic());
+//        // TODO I think artPath can be null
+//        FileSystemResource resource = new FileSystemResource(songService.getSongAlbumArtPathById(id));
+//        return new ResponseEntity<>(resource, headers, HttpStatus.OK);
+//    }
 
     @CrossOrigin
     @GetMapping(value = "{id}/play", produces = "audio/*")

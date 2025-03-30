@@ -3,6 +3,7 @@ package dev.davidsilva.music;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +13,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.sqlite.SQLiteConfig;
-import org.sqlite.SQLiteDataSource;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -42,7 +40,12 @@ import java.util.Objects;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackages = {"dev.davidsilva.music.audit", "dev.davidsilva.music.security"},
+        basePackages = {
+                "dev.davidsilva.music.audit",
+                "dev.davidsilva.music.security",
+                "dev.davidsilva.music.album",
+                "dev.davidsilva.music.genre"
+        },
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
 )
@@ -52,26 +55,31 @@ public class AppDbConfiguration {
 
     @Bean(name = "appDbDataSource")
     @Primary
-    public DataSource appDbDataSource() throws IOException, ClassNotFoundException {
-        final SQLiteDataSource dataSource = new SQLiteDataSource();
-        dataSource.setUrl(env.getProperty("app-db.url"));
-        // The following properties are supposed to help with proper transaction support
-        // Also, see this https://stackoverflow.com/questions/12605651/sqlite-and-foreign-key-support
-        SQLiteConfig config = dataSource.getConfig();
-        config.enforceForeignKeys(true);
-        config.setJournalMode(SQLiteConfig.JournalMode.WAL);
-        config.setSynchronous(SQLiteConfig.SynchronousMode.NORMAL);
-        dataSource.setConfig(config);
-        return dataSource;
+    public DataSource appDbDataSource() {
+        return DataSourceBuilder.create()
+                .url(env.getProperty("app-db.url"))
+                .username(env.getProperty("app-db.username"))
+                .password(env.getProperty("app-db.password"))
+                .driverClassName("org.postgresql.Driver")
+                .build();
     }
 
     @Bean(name = "appDbEntityManagerFactory")
     @Primary
     public LocalContainerEntityManagerFactoryBean appEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("appDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
-        propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
-        return builder.dataSource(dataSource).packages("dev.davidsilva.music.audit", "dev.davidsilva.music.security").properties(propertiesMap).build();
+        propertiesMap.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+        return builder.dataSource(dataSource)
+                .packages(
+                        "dev.davidsilva.music.audit",
+                        "dev.davidsilva.music.security",
+                        "dev.davidsilva.music.album",
+                        "dev.davidsilva.music.genre"
+                )
+                .properties(propertiesMap)
+                .build();
     }
+
 
     @Bean(name = "appDbEntityManager")
     @Primary

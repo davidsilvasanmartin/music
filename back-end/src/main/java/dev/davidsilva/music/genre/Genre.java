@@ -1,4 +1,4 @@
-package dev.davidsilva.music.genres;
+package dev.davidsilva.music.genre;
 
 import dev.davidsilva.music.album.Album;
 import jakarta.persistence.*;

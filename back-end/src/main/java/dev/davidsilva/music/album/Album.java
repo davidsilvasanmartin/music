@@ -1,6 +1,6 @@
 package dev.davidsilva.music.album;
 
-import dev.davidsilva.music.genres.Genre;
+import dev.davidsilva.music.genre.Genre;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

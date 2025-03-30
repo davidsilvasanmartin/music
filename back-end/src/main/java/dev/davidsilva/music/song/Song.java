@@ -1,6 +1,5 @@
 package dev.davidsilva.music.song;
 
-import dev.davidsilva.music.album.Album;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,14 +19,14 @@ class Song implements Serializable {
 
     private String path;
 
-    @ManyToOne()
-    @JoinColumn(
-            name = "album_id",
-            referencedColumnName = "id",
-            insertable = false,
-            updatable = false
-    )
-    private Album album;
+//    @ManyToOne()
+//    @JoinColumn(
+//            name = "album_id",
+//            referencedColumnName = "id",
+//            insertable = false,
+//            updatable = false
+//    )
+//    private Album album;
 
     private String title;
 

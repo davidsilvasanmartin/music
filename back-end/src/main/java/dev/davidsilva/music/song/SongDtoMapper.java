@@ -18,7 +18,7 @@ public class SongDtoMapper implements DtoMapper<SongDto, Song> {
         songDto.setId(song.getId());
         songDto.setTitle(song.getTitle());
         songDto.setLyrics(song.getLyrics());
-        songDto.setAlbum(albumToDto(song.getAlbum()));
+        // songDto.setAlbum(albumToDto(song.getAlbum()));
         return songDto;
     }
 
