@@ -16,7 +16,7 @@ public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
     public AlbumDto toDto(Album album) {
         AlbumDto albumDto = new AlbumDto();
         albumDto.setId(album.getId());
-        albumDto.setAlbumArtist(album.getAlbumArtist());
+        // albumDto.setAlbumArtist(album.getAlbumArtist());
         albumDto.setAlbum(album.getAlbum());
         // albumDto.setGenres(Arrays.stream(album.getGenre().split(",")).map(String::trim).toList());
         albumDto.setYear(album.getYear());

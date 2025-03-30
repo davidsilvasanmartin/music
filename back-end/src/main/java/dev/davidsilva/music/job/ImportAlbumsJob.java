@@ -2,10 +2,13 @@ package dev.davidsilva.music.job;
 
 import dev.davidsilva.music.album.Album;
 import dev.davidsilva.music.album.AlbumRepository;
+import dev.davidsilva.music.artist.Artist;
+import dev.davidsilva.music.artist.ArtistRepository;
 import dev.davidsilva.music.beets.album.BeetsAlbum;
 import dev.davidsilva.music.beets.album.BeetsAlbumRepository;
 import dev.davidsilva.music.genre.Genre;
 import dev.davidsilva.music.genre.GenreRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
@@ -23,27 +26,29 @@ import org.springframework.transaction.PlatformTransactionManager;
 import java.util.*;
 
 @Component
+@Slf4j
 public class ImportAlbumsJob {
     private final PlatformTransactionManager appDbTransactionManager;
-    private final PlatformTransactionManager beetsDbTransactionManager;
     private final AlbumRepository albumRepository;
+    private final GenreRepository genreRepository;
+    private final ArtistRepository artistRepository;
     private final JobRepository jobRepository;
     private final BeetsAlbumRepository beetsAlbumRepository;
-    private final GenreRepository genreRepository;
 
     public ImportAlbumsJob(
-            AlbumRepository albumRepository,
-            JobRepository jobRepository,
             @Qualifier("appDbTransactionManager") PlatformTransactionManager appDbTransactionManager,
-            @Qualifier("beetsDbTransactionManager") PlatformTransactionManager beetsDbTransactionManager,
-            BeetsAlbumRepository beetsAlbumRepository, GenreRepository genreRepository
+            AlbumRepository albumRepository,
+            GenreRepository genreRepository,
+            ArtistRepository artistRepository,
+            JobRepository jobRepository,
+            BeetsAlbumRepository beetsAlbumRepository
     ) {
-        this.albumRepository = albumRepository;
-        this.jobRepository = jobRepository;
         this.appDbTransactionManager = appDbTransactionManager;
-        this.beetsDbTransactionManager = beetsDbTransactionManager;
-        this.beetsAlbumRepository = beetsAlbumRepository;
+        this.albumRepository = albumRepository;
         this.genreRepository = genreRepository;
+        this.artistRepository = artistRepository;
+        this.jobRepository = jobRepository;
+        this.beetsAlbumRepository = beetsAlbumRepository;
     }
 
     private RepositoryItemReader<BeetsAlbum> reader() {
@@ -69,10 +74,31 @@ public class ImportAlbumsJob {
             album.setBeetsId(beetsAlbum.getId());
             album.setMbAlbumId(beetsAlbum.getMbAlbumId());
             album.setArtPath(beetsAlbum.getArtPath());
-            album.setAlbumArtist(beetsAlbum.getAlbumArtist());
             album.setAlbum(beetsAlbum.getAlbum());
             album.setYear(beetsAlbum.getYear());
 
+            // Artist
+            String artistName = beetsAlbum.getAlbumArtist();
+            String mbArtistId = beetsAlbum.getMbAlbumArtistId();
+            Artist artist;
+            // Sometimes an artist with a particular MB artist id has different names on different releases.
+            // This needs to be checked.
+            Optional<Artist> existingArtist = artistRepository.findByMbArtistId(mbArtistId);
+            if (existingArtist.isPresent()) {
+                artist = existingArtist.get();
+                if (!artistName.equals(artist.getName())) {
+                    log.warn("Artist name mismatch. DB name: \"{}\". New name: \"{}\"", artist.getName(), artistName);
+                }
+            } else {
+                artist = new Artist();
+                artist.setName(artistName);
+                artist.setMbArtistId(mbArtistId);
+                artist = artistRepository.save(artist); // Save and get ID
+            }
+            album.setArtist(artist);
+
+
+            // Genre
             if (beetsAlbum.getGenre() != null && !beetsAlbum.getGenre().isEmpty()) {
                 List<String> genreNames = Arrays.stream(beetsAlbum.getGenre().split(","))
                         .map(String::trim)
@@ -89,7 +115,6 @@ public class ImportAlbumsJob {
                             });
                     genres.add(genre);
                 }
-
                 album.setGenres(genres);
             }
 

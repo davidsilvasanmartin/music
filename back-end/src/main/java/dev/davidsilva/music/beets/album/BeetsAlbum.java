@@ -27,6 +27,9 @@ class BeetsAlbum implements Serializable {
     @Column(name = "albumartist")
     private String albumArtist;
 
+    @Column(name = "mb_albumartistid")
+    private String mbAlbumArtistId;
+
     @Column(name = "album")
     private String album;
 

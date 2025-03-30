@@ -1,4 +1,6 @@
 package dev.davidsilva.music.song;
 
-//public interface SongRepository extends JpaRepository<Song, Integer> {
-//}
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface SongRepository extends JpaRepository<Song, Integer> {
+}

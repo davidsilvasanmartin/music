@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Properties;
 
 /**
  * Configuration class for the database created by Beets that stores the music
@@ -39,7 +40,13 @@ public class BeetsDbConfiguration {
     public DataSource beetsDbDataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.sqlite.JDBC");
+        // TODO when I run the import albums job, there is some console error about the SQLite connection not being readonly:
+        //  Cannot change read-only flag after establishing a connection. Use SQLiteConfig#setReadOnly and SQLiteConfig.createConnection()
+        // String readonlyUrl = env.getProperty("beets-db.url") + "?mode=ro";
         dataSource.setUrl(env.getProperty("beets-db.url"));
+        Properties connectionProps = new Properties();
+        connectionProps.setProperty("ReadOnly", "true");
+        dataSource.setConnectionProperties(connectionProps);
         return dataSource;
     }
 
@@ -47,6 +54,12 @@ public class BeetsDbConfiguration {
     public LocalContainerEntityManagerFactoryBean beetsEntityManagerFactory(EntityManagerFactoryBuilder builder, @Qualifier("beetsDbDataSource") DataSource dataSource) {
         HashMap<String, String> propertiesMap = new HashMap<>();
         propertiesMap.put("hibernate.dialect", "org.hibernate.community.dialect.SQLiteDialect");
+
+        // Configure Hibernate for read-only operations
+        propertiesMap.put("hibernate.connection.readOnly", "true");
+        propertiesMap.put("hibernate.connection.handling_mode", "DELAYED_ACQUISITION_AND_HOLD");
+        propertiesMap.put("jakarta.persistence.lock.timeout", "0");
+
         return builder.dataSource(dataSource).packages(
                 "dev.davidsilva.music.beets.album",
                 "dev.davidsilva.music.beets.item"

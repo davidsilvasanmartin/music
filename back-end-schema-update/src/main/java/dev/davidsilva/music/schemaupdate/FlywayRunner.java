@@ -14,7 +14,7 @@ public class FlywayRunner implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         // Wipe the db first. This removes all data. Useful for development
-        // flyway.clean();
+        flyway.clean();
         flyway.migrate();
     }
 }

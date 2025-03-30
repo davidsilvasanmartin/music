@@ -29,7 +29,8 @@ import java.util.Objects;
                 "dev.davidsilva.music.security",
                 "dev.davidsilva.music.album",
                 "dev.davidsilva.music.genre",
-                "dev.davidsilva.music.song"
+                "dev.davidsilva.music.song",
+                "dev.davidsilva.music.artist"
         },
         entityManagerFactoryRef = "appDbEntityManagerFactory",
         transactionManagerRef = "appDbTransactionManager"
@@ -60,7 +61,8 @@ public class AppDbConfiguration {
                         "dev.davidsilva.music.security",
                         "dev.davidsilva.music.album",
                         "dev.davidsilva.music.genre",
-                        "dev.davidsilva.music.song"
+                        "dev.davidsilva.music.song",
+                        "dev.davidsilva.music.artist"
                 )
                 .persistenceUnit("appPersistenceUnit")
                 .properties(propertiesMap)

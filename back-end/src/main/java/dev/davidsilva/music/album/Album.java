@@ -1,12 +1,15 @@
 package dev.davidsilva.music.album;
 
+import dev.davidsilva.music.artist.Artist;
 import dev.davidsilva.music.genre.Genre;
+import dev.davidsilva.music.song.Song;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 @Setter
@@ -28,15 +31,17 @@ public class Album implements Serializable {
     @Column(name = "art_path")
     private String artPath;
 
-    @Column(name = "album_artist")
-    private String albumArtist;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "artist_id", referencedColumnName = "id")
+    private Artist artist;
+
 
     @Column(name = "album")
     private String album;
 
-//    @OneToMany(mappedBy = "album")
+    @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
 //    @JsonManagedReference
-//    private List<Song> songs;
+    private List<Song> songs;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
