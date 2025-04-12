@@ -1,6 +1,6 @@
 package dev.davidsilva.music.song;
 
-import dev.davidsilva.music.album.AlbumDtoMapper;
+import dev.davidsilva.music.album.AlbumMapper;
 import dev.davidsilva.music.album.AlbumRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ public class SongService {
     private final SongRepository songRepository;
     private final SongDtoMapper songDtoMapper;
     private final AlbumRepository albumRepository;
-    private final AlbumDtoMapper albumDtoMapper;
+    private final AlbumMapper albumMapper;
 
     public SongDto findSongById(int id) {
         Song song = songRepository.findById(id).orElseThrow(() ->
@@ -28,7 +28,7 @@ public class SongService {
 //        int albumId = song.getAlbum().getId();
 //        Album album = albumRepository.findById(albumId).orElseThrow(() ->
 //                new AlbumNotFoundException(albumId));
-//        return albumDtoMapper.toDto(album);
+//        return albumMapper.toDto(album);
 //    }
 
 //    public String getSongAlbumArtPathById(int id) {

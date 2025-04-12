@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class AlbumService {
     private final AlbumRepository albumRepository;
-    private final AlbumDtoMapper albumDtoMapper;
+    private final AlbumMapper albumMapper;
     private final ListMapper<Album, AlbumDto> listMapper;
 
-    public AlbumService(AlbumRepository albumRepository, AlbumDtoMapper albumDtoMapper) {
+    public AlbumService(AlbumRepository albumRepository, AlbumMapper albumMapper) {
         this.albumRepository = albumRepository;
-        this.albumDtoMapper = albumDtoMapper;
-        this.listMapper = (albums) -> albums.stream().map(albumDtoMapper::toDto).toList();
+        this.albumMapper = albumMapper;
+        this.listMapper = (albums) -> albums.stream().map(albumMapper::toDto).toList();
     }
 
     public PaginatedResponse<AlbumDto> findAll(AlbumSpecification specification, Pageable pageable) {
@@ -34,7 +34,7 @@ public class AlbumService {
         Album album = albumRepository.findById(id).orElseThrow(() ->
                 new AlbumNotFoundException(id)
         );
-        return albumDtoMapper.toDto(album);
+        return albumMapper.toDto(album);
     }
 
     public String findAlbumArtPathById(int id) {
