@@ -30,9 +30,7 @@ public class Song implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "album_id",
-            referencedColumnName = "id",
-            insertable = false,
-            updatable = false
+            referencedColumnName = "id"
     )
     private Album album;
 
