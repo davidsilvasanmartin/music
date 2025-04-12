@@ -3,11 +3,11 @@
     <div class="flex flex-row flex-wrap">
       <app-search
         class="grow"
-        [searchableFields]="['album', 'albumArtist', 'genre']"
+        [searchableFields]="['album', 'artist.name', 'genre']"
         [search]="params.search"
       ></app-search>
       <app-sort
-        [sortableFields]="['album', 'albumArtist', 'year']"
+        [sortableFields]="['album', 'artist.name', 'year']"
         [sort]="params.sort"
       ></app-sort>
     </div>

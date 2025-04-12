@@ -12,6 +12,11 @@ CREATE TABLE log_audit
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     description TEXT,
     FOREIGN KEY (user_id) REFERENCES auth_users (user_id)
+        -- TODO: the following line affects existing audit log entries that belong to a user that we delete. These entries
+        --  will be updated with NULL for the user id. Instead of doing this, it's better if we don't allow user deletion
+        --  (only the capability to disable them). Or, alternatively, save the username as a string and not as a foreign
+        --  key
+        ON DELETE SET NULL
 );
 
 CREATE INDEX idx_log_audit_user_id ON log_audit (user_id);

@@ -27,15 +27,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserService {
     private final UserRepository userRepository;
-    private final UserDtoMapper userDtoMapper;
+    private final UserMapper userMapper;
     private final ListMapper<User, UserDto> listMapper;
     private final RoleRepository roleRepository;
     private final AuditLogService auditLogService;
 
-    public UserService(UserRepository userRepository, UserDtoMapper userDtoMapper, RoleRepository roleRepository, AuditLogService auditLogService) {
+    public UserService(UserRepository userRepository, UserMapper userMapper, RoleRepository roleRepository, AuditLogService auditLogService) {
         this.userRepository = userRepository;
-        this.userDtoMapper = userDtoMapper;
-        this.listMapper = (users) -> users.stream().map(userDtoMapper::toDto).toList();
+        this.userMapper = userMapper;
+        this.listMapper = (users) -> users.stream().map(userMapper::toDto).toList();
         this.roleRepository = roleRepository;
         this.auditLogService = auditLogService;
     }
@@ -52,7 +52,7 @@ public class UserService {
 
     public UserDto findByUsername(String username) {
         return userRepository.findByUsername(username)
-                .map(userDtoMapper::toDto).orElseThrow(() -> new UserNotFoundException(username));
+                .map(userMapper::toDto).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     public void deleteByUsername(String username) {
@@ -118,7 +118,7 @@ public class UserService {
         }
 
         // TODO add validation logic here (or in the controller with Bean Validation)
-        User newUser = userDtoMapper.toEntity(user);
+        User newUser = userMapper.toEntity(user);
 
         try {
             newUser = userRepository.save(newUser);
@@ -131,7 +131,7 @@ public class UserService {
                     newUser,
                     null
             );
-            return userDtoMapper.toDto(newUser);
+            return userMapper.toDto(newUser);
         } catch (Exception e) {
             auditLogService.log(
                     "CREATE_FAILED",

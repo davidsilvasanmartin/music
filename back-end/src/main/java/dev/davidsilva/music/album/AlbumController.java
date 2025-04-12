@@ -28,7 +28,7 @@ public class AlbumController {
             // means that a 1 from the front-end is transformed into a 0 on the back-end
             @PageableDefault(page = 0, size = 10)
             @SortDefault.SortDefaults({
-                    @SortDefault(sort = "albumArtist", direction = Sort.Direction.ASC),
+                    @SortDefault(sort = "artist.name", direction = Sort.Direction.ASC),
                     @SortDefault(sort = "year", direction = Sort.Direction.ASC)
             })
             Pageable pageable,

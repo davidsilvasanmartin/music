@@ -1,12 +1,15 @@
 package dev.davidsilva.music.album;
 
-import dev.davidsilva.music.song.Song;
-import dev.davidsilva.music.song.SongDto;
+import dev.davidsilva.music.song.SongDtoMapper;
 import dev.davidsilva.music.utils.DtoMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
+    private final SongDtoMapper songDtoMapper;
+
     @Override
     public Album toEntity(AlbumDto dto) {
         throw new UnsupportedOperationException("Not supported yet");
@@ -16,18 +19,19 @@ public class AlbumDtoMapper implements DtoMapper<AlbumDto, Album> {
     public AlbumDto toDto(Album album) {
         AlbumDto albumDto = new AlbumDto();
         albumDto.setId(album.getId());
-        // albumDto.setAlbumArtist(album.getAlbumArtist());
+        albumDto.setAlbumArtist(album.getArtist() != null ? album.getArtist().getName() : null);
         albumDto.setAlbum(album.getAlbum());
-        // albumDto.setGenres(Arrays.stream(album.getGenre().split(",")).map(String::trim).toList());
         albumDto.setYear(album.getYear());
-        // albumDto.setSongs(album.getSongs().stream().map(this::toSongDto).toList());
+        albumDto.setSongs(album.getSongs().stream().map(songDtoMapper::toDtoWithoutAlbum).toList());
         return albumDto;
     }
 
-    private SongDto toSongDto(Song song) {
-        SongDto songDto = new SongDto();
-        songDto.setId(song.getId());
-        songDto.setTitle(song.getTitle());
-        return songDto;
+    public AlbumDto toDtoWithoutSongs(Album album) {
+        AlbumDto albumDto = new AlbumDto();
+        albumDto.setId(album.getId());
+        albumDto.setAlbumArtist(album.getArtist() != null ? album.getArtist().getName() : null);
+        albumDto.setAlbum(album.getAlbum());
+        albumDto.setYear(album.getYear());
+        return albumDto;
     }
 }

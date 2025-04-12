@@ -27,7 +27,7 @@ export class AlbumsComponent
   totalElements$: Observable<number>;
 
   constructor(private readonly _store: Store) {
-    super({ field: 'albumArtist', direction: SortDirection.ASC });
+    super({ field: 'artist.name', direction: SortDirection.ASC });
     this.albums$ = this._store.pipe(select(albumsSelectors.getAlbums));
     this.totalElements$ = this._store.pipe(
       select(albumsSelectors.getTotalElements),

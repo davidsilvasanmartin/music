@@ -17,7 +17,7 @@ export class AlbumComponent {
   getSearchQueryParamsForAlbumArtist(albumArtist: string): Params {
     return {
       search: this._searchMapperService.toQueryParam({
-        field: 'albumArtist',
+        field: 'artist.name',
         condition: 'contains',
         value: albumArtist,
       }),

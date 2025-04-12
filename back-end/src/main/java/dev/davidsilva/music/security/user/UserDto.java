@@ -17,7 +17,7 @@ public class UserDto {
     // Only used for creating or modifying a user
     private String password;
     private String email;
-    private boolean isEnabled;
+    private boolean enabled;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Set<RoleDto> roles;
