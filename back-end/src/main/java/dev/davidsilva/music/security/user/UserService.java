@@ -3,6 +3,7 @@ package dev.davidsilva.music.security.user;
 import dev.davidsilva.music.audit.AuditLogAction;
 import dev.davidsilva.music.audit.AuditLogService;
 import dev.davidsilva.music.security.role.Role;
+import dev.davidsilva.music.security.role.RoleDto;
 import dev.davidsilva.music.security.role.RoleNotFoundException;
 import dev.davidsilva.music.security.role.RoleRepository;
 import dev.davidsilva.music.utils.ListMapper;
@@ -11,6 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * When deleting users, check
@@ -104,41 +108,54 @@ public class UserService {
         return user.getPermissions().stream().anyMatch(permission -> permission.getName().equals("ADMIN"));
     }
 
-    public UserDto createUser(UserDto user) {
-        if (userRepository.existsByUsername(user.getUsername())) {
+    public UserDto createUser(UserDto userDto) {
+        if (userRepository.existsByUsername(userDto.getUsername())) {
             auditLogService.log(
                     "CREATE_FAILED",
                     "USER",
-                    user.getUsername(),
+                    userDto.getUsername(),
                     null,
-                    user,
+                    userDto,
                     "Failed to create user: username already exists"
             );
-            throw new UserAlreadyExistsException(user.getUsername());
+            throw new UserAlreadyExistsException(userDto.getUsername());
         }
 
-        // TODO add validation logic here (or in the controller with Bean Validation)
-        User newUser = userMapper.toEntity(user);
 
         try {
-            newUser = userRepository.save(newUser);
+            // TODO add validation logic here (or in the controller with Bean Validation)
+            User user = userMapper.toEntity(userDto);
+            // Handle roles separately
+            if (userDto.getRoles() != null && !userDto.getRoles().isEmpty()) {
+                Set<Role> roles = new HashSet<>();
+                for (RoleDto roleDto : userDto.getRoles()) {
+                    roles.add(
+                            roleRepository
+                                    .findByName(roleDto.getName())
+                                    .orElseThrow(() -> new RoleNotFoundException(roleDto.getName()))
+                    );
+                }
+                user.setRoles(roles);
+            }
+            User savedUser = userRepository.save(user);
+
             this.auditLogService.log(
                     AuditLogAction.CREATE.toString(),
                     "USER",
-                    String.valueOf(newUser.getId()),
+                    String.valueOf(savedUser.getId()),
                     null,
                     // TODO check what this logs
-                    newUser,
+                    savedUser,
                     null
             );
-            return userMapper.toDto(newUser);
+            return userMapper.toDto(savedUser);
         } catch (Exception e) {
             auditLogService.log(
                     "CREATE_FAILED",
                     "USER",
-                    user.getUsername(),
+                    userDto.getUsername(),
                     null,
-                    user,
+                    userDto,
                     "Failed to create user: " + e.getMessage()
             );
             throw new RuntimeException(e);
