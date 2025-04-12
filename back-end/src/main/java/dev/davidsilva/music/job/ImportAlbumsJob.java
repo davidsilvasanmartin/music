@@ -70,7 +70,9 @@ public class ImportAlbumsJob {
 
     private ItemProcessor<BeetsAlbum, Album> processor() {
         return beetsAlbum -> {
+            log.info("Processing album: {} (MB: {})", beetsAlbum.getAlbum(), beetsAlbum.getMbAlbumId());
             if (albumRepository.existsByBeetsId(beetsAlbum.getId())) {
+                log.info("Skipping already existing album: {} (Beets: {})", beetsAlbum.getAlbum(), beetsAlbum.getId());
                 // Return null to indicate that this item should be filtered out
                 // and not passed to the writer
                 return null;
@@ -87,15 +89,19 @@ public class ImportAlbumsJob {
             Artist artist = null;
             String artistName = beetsAlbum.getAlbumArtist();
             String mbArtistId = beetsAlbum.getMbAlbumArtistId();
+            log.info("Processing album artist: {} (MB: {}) for album: {} (MB: {})", artistName, mbArtistId, album.getAlbum(), album.getMbAlbumId());
             if (isPresent(artistName) && isPresent(mbArtistId)) {
                 artist = new Artist();
                 artist.setName(artistName);
                 artist.setMbArtistId(mbArtistId);
+            } else {
+                log.info("No artist found for album: {} (MB: {})", album.getAlbum(), album.getMbAlbumId());
             }
             album.setArtist(artist);
 
             // Genres
             if (isPresent(beetsAlbum.getGenre())) {
+                log.info("Processing album genres: {} for album: {} (MB: {})", beetsAlbum.getGenre(), album.getAlbum(), album.getMbAlbumId());
                 Set<Genre> genres = Arrays.stream(beetsAlbum.getGenre().split(","))
                         .map(String::trim)
                         .filter(name -> !name.isEmpty())
@@ -106,12 +112,15 @@ public class ImportAlbumsJob {
                         })
                         .collect(Collectors.toSet());
                 album.setGenres(genres);
+            } else {
+                log.info("No genres found for album: {} (MB: {})", album.getAlbum(), album.getMbAlbumId());
             }
 
             // Songs
             if (beetsAlbum.getSongs() != null) {
                 List<Song> songs = beetsAlbum.getSongs().stream()
                         .map(beetsItem -> {
+                            log.info("Processing song: {} (MB: {}) for album: {} (MB: {})", beetsItem.getTitle(), beetsItem.getMbTrackId(), album.getAlbum(), album.getMbAlbumId());
                             Song song = new Song();
                             song.setBeetsId(beetsItem.getId());
                             song.setMbTrackId(beetsItem.getMbTrackId());
@@ -128,7 +137,7 @@ public class ImportAlbumsJob {
                         .collect(Collectors.toList());
                 album.setSongs(songs);
             } else {
-                log.warn("No songs found for album: {}", album.getAlbum());
+                log.warn("No songs found for album: {} (MB: {})", album.getAlbum(), album.getMbAlbumId());
             }
 
 
@@ -155,6 +164,7 @@ public class ImportAlbumsJob {
                             }
                             album.setArtist(existingArtist);
                         } else {
+                            log.info("Saving new artist: \"{}\" (MB: {}) for album: \"{}\" (MB: {})", albumArtistName, albumArtist.getMbArtistId(), album.getAlbum(), album.getMbAlbumId());
                             album.setArtist(artistRepository.save(albumArtist));
                         }
                     }
@@ -167,6 +177,7 @@ public class ImportAlbumsJob {
                             if (existingGenreOptional.isPresent()) {
                                 processedGenres.add(existingGenreOptional.get());
                             } else {
+                                log.info("Saving new genre: \"{}\" for album: \"{}\" (MB: {})", genre.getName(), album.getAlbum(), album.getMbAlbumId());
                                 processedGenres.add(genreRepository.save(genre));
                             }
                         }
@@ -175,6 +186,7 @@ public class ImportAlbumsJob {
 
                     // Save the album and get the id (needed for songs)
                     Album savedAlbum = albumRepository.save(album);
+                    log.info("Saved new album: \"{}\" (MB: {}, id: {})", album.getAlbum(), album.getMbAlbumId(), album.getId());
 
                     // Songs
                     if (savedAlbum.getSongs() != null) {
@@ -182,6 +194,7 @@ public class ImportAlbumsJob {
                             // The album is already set on the song in the processor
                             // But we need to make sure it's the saved album instance with the ID
                             song.setAlbum(savedAlbum);
+                            log.info("Saving new song: \"{}\" (MB: {}) for album: \"{}\" (MB: {})", song.getTitle(), song.getMbTrackId(), savedAlbum.getAlbum(), savedAlbum.getMbAlbumId());
                             songRepository.save(song);
                         }
                     }
