@@ -32,14 +32,14 @@ public class TestSearch extends TestSuite {
 
     @Test
     void searchAlbumsWithBadCondition() {
-        givenLoggedInAsAdmin().when().get("albums?search=albumArtist:" + nonExistent + ":value").then()
+        givenLoggedInAsAdmin().when().get("albums?search=album:" + nonExistent + ":value").then()
                 .statusCode(HttpStatus.SC_BAD_REQUEST).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("invalid search operation:"));
     }
 
     @Test
-    void searchAlbumsByNonExistentAlbumArtist() {
-        givenLoggedInAsAdmin().when().get("albums?search=albumArtist:eq:" + nonExistent).then()
+    void searchAlbumsByNonExistentAlbum() {
+        givenLoggedInAsAdmin().when().get("albums?search=album:eq:" + nonExistent).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(0));
     }

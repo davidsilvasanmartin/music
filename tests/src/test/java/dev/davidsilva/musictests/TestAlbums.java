@@ -40,8 +40,8 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void getAlbumsWithSort() {
-        givenLoggedInAsAdmin().when().get("albums?sort=albumArtist,desc").then()
+    void getAlbumsWithSortByArtistName() {
+        givenLoggedInAsAdmin().when().get("albums?sort=artist.name,desc").then()
                 .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(1))
                 .body("size", equalTo(10)).body("content.size()", equalTo(10))
                 .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"));
@@ -69,9 +69,10 @@ public class TestAlbums extends TestSuite {
                 .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }
 
+    // TODO NOT WORKING
     @Test
     void searchAlbumsByArtist() {
-        givenLoggedInAsAdmin().when().get("albums?search=albumArtist:eq:" + albumArtist).then()
+        givenLoggedInAsAdmin().when().get("albums?search=artist.name:eq:" + albumArtist).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].albumArtist", equalTo(albumArtist));
     }
@@ -90,9 +91,10 @@ public class TestAlbums extends TestSuite {
                 .body("content.size()", greaterThan(0)).body("content[0].year", equalTo(albumYear));
     }
 
+    // TODO NOT WORKING
     @Test
     void searchAlbumsByGenre() {
-        givenLoggedInAsAdmin().when().get("albums?search=genre:contains:" + albumGenre).then()
+        givenLoggedInAsAdmin().when().get("albums?search=genre.name:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
     }
