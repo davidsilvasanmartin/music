@@ -28,8 +28,6 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
             List<Predicate> predicates = new ArrayList<>();
 
             // TODO need to understand what kind of sorcery is this
-            // TODO this code is duplicating items. For example, an album with genres with names "House" and "Progressive House"
-            //  will appear twice on the list when we search by genres:contains:House
             for (SearchCriteria criteria : this.criteria) {
                 String key = criteria.key();
 
