@@ -7,6 +7,8 @@ import org.testng.annotations.Test;
 import static dev.davidsilva.musictests.Login.givenLoggedInAsAdmin;
 import static org.hamcrest.Matchers.*;
 
+// TODO album with multiple genres
+
 public class TestAlbums extends TestSuite {
     final int albumId = 1;
     final int nonExistentAlbumId = 99999999;
@@ -63,13 +65,12 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void getNonExistentAlbumById() {
+    void getAlbumByNonExistentId() {
         givenLoggedInAsAdmin().when().get("albums/" + nonExistentAlbumId).then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
                 .body("message", containsStringIgnoringCase("album with id " + nonExistentAlbumId + " was not found"));
     }
 
-    // TODO NOT WORKING
     @Test
     void searchAlbumsByArtist() {
         givenLoggedInAsAdmin().when().get("albums?search=artist.name:eq:" + albumArtist).then()
@@ -92,11 +93,32 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsByGenre() {
+    void searchAlbumsByGenreContains() {
         givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
-                .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
-        // TODO here we are also getting the album that has genre "House 10", this could be added to the test
+                .body("content.size()", equalTo(2))
+                .body("content[0].genres.toString()", containsString(albumGenre))
+                // The album with "House 10" genre is also found because it contains "House 1"
+                .body("content[1].genres.toString()", containsString("House 10"));
+    }
+
+    @Test
+    void searchAlbumsByGenreContainsSortByArtist() {
+        givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:e&sort=artist.name,desc&size=20").then()
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
+                .body("content.size()", equalTo(11))
+                // Only check the first 2 albums, to verify the sort
+                .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"))
+                .body("content[1].albumArtist", equalTo(albumArtist));
+    }
+
+    @Test
+    void searchAlbumsByArtistContainsSortByGenre() {
+        givenLoggedInAsAdmin().when().get("albums?search=artist.name:contains:e&sort=genres.name,desc&size=20").then()
+                .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
+                .body("content.size()", equalTo(11))
+                .body("content[0].genres.toString()", containsString("House 9"))
+                .body("content[1].genres.toString()", containsString("House 8"));
     }
 
     @Test
@@ -117,6 +139,6 @@ public class TestAlbums extends TestSuite {
 
     @Test
     public void getAlbumWithoutAlbumArtAlbumArt() {
-        // todo
+        // TODO
     }
 }
