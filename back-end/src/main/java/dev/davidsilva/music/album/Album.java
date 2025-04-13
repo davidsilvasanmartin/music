@@ -40,7 +40,7 @@ public class Album implements Serializable {
     private String album;
 
     @OneToMany(mappedBy = "album", fetch = FetchType.EAGER)
-//    @JsonManagedReference
+    @OrderBy("discNumber ASC, trackNumber ASC")
     private List<Song> songs;
 
     @ManyToMany(fetch = FetchType.EAGER)

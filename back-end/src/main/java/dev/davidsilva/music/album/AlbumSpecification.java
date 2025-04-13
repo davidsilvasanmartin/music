@@ -89,16 +89,16 @@ public class AlbumSpecification extends AbstractSpecification<Album> {
             ```
          */
 
-        // TODO need to see what happens with songs (search by song name for example?)
-
         if (query.getResultType() != null && query.getResultType().equals(Album.class)) {
             // For select queries, use fetch joins for performance and to fix the bug explained above
             root.fetch("artist", JoinType.LEFT);
             root.fetch("genres", JoinType.LEFT);
+            root.fetch("songs", JoinType.LEFT);
         } else {
             // For count queries or projections, use regular joins
             root.join("artist", JoinType.LEFT);
             root.join("genres", JoinType.LEFT);
+            root.join("songs", JoinType.LEFT);
         }
 
         return super.toPredicate(root, query, builder);
