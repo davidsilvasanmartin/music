@@ -27,11 +27,23 @@ public abstract class AbstractSpecification<T> implements Specification<T> {
         try {
             List<Predicate> predicates = new ArrayList<>();
 
+            // TODO need to understand what kind of sorcery is this
+            // TODO this code is duplicating items. For example, an album with genres with names "House" and "Progressive House"
+            //  will appear twice on the list when we search by genres:contains:House
             for (SearchCriteria criteria : this.criteria) {
+                String key = criteria.key();
+
+                String[] parts = key.split("\\.");
+                jakarta.persistence.criteria.Path<?> path = root;
+
+                for (String part : parts) {
+                    path = path.get(part);
+                }
+
                 switch (criteria.operation()) {
                     case CONTAINS ->
-                            predicates.add(builder.like(builder.lower(root.get(criteria.key())), "%" + criteria.value().toLowerCase() + "%"));
-                    case EQUALS -> predicates.add(builder.equal(root.get(criteria.key()), criteria.value()));
+                            predicates.add(builder.like(builder.lower(path.as(String.class)), "%" + criteria.value().toLowerCase() + "%"));
+                    case EQUALS -> predicates.add(builder.equal(path, criteria.value()));
                 }
             }
 

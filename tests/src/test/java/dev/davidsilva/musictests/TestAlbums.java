@@ -91,12 +91,12 @@ public class TestAlbums extends TestSuite {
                 .body("content.size()", greaterThan(0)).body("content[0].year", equalTo(albumYear));
     }
 
-    // TODO NOT WORKING
     @Test
     void searchAlbumsByGenre() {
-        givenLoggedInAsAdmin().when().get("albums?search=genre.name:contains:" + albumGenre).then()
+        givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", greaterThan(0)).body("content[0].genres.toString()", containsString(albumGenre));
+        // TODO here we are also getting the album that has genre "House 10", this could be added to the test
     }
 
     @Test
