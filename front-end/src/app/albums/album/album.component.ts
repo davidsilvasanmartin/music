@@ -28,7 +28,7 @@ export class AlbumComponent {
   getSearchQueryParamsForGenre(genre: string): Params {
     return {
       search: this._searchMapperService.toQueryParam({
-        field: 'genre',
+        field: 'genre.name',
         condition: 'contains',
         value: genre,
       }),

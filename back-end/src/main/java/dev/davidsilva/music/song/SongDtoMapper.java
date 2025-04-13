@@ -1,12 +1,13 @@
 package dev.davidsilva.music.song;
 
-import dev.davidsilva.music.album.Album;
-import dev.davidsilva.music.album.AlbumDto;
 import dev.davidsilva.music.utils.DtoMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class SongDtoMapper implements DtoMapper<SongDto, Song> {
+
     @Override
     public Song toEntity(SongDto dto) {
         throw new UnsupportedOperationException("Not supported yet");
@@ -18,15 +19,15 @@ public class SongDtoMapper implements DtoMapper<SongDto, Song> {
         songDto.setId(song.getId());
         songDto.setTitle(song.getTitle());
         songDto.setLyrics(song.getLyrics());
-        // songDto.setAlbum(albumToDto(song.getAlbum()));
+//        songDto.setAlbum(albumDtoMapper.toDtoWithoutSongs(song.getAlbum()));
         return songDto;
     }
 
-    private AlbumDto albumToDto(Album album) {
-        AlbumDto albumDto = new AlbumDto();
-        albumDto.setId(album.getId());
-        // albumDto.setAlbumArtist(album.getAlbumArtist());
-        albumDto.setAlbum(album.getAlbum());
-        return albumDto;
+    public SongDto toDtoWithoutAlbum(Song song) {
+        SongDto songDto = new SongDto();
+        songDto.setId(song.getId());
+        songDto.setTitle(song.getTitle());
+        songDto.setLyrics(song.getLyrics());
+        return songDto;
     }
 }

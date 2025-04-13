@@ -17,7 +17,7 @@ public class AlbumService {
     public AlbumService(AlbumRepository albumRepository, AlbumMapper albumMapper) {
         this.albumRepository = albumRepository;
         this.albumMapper = albumMapper;
-        this.listMapper = (albums) -> albums.stream().map(albumMapper::toDto).toList();
+        this.listMapper = albumMapper::toAlbumDto;
     }
 
     public PaginatedResponse<AlbumDto> findAll(AlbumSpecification specification, Pageable pageable) {
@@ -34,7 +34,7 @@ public class AlbumService {
         Album album = albumRepository.findById(id).orElseThrow(() ->
                 new AlbumNotFoundException(id)
         );
-        return albumMapper.toDto(album);
+        return albumMapper.toAlbumDto(album);
     }
 
     public String findAlbumArtPathById(int id) {
