@@ -11,6 +11,7 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Data
 public class ArtistDto implements Serializable {
+    private int id;
     private String name;
     private String mbArtistId;
     private List<AlbumDto> albums;
