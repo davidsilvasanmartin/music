@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 import static dev.davidsilva.musictests.Login.givenLoggedInAsAdmin;
 import static org.hamcrest.Matchers.*;
 
-// TODO update tests when changing signature for Genre, Artist
+// TODO update tests when changing signature for Genre
 
 public class TestAlbums extends TestSuite {
     final int albumId = 1;
@@ -46,7 +46,7 @@ public class TestAlbums extends TestSuite {
         givenLoggedInAsAdmin().when().get("albums?sort=artist.name,desc").then()
                 .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON).body("page", equalTo(1))
                 .body("size", equalTo(10)).body("content.size()", equalTo(10))
-                .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"));
+                .body("content[0].artist.name", equalTo("Mutant Blessed Birds"));
     }
 
     @Test
@@ -83,7 +83,7 @@ public class TestAlbums extends TestSuite {
         givenLoggedInAsAdmin().when().get("albums/" + albumId).then()
                 .statusCode(HttpStatus.SC_OK).contentType(ContentType.JSON)
                 .body("id", equalTo(albumId))
-                .body("albumArtist", equalTo(albumArtist))
+                .body("artist.name", equalTo(albumArtist))
                 .body("album", equalTo(album))
                 .body("year", equalTo(albumYear))
                 .body("genres.size()", equalTo(1))
@@ -109,10 +109,10 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsByArtist() {
+    void searchAlbumsByArtistName() {
         givenLoggedInAsAdmin().when().get("albums?search=artist.name:eq:" + albumArtist).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
-                .body("content.size()", greaterThan(0)).body("content[0].albumArtist", equalTo(albumArtist));
+                .body("content.size()", greaterThan(0)).body("content[0].artist.name", equalTo(albumArtist));
     }
 
     @Test
@@ -130,7 +130,7 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsByGenreContains() {
+    void searchAlbumsByGenreNameContains() {
         givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:" + albumGenre).then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(2))
@@ -140,17 +140,17 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsByGenreContainsSortByArtist() {
+    void searchAlbumsByGenreNameContainsSortByArtistName() {
         givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:e&sort=artist.name,desc&size=20").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(11))
                 // Only check the first 2 albums, to verify the sort
-                .body("content[0].albumArtist", equalTo("Mutant Blessed Birds"))
-                .body("content[1].albumArtist", equalTo(albumArtist));
+                .body("content[0].artist.name", equalTo("Mutant Blessed Birds"))
+                .body("content[1].artist.name", equalTo(albumArtist));
     }
 
     @Test
-    void searchAlbumsByGenreContainsSortBySongTitle() {
+    void searchAlbumsByGenreNameContainsSortBySongTitle() {
         givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:e&sort=songs.title,asc&size=20").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(11))
@@ -167,7 +167,7 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsByArtistContainsSortByGenre() {
+    void searchAlbumsByArtistNameContainsSortByGenreName() {
         givenLoggedInAsAdmin().when().get("albums?search=artist.name:contains:e&sort=genres.name,asc&size=20").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(11))
@@ -176,7 +176,7 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsBySongTitleSortByArtist() {
+    void searchAlbumsBySongTitleSortByArtistName() {
         givenLoggedInAsAdmin().when().get("albums?search=songs.title:eq:" + albumFirstSongTitle + "&sort=artist.name,desc").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(1))
@@ -184,7 +184,7 @@ public class TestAlbums extends TestSuite {
     }
 
     @Test
-    void searchAlbumsBySongTitleSortByGenre() {
+    void searchAlbumsBySongTitleSortByGenreName() {
         givenLoggedInAsAdmin().when().get("albums?search=songs.title:eq:" + albumFirstSongTitle + "&sort=genres.name,desc").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(1))

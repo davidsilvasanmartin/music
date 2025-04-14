@@ -12,9 +12,10 @@ public interface SongMapper {
     @Mapping(target = "album", qualifiedByName = "toAlbumDtoBasic")
     SongDto toSongDto(Song entity);
 
+    // TODO include artist here ??
     @Named("toAlbumDtoBasic")
     @Mapping(target = "id", source = "id")
-    @Mapping(target = "albumArtist", source = "artist.name")
+//    @Mapping(target = "albumArtist", source = "artist.name")
     @Mapping(target = "album", source = "album")
     @BeanMapping(ignoreByDefault = true)
     AlbumDto toAlbumDtoBasic(Album entity);
