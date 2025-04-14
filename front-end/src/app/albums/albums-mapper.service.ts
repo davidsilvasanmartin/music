@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { ApiService } from '../api/api.service';
-import { Album } from './album';
-import { AlbumDto } from './album-dto';
+import type { Artist } from '../artists/artist';
+import type { ArtistDto } from '../artists/artist-dto';
+import type { Album } from './album';
+import type { AlbumDto } from './album-dto';
 
 @Injectable({ providedIn: 'root' })
 export class AlbumsMapper {
@@ -14,12 +16,19 @@ export class AlbumsMapper {
       artPathUrl: this._apiService.createApiUrl(
         `/albums/${albumDto.id}/albumArt`,
       ),
-      albumArtist: albumDto.albumArtist,
+      artist: this.fromArtistDto(albumDto.artist),
       album: albumDto.album,
       genres: albumDto.genres,
       year: albumDto.year,
       // TODO
       songs: albumDto.songs,
+    };
+  }
+
+  fromArtistDto(artistDto: ArtistDto): Artist {
+    return {
+      id: artistDto.id,
+      name: artistDto.name,
     };
   }
 }

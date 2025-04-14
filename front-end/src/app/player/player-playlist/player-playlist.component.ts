@@ -66,7 +66,7 @@ import type { Song } from '../../songs/song';
                           [routerLink]="['.']"
                           class="text-blue-600 hover:text-blue-400 hover:underline"
                         >
-                          {{ song.album?.albumArtist }}</a
+                          {{ song.album?.artist?.name }}</a
                         >
                         <span>/</span>
                         <a

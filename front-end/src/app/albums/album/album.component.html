@@ -11,13 +11,11 @@
     >
       <div class="flex flex-row flex-wrap items-center gap-2">
         <a
-          [queryParams]="
-            getSearchQueryParamsForAlbumArtist(album().albumArtist)
-          "
+          [queryParams]="getSearchQueryParamsForAlbumArtist(album().artist)"
           [routerLink]="['.']"
           class="text-xl text-blue-600 hover:text-blue-400 hover:underline"
           queryParamsHandling="merge"
-          >{{ album().albumArtist }}</a
+          >{{ album().artist.name }}</a
         >
         <span class="text-xl">/</span>
         <a

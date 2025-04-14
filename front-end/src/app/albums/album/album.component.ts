@@ -1,8 +1,9 @@
 import { Component, input, signal } from '@angular/core';
 import { Params } from '@angular/router';
 
+import type { Artist } from '../../artists/artist';
 import { SearchMapperService } from '../../ui/search';
-import { Album } from '../album';
+import type { Album } from '../album';
 
 @Component({
   selector: 'app-album',
@@ -14,12 +15,12 @@ export class AlbumComponent {
 
   constructor(private readonly _searchMapperService: SearchMapperService) {}
 
-  getSearchQueryParamsForAlbumArtist(albumArtist: string): Params {
+  getSearchQueryParamsForAlbumArtist(albumArtist: Artist): Params {
     return {
       search: this._searchMapperService.toQueryParam({
         field: 'artist.name',
         condition: 'contains',
-        value: albumArtist,
+        value: albumArtist.name,
       }),
       page: 1,
     };

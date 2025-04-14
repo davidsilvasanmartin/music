@@ -1,9 +1,10 @@
-import { Song } from '../songs/song';
+import type { ArtistDto } from '../artists/artist-dto';
+import type { Song } from '../songs/song';
 
 export interface AlbumDto {
   id: number;
   artPath: string;
-  albumArtist: string;
+  artist: ArtistDto;
   album: string;
   genres: string[];
   year: number;
