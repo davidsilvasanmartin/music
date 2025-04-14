@@ -102,7 +102,7 @@ public class ImportAlbumsJob {
             // Genres
             if (isPresent(beetsAlbum.getGenre())) {
                 log.info("Processing album genres: {} for album: {} (MB: {})", beetsAlbum.getGenre(), album.getAlbum(), album.getMbAlbumId());
-                List<Genre> genres = Arrays.stream(beetsAlbum.getGenre().split(","))
+                Set<Genre> genres = Arrays.stream(beetsAlbum.getGenre().split(","))
                         .map(String::trim)
                         .filter(name -> !name.isEmpty())
                         .map(genreName -> {
@@ -110,7 +110,7 @@ public class ImportAlbumsJob {
                             g.setName(genreName);
                             return g;
                         })
-                        .toList();
+                        .collect(Collectors.toSet());
                 album.setGenres(genres);
             } else {
                 log.info("No genres found for album: {} (MB: {})", album.getAlbum(), album.getMbAlbumId());
@@ -170,7 +170,7 @@ public class ImportAlbumsJob {
                     }
 
                     // Genres
-                    List<Genre> processedGenres = new ArrayList<>();
+                    Set<Genre> processedGenres = new HashSet<>();
                     if (album.getGenres() != null) {
                         for (Genre genre : album.getGenres()) {
                             Optional<Genre> existingGenreOptional = genreRepository.findByNameIgnoreCase(genre.getName());

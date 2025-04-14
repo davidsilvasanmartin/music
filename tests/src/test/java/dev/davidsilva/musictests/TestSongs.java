@@ -26,7 +26,7 @@ public class TestSongs extends TestSuite {
                 .statusCode(200).and().contentType(ContentType.JSON)
                 .and().body("id", equalTo(m4aSongId))
                 .and().body("album.id", equalTo(m4aSongAlbumId))
-                .and().body("album.albumArtist", equalTo(m4aSongAlbumArtist))
+                .and().body("album.artist.name", equalTo(m4aSongAlbumArtist))
                 .and().body("album.album", equalTo(m4aSongAlbumTitle))
                 .and().body("title", equalTo(m4aSongTitle))
                 .and().body("lyrics", equalTo(m4aSongLyrics));

@@ -8,10 +8,7 @@ import lombok.Data;
 @Data
 public class SongDto {
     private int id;
-
     private AlbumDto album;
-
     private String title;
-
     private String lyrics;
 }
