@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 
 @Setter
 @Getter
@@ -22,7 +22,8 @@ public class Genre {
     private String name;
 
     @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
-    private Set<Album> albums;
+    @OrderBy("year DESC")
+    private List<Album> albums;
 
     @Column(name = "created_at", insertable = false)
     private LocalDateTime createdAt;

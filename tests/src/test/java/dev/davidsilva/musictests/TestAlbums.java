@@ -87,7 +87,7 @@ public class TestAlbums extends TestSuite {
                 .body("album", equalTo(album))
                 .body("year", equalTo(albumYear))
                 .body("genres.size()", equalTo(1))
-                .body("genres", hasItem(albumGenre))
+                .body("genres[0].name", equalTo(albumGenre))
                 .body("songs.size()", equalTo(albumNumberOfSongs))
                 // Songs are sorted by discNumber and then by trackNumber. Have a look at the test Beets
                 // database to understand the following sort.
