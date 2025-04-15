@@ -56,7 +56,9 @@ public class AlbumController {
         HttpHeaders headers = new HttpHeaders();
         headers.setCacheControl(CacheControl.maxAge(Duration.ofDays(60)).cachePublic());
         FileSystemResource resource = new FileSystemResource(albumService.findAlbumArtPathById(id));
-        // TODO: album.getArtPath() can be null
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new AlbumArtNotFoundException(id);
+        }
         return new ResponseEntity<>(resource, headers, HttpStatus.OK);
     }
 }

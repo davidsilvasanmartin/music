@@ -154,7 +154,7 @@ public class TestAlbums extends TestSuite {
         givenLoggedInAsAdmin().when().get("albums?search=genres.name:contains:e&sort=songs.title,asc&size=20").then()
                 .statusCode(HttpStatus.SC_OK).and().contentType(ContentType.JSON)
                 .body("content.size()", equalTo(11))
-                // The first album is the only one that has songs...
+                // The first album has 4 songs...
                 .body("content[0].album", equalTo(album))
                 .body("content[0].songs.size()", equalTo(albumNumberOfSongs))
                 // ... And its songs are sorted by title
@@ -162,8 +162,10 @@ public class TestAlbums extends TestSuite {
                 .body("content[0].songs[1].title", equalTo("Song m4a"))
                 .body("content[0].songs[2].title", equalTo("Song mp3"))
                 .body("content[0].songs[3].title", equalTo("Song ogg"))
+                // This other album has a single song titled "Song for...", which gets sorted after "Song flac"
+                .body("content[1].album", equalTo("Album 10 NoAlbumArt"))
                 // The rest of the albums, I'm not sure how they are sorted
-                .body("content[1].album", equalTo("Album 2"));
+                .body("content[2].album", equalTo("Album 2"));
     }
 
     @Test
@@ -209,6 +211,8 @@ public class TestAlbums extends TestSuite {
 
     @Test
     public void getAlbumWithoutAlbumArtAlbumArt() {
-        // TODO
+        givenLoggedInAsAdmin().accept("image/*,*/*").when().get("albums/10/albumArt").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
+                .body("message", containsStringIgnoringCase("album art not found for album with id 10"));
     }
 }

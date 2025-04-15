@@ -53,6 +53,13 @@ public class TestSongs extends TestSuite {
     }
 
     @Test
+    public void getSongWithoutAlbumArtAlbumArt() {
+        givenLoggedInAsAdmin().accept("image/*,*/*").when().get("songs/5/albumArt").then()
+                .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
+                .body("message", containsStringIgnoringCase("album art not found for song with id 5"));
+    }
+
+    @Test
     public void playM4aSong() {
         // Below is the Accept header that Firefox uses for <audio> elements
         givenLoggedInAsAdmin().accept("audio/*,*/*")
