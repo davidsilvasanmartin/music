@@ -5,6 +5,4 @@ export interface ArtistDto {
   name: string;
   mbArtistId: string;
   albums?: AlbumDto[];
-  createdAt?: string;
-  updatedAt?: number;
 }
