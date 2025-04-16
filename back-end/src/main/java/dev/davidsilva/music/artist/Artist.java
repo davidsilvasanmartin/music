@@ -25,7 +25,8 @@ public class Artist implements Serializable {
     @Column(name = "mb_artist_id")
     private String mbArtistId;
 
-    @OneToMany(mappedBy = "artist")
+    @OneToMany(mappedBy = "artist", fetch = FetchType.LAZY)
+    @OrderBy("year DESC")
     private List<Album> albums;
 
     @Column(name = "created_at", insertable = false)

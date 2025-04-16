@@ -7,8 +7,6 @@ import org.testng.annotations.Test;
 import static dev.davidsilva.musictests.Login.givenLoggedInAsAdmin;
 import static org.hamcrest.Matchers.*;
 
-// TODO update tests when changing signature for Genre
-
 public class TestAlbums extends TestSuite {
     final int albumId = 1;
     final int nonExistentAlbumId = 99999999;
