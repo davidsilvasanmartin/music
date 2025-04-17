@@ -23,7 +23,7 @@ export const loadAlbumsSuccess = createAction(
 
 export const loadAlbumsFail = createAction(
   AlbumsActionTypes.loadAlbumsFail,
-  props<{ error: any }>(),
+  props<{ error: unknown }>(),
 );
 
 export const reset = createAction(AlbumsActionTypes.reset);

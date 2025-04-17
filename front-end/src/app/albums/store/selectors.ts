@@ -1,12 +1,12 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { AlbumsState } from './state';
+import type { AlbumsState } from './state';
 
 export const getAlbumsState = createFeatureSelector<AlbumsState>('albums');
 
 export const getAlbums = createSelector(
   getAlbumsState,
-  (state: AlbumsState) => state.albums.data?.content,
+  (state: AlbumsState) => state.albums.data?.content || [],
 );
 
 export const getTotalElements = createSelector(

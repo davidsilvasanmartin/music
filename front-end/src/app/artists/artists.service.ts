@@ -9,23 +9,23 @@ import type { PageableResource } from '../api/api-pageable-resource-request';
 import type { PaginationSortSearchParams } from '../ui/pagination-sort-search';
 import { SearchMapperService } from '../ui/search';
 import { SortMapperService } from '../ui/sort';
-import type { Album } from './album';
-import type { AlbumDto } from './album-dto';
-import { AlbumsMapperService } from './albums-mapper.service';
+import type { Artist } from './artist';
+import type { ArtistDto } from './artist-dto';
+import { ArtistsMapper } from './artists-mapper.service';
 
 @Injectable({ providedIn: 'root' })
-export class AlbumsService {
+export class ArtistsService {
   constructor(
     private readonly _http: HttpClient,
-    private readonly _albumsMapper: AlbumsMapperService,
+    private readonly _artistsMapper: ArtistsMapper,
     private readonly _apiService: ApiService,
     private readonly _sortMapperService: SortMapperService,
     private readonly _searchMapperService: SearchMapperService,
   ) {}
 
-  getAlbums(
+  getArtists(
     params: PaginationSortSearchParams,
-  ): Observable<PageableResource<Album[]>> {
+  ): Observable<PageableResource<Artist[]>> {
     const paramsObject: Record<string, string | number> = {
       page: params.page,
       size: params.size,
@@ -38,17 +38,17 @@ export class AlbumsService {
     }
 
     return this._http
-      .get<PageableResource<AlbumDto[]>>(
-        this._apiService.createApiUrl('albums'),
+      .get<PageableResource<ArtistDto[]>>(
+        this._apiService.createApiUrl('artists'),
         {
           params: new HttpParams({ fromObject: paramsObject }),
         },
       )
       .pipe(
-        map((albumsResource: PageableResource<AlbumDto[]>) => ({
-          ...albumsResource,
-          content: albumsResource.content.map((a: AlbumDto) =>
-            this._albumsMapper.fromDto(a),
+        map((artistsResource: PageableResource<ArtistDto[]>) => ({
+          ...artistsResource,
+          content: artistsResource.content.map((a: ArtistDto) =>
+            this._artistsMapper.fromDto(a),
           ),
         })),
       );

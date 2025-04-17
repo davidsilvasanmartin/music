@@ -1,0 +1,53 @@
+<div class="flex w-full flex-col flex-nowrap gap-4">
+  @if (params$ | async; as params) {
+    <div class="flex flex-row flex-wrap">
+      <app-search
+        class="grow"
+        [searchableFields]="['name', 'mbArtistId']"
+        [search]="params.search"
+      ></app-search>
+      <app-sort
+        [sortableFields]="['name', 'mbArtistId']"
+        [sort]="params.sort"
+      ></app-sort>
+    </div>
+  }
+
+  <!--
+    TODO
+      - Make sticky work well (right now it does not)
+      - Remove the other CSS classes
+      - MusicBrainz link, with icon if possible
+      - Add "total discs" counter
+      - Fix artist name in album
+      - Fix sidebar styles when Artist is selected
+  -->
+  @for (artist of artists$ | async; track artist.id) {
+    <div class="rounded-lg border border-blue-300 bg-blue-50 p-4 shadow-md">
+      <div class="artist-header sticky top-0 z-10 bg-blue-50">
+        <h2 class="m-0 text-xl font-bold">{{ artist.name }}</h2>
+        <div class="text-sm text-gray-600">
+          MusicBrainz ID: {{ artist.mbArtistId }}
+        </div>
+      </div>
+
+      @if (artist.albums && artist.albums.length > 0) {
+        <div class="albums-container">
+          <app-card *ngFor="let album of artist.albums" class="album">
+            <app-album [album]="album" />
+          </app-card>
+        </div>
+      } @else {
+        <div class="no-albums">No albums available for this artist.</div>
+      }
+    </div>
+  }
+
+  @if (params$ | async; as params) {
+    <app-paginator
+      [page]="params.page"
+      [size]="params.size"
+      [totalElements]="totalElements$ | async"
+    />
+  }
+</div>

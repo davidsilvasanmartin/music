@@ -30,6 +30,10 @@ public final class Login {
                     .extract()
                     .response()
                     .getCookie("JSESSIONID");
+            // Force importing Beets database. If this has been done before, nothing will happen,
+            // because all albums will be ignored and not imported again.
+            givenLoggedInAsAdmin().when().post("jobs/import-albums").then()
+                    .statusCode(HttpStatus.SC_OK);
         }
     }
 

@@ -35,11 +35,11 @@ public interface AlbumMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
     @BeanMapping(ignoreByDefault = true)
-    ArtistDto toArtistDto(Artist artist);
+    ArtistDto toArtistDtoBasic(Artist artist);
 
     @Named("toGenreDtoBasic")
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
     @BeanMapping(ignoreByDefault = true)
-    GenreDto toGenreDto(Genre genre);
+    GenreDto toGenreDtoBasic(Genre genre);
 }

@@ -6,7 +6,7 @@ export interface PageableResource<T> {
 }
 
 export interface ApiPageableResourceRequest<T> {
-  data: PageableResource<T>;
+  data: PageableResource<T> | null;
   loading: boolean;
   error: any;
 }

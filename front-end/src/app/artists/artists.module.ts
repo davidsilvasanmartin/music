@@ -8,22 +8,22 @@ import { AlbumComponent } from '../shared/album/album.component';
 import { SearchModule } from '../ui/search';
 import { SortModule } from '../ui/sort';
 import { UiModule } from '../ui/ui.module';
-import { AlbumsComponent } from './albums.component';
-import { AlbumsRoutingModule } from './albums-routing.module';
-import { AlbumsEffects } from './store/effects';
-import { albumsReducer } from './store/reducers';
+import { ArtistsComponent } from './artists.component';
+import { ArtistsRoutingModule } from './artists-routing.module';
+import { ArtistsEffects } from './store/effects';
+import { artistsReducer } from './store/reducers';
 
 @NgModule({
-  declarations: [AlbumsComponent],
+  declarations: [ArtistsComponent],
   imports: [
     CommonModule,
-    AlbumsRoutingModule,
+    ArtistsRoutingModule,
     UiModule,
-    StoreModule.forFeature('albums', albumsReducer),
-    EffectsModule.forFeature([AlbumsEffects]),
+    StoreModule.forFeature('artists', artistsReducer),
+    EffectsModule.forFeature([ArtistsEffects]),
     SortModule,
     SearchModule,
     AlbumComponent,
   ],
 })
-export class AlbumsModule {}
+export class ArtistsModule {}

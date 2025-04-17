@@ -4,7 +4,7 @@ import type { Song } from '../songs/song';
 export interface Album {
   id: number;
   artPathUrl: string;
-  artist: Artist;
+  artist?: Artist;
   album: string;
   genres: string[];
   year: number;

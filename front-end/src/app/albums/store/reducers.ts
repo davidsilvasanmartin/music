@@ -1,14 +1,14 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as albumsActions from './actions';
-import { albumsInitialState, AlbumsState } from './state';
+import { albumsInitialState, type AlbumsState } from './state';
 
 const reducer = createReducer(
   albumsInitialState,
   on(albumsActions.loadAlbums, (state) => ({
     ...state,
     albums: {
-      data: null as any,
+      data: null,
       loading: true,
       error: null,
     },
@@ -24,12 +24,12 @@ const reducer = createReducer(
   on(albumsActions.loadAlbumsFail, (state, { error }) => ({
     ...state,
     albums: {
-      data: null as any,
+      data: null,
       loading: false,
       error,
     },
   })),
-  on(albumsActions.reset, () => albumsInitialState)
+  on(albumsActions.reset, () => albumsInitialState),
 );
 
 export const albumsReducer = (state: AlbumsState, action: Action) =>

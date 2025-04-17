@@ -43,5 +43,5 @@ public interface ArtistMapper {
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
     @BeanMapping(ignoreByDefault = true)
-    GenreDto toGenreDto(Genre genre);
+    GenreDto toGenreDtoBasic(Genre genre);
 }

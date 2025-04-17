@@ -1,13 +1,23 @@
-import { Component, input, signal } from '@angular/core';
-import { Params } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  signal,
+} from '@angular/core';
+import { Params, RouterModule } from '@angular/router';
 
+import type { Album } from '../../albums/album';
 import type { Artist } from '../../artists/artist';
 import { SearchMapperService } from '../../ui/search';
-import type { Album } from '../album';
+import { UiModule } from '../../ui/ui.module';
+import { AlbumDetailsComponent } from './album-details/album-details.component';
 
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [RouterModule, UiModule, AlbumDetailsComponent],
 })
 export class AlbumComponent {
   album = input.required<Album>();
@@ -15,7 +25,10 @@ export class AlbumComponent {
 
   constructor(private readonly _searchMapperService: SearchMapperService) {}
 
-  getSearchQueryParamsForAlbumArtist(albumArtist: Artist): Params {
+  getSearchQueryParamsForAlbumArtist(albumArtist: Artist | undefined): Params {
+    if (!albumArtist) {
+      return {};
+    }
     return {
       search: this._searchMapperService.toQueryParam({
         field: 'artist.name',
