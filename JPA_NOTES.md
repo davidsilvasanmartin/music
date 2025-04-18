@@ -74,6 +74,7 @@ public class Department {
   **`Department` is the "inverse side" or "non-owning side"** of the relationship.
 
 **Why does it matter?**
+
 JPA only considers the **owning side** when determining how to update the foreign key relationship in the database.
 
 - If you do `employee.setDepartment(someDepartment);`, JPA knows it needs to update the `department_id` column in that
@@ -84,6 +85,7 @@ JPA only considers the **owning side** when determining how to update the foreig
   column.
 
 **In short:**
+
 The **owning side** is the entity that contains the mapping definition (`@JoinColumn` or `@JoinTable`) for the physical
 foreign key in the database. The other side (**inverse/non-owning side**) uses `mappedBy` to point back to the field on
 the owning side.
@@ -114,6 +116,7 @@ This `student_courses` table _is_ the physical representation of the relationshi
 `students` or `courses`; it links them.
 Now, in JPA, when you model this with `@ManyToMany`, you still need to tell JPA _which entity's mapping configuration_
 it should use to manage this join table. **One side must be designated as the owning side.**
+
 **1. The `Student` Entity (Designated as Owning Side):**
 
 ``` java
@@ -196,6 +199,7 @@ public class Course {
   non-owning side"**.
 
 **Why does it matter (again)?**
+
 JPA only considers the configuration on the **owning side** (`Student` in this case) when deciding how to modify the *
 *`student_courses` join table**.
 
@@ -222,7 +226,9 @@ JPA only considers the configuration on the **owning side** (`Student` in this c
 
 Let's break down why keeping both sides of a relationship synchronized _in memory_ is important, even though only the
 owning side dictates database changes.
+
 **The Problem: Inconsistent Object State**
+
 Imagine our `Student` (owning side) and `Course` (inverse side) ManyToMany relationship.
 If you only modify the owning side in your code like this:
 
@@ -245,6 +251,7 @@ student1.getCourses().add(math101);
 
 Your Java objects are now out of sync with each other. The `student1` object "knows" it's enrolled in `math101`, but the
 `math101` object doesn't "know" that `student1` is enrolled in it.
+
 **Why is this In-Memory Inconsistency Bad?**
 
 1. **Unexpected Behavior During the Same Transaction:** If, later _in the same transaction or unit of work_ (before the
@@ -259,9 +266,11 @@ Your Java objects are now out of sync with each other. The `student1` object "kn
    prone to errors if someone refactors the code later without understanding the JPA owning/inverse side nuances.
 
 **The Solution: Helper Methods for Synchronization**
+
 This is where helper methods come in. You add methods to manage the relationship, and these methods update _both_ sides
 of the relationship _in memory_ simultaneously.
 Let's refine the `Student` (owning) and `Course` (inverse) entities:
+
 **Student (Owning Side)**
 
 ``` java
