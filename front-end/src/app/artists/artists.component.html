@@ -16,7 +16,7 @@
   @for (artist of artists$ | async; track artist.id) {
     <app-card>
       <div
-        class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-slate-100 pb-3"
+        class="sticky top-0 z-10 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-slate-100 bg-white pb-2"
       >
         <h2 class="m-0 text-lg font-semibold text-blue-600 hover:text-blue-400">
           <a href="" class="hover:underline">{{ artist.name }}</a>
@@ -47,47 +47,10 @@
       </div>
 
       @if (artist.albums && artist.albums.length > 0) {
-        <div class="flow-root">
-          <ul role="list" class="divide-y divide-slate-100">
-            @for (album of artist.albums; track album.id) {
-              <li
-                class="flex items-center gap-4 py-3 transition-colors hover:bg-slate-50"
-              >
-                <img
-                  [src]="album.artPathUrl"
-                  alt="Album art for {{ album.album }}"
-                  class="h-10 w-10 flex-shrink-0 rounded object-cover shadow-sm"
-                  loading="lazy"
-                />
-                <div class="min-w-0 flex-auto">
-                  <p class="truncate text-sm font-medium text-slate-800">
-                    <a
-                      href=""
-                      class="text-emerald-700 hover:text-emerald-500 hover:underline"
-                      >{{ album.album }}</a
-                    >
-                  </p>
-                  <p class="flex items-center gap-x-2 text-xs text-slate-500">
-                    <span>{{ album.year }}</span>
-                    <span class="text-slate-300">&bull;</span>
-                    <span
-                      >{{ album.songs.length }}
-                      {{ album.songs.length === 1 ? "Song" : "Songs" }}</span
-                    >
-                  </p>
-                </div>
-                <!-- Play Button -->
-                <button
-                  class="ml-auto flex-shrink-0 rounded-full p-1 text-slate-400 transition-colors hover:bg-blue-100 hover:text-blue-600"
-                  title="Play {{ album.album }}"
-                >
-                  <span class="sr-only">Play album {{ album.album }}</span>
-                  <!-- Screen reader text -->
-                  <app-icon-play class="size-4" />
-                </button>
-              </li>
-            }
-          </ul>
+        <div class="flex flex-col flex-nowrap gap-4">
+          @for (album of artist.albums; track album.id) {
+            <app-album [album]="album" />
+          }
         </div>
       } @else {
         <div class="py-4 text-center text-sm italic text-slate-500">
