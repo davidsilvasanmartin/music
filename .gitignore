@@ -85,3 +85,4 @@ fabric.properties
 
 # Other
 .DS_Store
+.venv
