@@ -16,7 +16,6 @@ import * as albumsSelectors from './store/selectors';
 @Component({
   selector: 'app-albums',
   templateUrl: './albums.component.html',
-  styleUrls: ['./albums.component.scss'],
   styles: ':host { display: contents;}',
 })
 export class AlbumsComponent

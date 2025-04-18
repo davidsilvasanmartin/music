@@ -14,14 +14,9 @@ export class ArtistsMapper {
       name: artistDto.name,
       mbArtistId: artistDto.mbArtistId,
       albums:
-        artistDto.albums?.map((albumDto) => ({
-          ...this._albumsMapper.fromDto(albumDto),
-          // The request we use to get the artist returns Albums without the artist property
-          artist: {
-            id: artistDto.id,
-            name: artistDto.name,
-          },
-        })) || [],
+        artistDto.albums?.map((albumDto) =>
+          this._albumsMapper.fromDto(albumDto),
+        ) || [],
     };
   }
 }

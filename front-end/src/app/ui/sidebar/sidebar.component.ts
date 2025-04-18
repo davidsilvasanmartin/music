@@ -65,7 +65,7 @@ import { UiModule } from '../ui.module';
         <a
           class="blue"
           routerLink="/artists"
-          routerLinkActive="bg-blue-50 border-blue-500 text-blue-800"
+          routerLinkActive="active-link"
           title="Artists"
           role="menuitem"
           aria-label="Artists"
@@ -78,7 +78,7 @@ import { UiModule } from '../ui.module';
         <a
           class="amber"
           routerLink="/genres"
-          routerLinkActive="bg-amber-50 border-amber-500 text-amber-800"
+          routerLinkActive="active-link"
           title="Genres"
           role="menuitem"
           aria-label="Genres"
@@ -91,7 +91,7 @@ import { UiModule } from '../ui.module';
         <a
           class="slate"
           routerLink="/playlists"
-          routerLinkActive="bg-slate-100 border-slate-500 text-slate-800"
+          routerLinkActive="active-link"
           title="Playlists"
           role="menuitem"
           aria-label="Playlists"

@@ -1,4 +1,4 @@
-<div class="flex w-full flex-col flex-nowrap gap-4">
+<div class="flex w-full flex-col flex-nowrap gap-4 p-3 lg:p-5">
   @if (params$ | async; as params) {
     <div class="flex flex-row flex-wrap">
       <app-search
@@ -13,7 +13,7 @@
     </div>
   }
 
-  <app-card *ngFor="let album of albums$ | async" class="album">
+  <app-card *ngFor="let album of albums$ | async">
     <app-album [album]="album" />
   </app-card>
 

@@ -16,7 +16,6 @@ import * as artistsSelectors from './store/selectors';
 @Component({
   selector: 'app-artists',
   templateUrl: './artists.component.html',
-  styleUrls: ['./artists.component.scss'],
   styles: ':host { display: contents;}',
 })
 export class ArtistsComponent

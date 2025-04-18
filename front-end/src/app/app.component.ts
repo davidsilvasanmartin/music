@@ -16,7 +16,7 @@ import { AuthRootState } from './auth/store/state';
       <app-topbar></app-topbar>
       <div class="flex flex-1 flex-row flex-nowrap overflow-hidden">
         <app-sidebar></app-sidebar>
-        <div class="flex-1 overflow-y-auto p-3 lg:p-5">
+        <div class="flex-1 overflow-y-auto">
           <router-outlet></router-outlet>
         </div>
       </div>
