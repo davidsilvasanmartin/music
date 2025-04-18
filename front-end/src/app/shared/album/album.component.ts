@@ -13,6 +13,13 @@ import { SearchMapperService } from '../../ui/search';
 import { UiModule } from '../../ui/ui.module';
 import { AlbumDetailsComponent } from './album-details/album-details.component';
 
+/**
+ * This component is used in different modules.
+ *
+ * TODO
+ *  - The routing and query parameters is specific for the AlbumsComponent. We need to add
+ *    functionality so this component can be used in other modules.
+ */
 @Component({
   selector: 'app-album',
   templateUrl: './album.component.html',
@@ -46,6 +53,17 @@ export class AlbumComponent {
         field: 'genres.name',
         condition: 'contains',
         value: genre.name,
+      }),
+      page: 1,
+    };
+  }
+
+  getSearchQueryParamsForYear(year: number): Params {
+    return {
+      search: this._searchMapperService.toQueryParam({
+        field: 'year',
+        condition: 'contains',
+        value: year.toString(),
       }),
       page: 1,
     };

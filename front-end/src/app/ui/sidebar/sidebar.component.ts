@@ -89,7 +89,7 @@ import { UiModule } from '../ui.module';
       </li>
       <li role="none">
         <a
-          class="slate"
+          class="red"
           routerLink="/playlists"
           routerLinkActive="active-link"
           title="Playlists"
@@ -130,6 +130,13 @@ import { UiModule } from '../ui.module';
         @apply hover:bg-amber-50 hover:text-amber-600;
         &.active-link {
           @apply border-amber-600 bg-amber-50 text-amber-600;
+        }
+      }
+
+      &.red {
+        @apply hover:bg-red-50 hover:text-red-600;
+        &.active-link {
+          @apply border-red-600 bg-red-50 text-red-600;
         }
       }
 

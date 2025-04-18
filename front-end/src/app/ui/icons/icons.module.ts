@@ -11,6 +11,7 @@ import { IconChevronUpComponent } from './icon-chevron-up.component';
 import { IconEighthNoteComponent } from './icon-eighth-note.component';
 import { IconExternalLinkComponent } from './icon-external-link.component';
 import { IconEyeComponent } from './icon-eye.component';
+import { IconFilterComponent } from './icon-filter.component';
 import { IconHomeComponent } from './icon-home.component';
 import { IconMenuListComponent } from './icon-menu-list.component';
 import { IconMicComponent } from './icon-mic.component';
@@ -57,6 +58,7 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconVolume1Component,
     IconVolume2Component,
     IconExternalLinkComponent,
+    IconFilterComponent,
   ],
   imports: [CommonModule],
   exports: [
@@ -86,6 +88,7 @@ import { IconVynilComponent } from './icon-vynil.component';
     IconVolume1Component,
     IconVolume2Component,
     IconExternalLinkComponent,
+    IconFilterComponent,
   ],
 })
 export class IconsModule {}
