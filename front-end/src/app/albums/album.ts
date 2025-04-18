@@ -1,4 +1,5 @@
 import type { Artist } from '../artists/artist';
+import type { Genre } from '../genres/genre';
 import type { Song } from '../songs/song';
 
 export interface Album {
@@ -6,7 +7,7 @@ export interface Album {
   artPathUrl: string;
   artist?: Artist;
   album: string;
-  genres: string[];
+  genres: Genre[];
   year: number;
   songs: Song[];
 }
