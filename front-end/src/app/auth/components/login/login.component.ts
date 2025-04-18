@@ -11,6 +11,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 import { Store } from '@ngrx/store';
 
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly store: Store<AuthRootState>,
     private readonly authService: AuthService,
+    private readonly route: ActivatedRoute,
   ) {
     this.loginForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -42,10 +44,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    // TODO what to do with this setTimeout?
     setTimeout(() => {
       this.authService.isLoggedIn().subscribe((user: User | null) => {
         if (user) {
-          this.store.dispatch(authActions.loginSuccess({ user }));
+          const redirectTo =
+            this.route.snapshot.queryParamMap.get('redirectTo') || undefined;
+          this.store.dispatch(authActions.loginSuccess({ user, redirectTo }));
         } else {
           this.isAuthCheckInProgress.set(false);
         }
@@ -55,8 +60,15 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
     if (this.loginForm.valid) {
+      const redirectTo =
+        this.route.snapshot.queryParamMap.get('redirectTo') || undefined;
       console.log('Dispatching action', this.loginForm.value);
-      this.store.dispatch(authActions.login(this.loginForm.value));
+      this.store.dispatch(
+        authActions.login({
+          ...this.loginForm.value,
+          redirectTo,
+        }),
+      );
     }
   }
 }

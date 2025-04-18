@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { ObservableInput, of } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError, map, switchMap, tap } from 'rxjs/operators';
 
 import { User } from '../models';
@@ -12,29 +12,37 @@ import * as authActions from './actions';
 
 @Injectable()
 export class AuthEffects {
-  login$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(authActions.login),
-      switchMap(({ username, password }) =>
-        this.authService.login({ username, password }).pipe(
-          map((user: User) => {
-            console.log('SUCCESS Logging in', user);
-            return authActions.loginSuccess({ user });
-          }),
-          catchError((error) => {
-            console.error(error);
-            return of(null) as ObservableInput<any>;
-          }),
+  login$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(authActions.login),
+        switchMap(({ username, password, redirectTo }) =>
+          this.authService.login({ username, password }).pipe(
+            map((user: User) => {
+              console.log('SUCCESS Logging in', user);
+              return authActions.loginSuccess({ user, redirectTo });
+            }),
+            catchError((error) => {
+              console.error(error);
+              return throwError(() => error);
+              // return of(null)// as ObservableInput<unknown as any>;
+            }),
+          ),
         ),
       ),
-    ),
+    // We are rethrowing the error mostly because typescript complains about the return type.
+    // In any case, we don't need Ngrx to handle the error for us
+    { useEffectsErrorHandler: false },
   );
 
   loginSuccess$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(authActions.loginSuccess),
-        tap(() => this.router.navigate(['/'])),
+        tap(({ redirectTo }) => {
+          const target = redirectTo ? decodeURIComponent(redirectTo) : '/';
+          this.router.navigateByUrl(target);
+        }),
       ),
     { dispatch: false },
   );

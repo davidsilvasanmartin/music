@@ -9,10 +9,10 @@ export enum AuthActionTypes {
 
 export const login = createAction(
   AuthActionTypes.login,
-  props<{ username: string; password: string }>(),
+  props<{ username: string; password: string; redirectTo?: string }>(),
 );
 
 export const loginSuccess = createAction(
   AuthActionTypes.loginSuccess,
-  props<{ user: User }>(),
+  props<{ user: User; redirectTo?: string }>(),
 );
