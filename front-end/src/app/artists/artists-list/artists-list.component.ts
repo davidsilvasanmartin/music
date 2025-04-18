@@ -6,19 +6,19 @@ import { select, Store } from '@ngrx/store';
 
 import { Observable } from 'rxjs';
 
-import { PaginatedSortedSearchableListComponent } from '../ui/pagination-sort-search';
-import { SortDirection } from '../ui/sort';
-import type { Artist } from './artist';
+import { PaginatedSortedSearchableListComponent } from '../../ui/pagination-sort-search';
+import { SortDirection } from '../../ui/sort';
+import type { Artist } from '../artist';
 import * as artistsActions from './store/actions';
 import * as artistsSelectors from './store/selectors';
 
 @UntilDestroy()
 @Component({
-  selector: 'app-artists',
-  templateUrl: './artists.component.html',
+  selector: 'app-artists-list',
+  templateUrl: './artists-list.component.html',
   styles: ':host { display: contents;}',
 })
-export class ArtistsComponent
+export class ArtistsListComponent
   extends PaginatedSortedSearchableListComponent
   implements OnDestroy
 {

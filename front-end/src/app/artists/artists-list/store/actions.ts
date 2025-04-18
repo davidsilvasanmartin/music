@@ -1,14 +1,14 @@
 import { createAction, props } from '@ngrx/store';
 
-import type { PageableResource } from '../../api/api-pageable-resource-request';
-import type { PaginationSortSearchParams } from '../../ui/pagination-sort-search';
-import type { Artist } from '../artist';
+import type { PageableResource } from '../../../api/api-pageable-resource-request';
+import type { PaginationSortSearchParams } from '../../../ui/pagination-sort-search';
+import type { Artist } from '../../artist';
 
 export enum ArtistsActionTypes {
-  loadArtists = '[Artists] Load Artists',
-  loadArtistsSuccess = '[Artists] Load Artists Success',
-  loadArtistsFail = '[Artists] Load Artists Fail',
-  reset = '[Artists] Reset',
+  loadArtists = '[Artists List] Load Artists',
+  loadArtistsSuccess = '[Artists List] Load Artists Success',
+  loadArtistsFail = '[Artists List] Load Artists Fail',
+  reset = '[Artists List] Reset',
 }
 
 export const loadArtists = createAction(

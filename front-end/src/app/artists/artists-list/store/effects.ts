@@ -4,9 +4,9 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 import { map, switchMap } from 'rxjs/operators';
 
-import { PageableResource } from '../../api/api-pageable-resource-request';
-import { Artist } from '../artist';
-import { ArtistsService } from '../artists.service';
+import type { PageableResource } from '../../../api/api-pageable-resource-request';
+import type { Artist } from '../../artist';
+import { ArtistsService } from '../../artists.service';
 import * as artistsActions from './actions';
 
 @Injectable()

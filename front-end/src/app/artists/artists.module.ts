@@ -8,13 +8,14 @@ import { AlbumComponent } from '../shared/album/album.component';
 import { SearchModule } from '../ui/search';
 import { SortModule } from '../ui/sort';
 import { UiModule } from '../ui/ui.module';
-import { ArtistsComponent } from './artists.component';
+import { ArtistsListComponent } from './artists-list/artists-list.component';
+import { ArtistsEffects } from './artists-list/store/effects';
 import { ArtistsRoutingModule } from './artists-routing.module';
-import { ArtistsEffects } from './store/effects';
+import { ArtistsViewComponent } from './artists-view/artists-view.component';
 import { artistsReducer } from './store/reducers';
 
 @NgModule({
-  declarations: [ArtistsComponent],
+  declarations: [ArtistsListComponent, ArtistsViewComponent],
   imports: [
     CommonModule,
     ArtistsRoutingModule,

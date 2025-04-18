@@ -91,4 +91,3 @@ Angular app
 - Pagination for albums (also back-end)
 - Specification for searching albums, inspired on https://attacomsian.com/blog/spring-data-jpa-specifications.
 - For the test project: create a fake beets database for the back-end application to use. Have a few albums/songs in it.
-

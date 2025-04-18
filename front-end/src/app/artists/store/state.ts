@@ -1,15 +1,10 @@
-import type { ApiPageableResourceRequest } from '../../api/api-pageable-resource-request';
 import type { AppState } from '../../store/state';
-import type { Artist } from '../artist';
+import type { ArtistsListState } from '../artists-list/store/state';
 
 export interface ArtistsRootState extends AppState {
   artists: ArtistsState;
 }
 
 export interface ArtistsState {
-  artists: ApiPageableResourceRequest<Artist[]>;
+  list: ArtistsListState;
 }
-
-export const artistsInitialState: ArtistsState = {
-  artists: { data: null, loading: false, error: null },
-};

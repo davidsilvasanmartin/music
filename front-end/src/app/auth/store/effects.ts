@@ -25,7 +25,6 @@ export class AuthEffects {
             catchError((error) => {
               console.error(error);
               return throwError(() => error);
-              // return of(null)// as ObservableInput<unknown as any>;
             }),
           ),
         ),
