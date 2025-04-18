@@ -10,7 +10,7 @@ import { PaginatedSortedSearchableListComponent } from '../../ui/pagination-sort
 import { SortDirection } from '../../ui/sort';
 import type { Artist } from '../artist';
 import * as artistsActions from './store/actions';
-import * as artistsSelectors from './store/selectors';
+import { selectArtists, selectTotalElements } from './store/selectors';
 
 @UntilDestroy()
 @Component({
@@ -27,10 +27,8 @@ export class ArtistsListComponent
 
   constructor(private readonly _store: Store) {
     super({ field: 'name', direction: SortDirection.ASC });
-    this.artists$ = this._store.pipe(select(artistsSelectors.getArtists));
-    this.totalElements$ = this._store.pipe(
-      select(artistsSelectors.getTotalElements),
-    );
+    this.artists$ = this._store.pipe(select(selectArtists));
+    this.totalElements$ = this._store.pipe(select(selectTotalElements));
     this.params$
       .pipe(takeUntilDestroyed())
       .subscribe((paginationParams) =>

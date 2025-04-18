@@ -5,6 +5,6 @@ export interface ArtistsListState {
   artists: ApiPageableResourceRequest<Artist[]>;
 }
 
-export const artistsInitialState: ArtistsListState = {
+export const artistsListInitialState: ArtistsListState = {
   artists: { data: null, loading: false, error: null },
 };

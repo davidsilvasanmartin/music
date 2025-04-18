@@ -19,30 +19,15 @@
         class="sticky top-0 z-10 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-slate-100 bg-white pb-2"
       >
         <h2 class="m-0 text-lg font-semibold text-blue-600 hover:text-blue-400">
-          <a href="" class="hover:underline">{{ artist.name }}</a>
+          <a [routerLink]="[artist.id]" class="hover:underline">{{
+            artist.name
+          }}</a>
         </h2>
         <div
           class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500"
         >
-          <div class="flex items-center gap-1" title="Total Albums">
-            <app-icon-vynil class="size-4 text-gray-400"></app-icon-vynil>
-            <span>{{ artist.albums?.length ?? 0 }} Albums</span>
-          </div>
-          <div class="flex items-center">
-            <span>MBID:</span>
-            <a
-              href=""
-              target="_blank"
-              rel="noopener noreferrer"
-              class="ml-1 flex flex-row flex-nowrap items-center hover:text-gray-700 hover:underline"
-              title="View on MusicBrainz (external link)"
-            >
-              {{ artist.mbArtistId }}
-              <app-icon-external-link
-                class="ml-0.5 inline-block size-3 align-baseline"
-              ></app-icon-external-link>
-            </a>
-          </div>
+          <app-album-count [albumCount]="artist.albums?.length" />
+          <app-mb-link [mbId]="artist.mbArtistId" mbUrl="artist" />
         </div>
       </div>
 

@@ -1,10 +1,10 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import * as artistsActions from './actions';
-import { artistsInitialState, type ArtistsListState } from './state';
+import { artistsListInitialState, type ArtistsListState } from './state';
 
 const reducer = createReducer(
-  artistsInitialState,
+  artistsListInitialState,
   on(artistsActions.loadArtists, (state) => ({
     ...state,
     artists: {
@@ -29,7 +29,7 @@ const reducer = createReducer(
       error,
     },
   })),
-  on(artistsActions.reset, () => artistsInitialState),
+  on(artistsActions.reset, () => artistsListInitialState),
 );
 
 export const artistsListReducer = (

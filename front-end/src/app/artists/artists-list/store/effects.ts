@@ -10,7 +10,7 @@ import { ArtistsService } from '../../artists.service';
 import * as artistsActions from './actions';
 
 @Injectable()
-export class ArtistsEffects {
+export class ArtistsListEffects {
   loadArtists$ = createEffect(() =>
     this._actions$.pipe(
       ofType(artistsActions.loadArtists),

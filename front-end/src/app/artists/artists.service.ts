@@ -53,4 +53,10 @@ export class ArtistsService {
         })),
       );
   }
+
+  getArtist(id: number) {
+    return this._http
+      .get<ArtistDto>(this._apiService.createApiUrl(`artists/${id}`))
+      .pipe(map((a: ArtistDto) => this._artistsMapper.fromDto(a)));
+  }
 }

@@ -5,6 +5,12 @@ import { select, Store } from '@ngrx/store';
 import * as authSelectors from './auth/store/selectors';
 import { AuthRootState } from './auth/store/state';
 
+/**
+ * TODO it may be nice to rename all selectors to "select*" instead of "get*", this makes it
+ *  easier to differentiate them from actions if we import them directly rather than using
+ *  "import * as whateverSelectors" and "whateverSelectors.getXyz"
+ */
+
 // TODO review styles and so on
 @Component({
   selector: 'app-root',

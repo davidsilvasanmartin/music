@@ -1,19 +1,19 @@
 import { createSelector } from '@ngrx/store';
 
-import { getArtistsFeatureState } from '../../store/selectors';
+import { selectArtistsFeatureState } from '../../store/selectors';
 import type { ArtistsListState } from './state';
 
-const getArtistsListState = createSelector(
-  getArtistsFeatureState,
+const selectArtistsListState = createSelector(
+  selectArtistsFeatureState,
   (state) => state.list,
 );
 
-export const getArtists = createSelector(
-  getArtistsListState,
+export const selectArtists = createSelector(
+  selectArtistsListState,
   (state: ArtistsListState) => state.artists.data?.content ?? [],
 );
 
-export const getTotalElements = createSelector(
-  getArtistsListState,
+export const selectTotalElements = createSelector(
+  selectArtistsListState,
   (state: ArtistsListState) => state.artists.data?.totalElements ?? 0,
 );
