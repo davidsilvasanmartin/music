@@ -9,7 +9,7 @@
     <div
       class="flex flex-shrink flex-grow basis-auto flex-col flex-nowrap justify-between gap-2"
     >
-      <div class="flex flex-row flex-wrap items-center gap-2">
+      <div class="flex flex-row flex-wrap items-center gap-x-2">
         @if (album().artist) {
           <a
             [routerLink]="['/artists', album().artist?.id]"
@@ -20,9 +20,10 @@
           <a
             [queryParams]="getSearchQueryParamsForAlbumArtist(album().artist)"
             [routerLink]="['.']"
-            class="text-xl text-blue-600 hover:text-blue-400 hover:underline"
+            class="ml-1 inline-flex items-center text-blue-600 hover:text-blue-400"
+            title="Filter albums by {{ album().artist?.name }}"
             queryParamsHandling="merge"
-            ><app-icon-filter class="size-4"
+            ><app-icon-filter class="size-4 align-middle"
           /></a>
           <span class="text-xl">/</span>
         }
@@ -40,14 +41,8 @@
           class="rounded-md border-[1px] border-slate-700 bg-slate-50 px-2 py-0.5 text-sm text-slate-700 hover:border-slate-500 hover:text-slate-500 hover:underline"
           >{{ album().year }}</a
         >
-        @for (genre of album().genres; track genre; let isLast = $last) {
-          <a
-            [routerLink]="['.']"
-            [queryParams]="getSearchQueryParamsForGenre(genre)"
-            queryParamsHandling="merge"
-            class="rounded-md border-[1px] border-amber-700 bg-amber-50 px-2 py-0.5 text-sm text-amber-700 hover:border-amber-500 hover:text-amber-500 hover:underline"
-            >{{ genre.name }}</a
-          >{{ isLast ? "" : " " }}
+        @for (genre of album().genres; track genre) {
+          <app-genre-badge [genre]="genre" />
         }
       </div>
     </div>

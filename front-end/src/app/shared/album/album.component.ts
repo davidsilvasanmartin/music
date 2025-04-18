@@ -8,9 +8,9 @@ import { Params, RouterModule } from '@angular/router';
 
 import type { Album } from '../../albums/album';
 import type { Artist } from '../../artists/artist';
-import type { Genre } from '../../genres/genre';
 import { SearchMapperService } from '../../ui/search';
 import { UiModule } from '../../ui/ui.module';
+import { BadgesModule } from '../badges/badges.module';
 import { AlbumDetailsComponent } from './album-details/album-details.component';
 
 /**
@@ -25,7 +25,7 @@ import { AlbumDetailsComponent } from './album-details/album-details.component';
   templateUrl: './album.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UiModule, AlbumDetailsComponent],
+  imports: [RouterModule, UiModule, AlbumDetailsComponent, BadgesModule],
 })
 export class AlbumComponent {
   album = input.required<Album>();
@@ -42,17 +42,6 @@ export class AlbumComponent {
         field: 'artist.name',
         condition: 'contains',
         value: albumArtist.name,
-      }),
-      page: 1,
-    };
-  }
-
-  getSearchQueryParamsForGenre(genre: Genre): Params {
-    return {
-      search: this._searchMapperService.toQueryParam({
-        field: 'genres.name',
-        condition: 'contains',
-        value: genre.name,
       }),
       page: 1,
     };
