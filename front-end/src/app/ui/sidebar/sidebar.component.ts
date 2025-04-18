@@ -28,7 +28,7 @@ import { UiModule } from '../ui.module';
   imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
   // Width is calculated so that the icons look more or less centered when the sidebar is collapsed
   template: `<nav
-    class="h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-md lg:w-40"
+    class="z-10 h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-md lg:w-40"
     aria-label="Main navigation"
   >
     <ul class="m-0 flex h-full w-full flex-col p-0" role="menubar">

@@ -1,6 +1,6 @@
-<div class="flex w-full flex-col flex-nowrap gap-4 p-3 lg:p-5">
+<div class="flex w-full flex-col flex-nowrap gap-4 py-3 lg:py-5">
   @if (params$ | async; as params) {
-    <div class="flex flex-row flex-wrap">
+    <div class="flex flex-row flex-wrap px-3 lg:px-5">
       <app-search
         class="grow"
         [searchableFields]="['name', 'mbArtistId']"
@@ -13,32 +13,54 @@
     </div>
   }
 
-  <!--
-    TODO
-      - MusicBrainz link, with icon if possible
-      - Add "total discs" counter
-  -->
   @for (artist of artists$ | async; track artist.id) {
-    <div class="rounded-lg border border-blue-300 bg-white">
-      <div class="sticky top-0 z-10 rounded-lg bg-white p-4">
-        <h2
-          class="m-0 text-xl text-blue-600 hover:text-blue-400 hover:underline"
+    <div class="flex flex-col flex-nowrap gap-4 p-4">
+      <app-card>
+        <div
+          class="flex flex-wrap items-center justify-between gap-x-4 gap-y-1"
         >
-          <a href="">{{ artist.name }}</a>
-        </h2>
-        <div class="text-sm text-gray-600">
-          MusicBrainz ID: {{ artist.mbArtistId }}
+          <h2
+            class="m-0 text-lg font-semibold text-blue-600 hover:text-blue-400"
+          >
+            <a href="" class="hover:underline">{{ artist.name }}</a>
+          </h2>
+
+          <div
+            class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500"
+          >
+            <div class="flex items-center gap-1" title="Total Albums">
+              <app-icon-vynil class="size-4 text-gray-400"></app-icon-vynil>
+              <span>{{ artist.albums?.length ?? 0 }} Albums</span>
+            </div>
+
+            <div class="flex items-center">
+              <span>MBID:</span>
+              <a
+                href=""
+                target="_blank"
+                rel="noopener noreferrer"
+                class="ml-1 flex flex-row flex-nowrap hover:text-gray-700 hover:underline"
+                title="View on MusicBrainz (external link)"
+              >
+                {{ artist.mbArtistId }}
+                <app-icon-external-link
+                  class="mb-0.5 ml-0.5 inline-block size-3 align-baseline"
+                ></app-icon-external-link>
+              </a>
+            </div>
+          </div>
         </div>
-      </div>
+      </app-card>
 
       @if (artist.albums && artist.albums.length > 0) {
-        <div class="flex flex-col flex-nowrap gap-4 px-4 pb-4">
+        <div class="flex flex-col flex-nowrap gap-4">
           <app-card *ngFor="let album of artist.albums" class="album">
             <app-album [album]="album" />
           </app-card>
         </div>
       } @else {
-        <div class="italic text-slate-600">
+        <!-- Adjusted styling for no albums message -->
+        <div class="py-4 text-center italic text-slate-500">
           No albums available for this artist.
         </div>
       }
@@ -46,10 +68,12 @@
   }
 
   @if (params$ | async; as params) {
-    <app-paginator
-      [page]="params.page"
-      [size]="params.size"
-      [totalElements]="totalElements$ | async"
-    />
+    <div class="px-3 lg:px-5">
+      <app-paginator
+        [page]="params.page"
+        [size]="params.size"
+        [totalElements]="totalElements$ | async"
+      />
+    </div>
   }
 </div>
