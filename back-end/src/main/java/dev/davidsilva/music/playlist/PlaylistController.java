@@ -41,6 +41,11 @@ public class PlaylistController {
         return new ResponseEntity<>(playlistService.createPlaylist(playlistDto), HttpStatus.CREATED);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<PlaylistDto> updatePlaylist(@PathVariable int id, @RequestBody PlaylistDto playlistDto) {
+        return new ResponseEntity<>(playlistService.updatePlaylist(id, playlistDto), HttpStatus.OK);
+    }
+
     // TODO find out correct ResponseEntity generic type
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePlaylist(@PathVariable int id) {
