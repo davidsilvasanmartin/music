@@ -56,7 +56,7 @@ public class TestSongs extends TestSuite {
     public void getSongWithoutAlbumArtAlbumArt() {
         givenLoggedInAsAdmin().accept("image/*,*/*").when().get("songs/5/albumArt").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
-                .body("message", containsStringIgnoringCase("album art not found for song with id 5"));
+                .body("message", containsStringIgnoringCase("album art for song with id 5 was not found"));
     }
 
     @Test

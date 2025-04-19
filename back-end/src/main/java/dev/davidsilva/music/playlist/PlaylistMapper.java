@@ -28,7 +28,7 @@ public interface PlaylistMapper {
     @Mapping(target = "albumTitle", source = "albumTitle")
     @Mapping(target = "song", qualifiedByName = "toSongDtoBasic")
     @BeanMapping(ignoreByDefault = true)
-    SongDto toPlaylistItemDtoBasic(Song song);
+    PlaylistItemDto toPlaylistItemDtoBasic(PlaylistItem playlistItem);
 
     // Ignoring other interesting Song fields, because they are supposed to have
     // been cached in the PlaylistItem entity

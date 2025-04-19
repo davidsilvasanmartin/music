@@ -211,6 +211,6 @@ public class TestAlbums extends TestSuite {
     public void getAlbumWithoutAlbumArtAlbumArt() {
         givenLoggedInAsAdmin().accept("image/*,*/*").when().get("albums/10/albumArt").then()
                 .statusCode(HttpStatus.SC_NOT_FOUND).and().contentType(ContentType.JSON)
-                .body("message", containsStringIgnoringCase("album art not found for album with id 10"));
+                .body("message", containsStringIgnoringCase("album art for album with id 10 was not found"));
     }
 }

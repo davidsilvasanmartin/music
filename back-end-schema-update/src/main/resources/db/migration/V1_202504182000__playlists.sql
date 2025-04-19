@@ -30,8 +30,8 @@ CREATE TABLE playlist_items
     -- The cached data could be in a separate table but this would complicate logic
     mb_track_id VARCHAR(255) NOT NULL, -- The persistent MusicBrainz ID
     song_title  VARCHAR(255) NOT NULL, -- Cached title
-    mb_album_id VARCHAR(255),          -- Cached album MusicBrainz ID
-    album_title VARCHAR(255),          -- Cached album title
+    mb_album_id VARCHAR(255) NOT NULL, -- Cached album MusicBrainz ID
+    album_title VARCHAR(255) NOT NULL, -- Cached album title
 
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -4,35 +4,39 @@ import dev.davidsilva.music.song.Song;
 import dev.davidsilva.music.song.SongRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Service layer for managing Playlists.
- * Handles business logic and coordinates repository interactions.
- */
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class PlaylistService {
     private final PlaylistRepository playlistRepository;
     private final PlaylistItemRepository playlistItemRepository;
     private final SongRepository songRepository;
+    private final PlaylistMapper playlistMapper;
+
+    public PlaylistService(PlaylistRepository playlistRepository, PlaylistItemRepository playlistItemRepository, SongRepository songRepository, PlaylistMapper playlistMapper) {
+        this.playlistRepository = playlistRepository;
+        this.playlistItemRepository = playlistItemRepository;
+        this.songRepository = songRepository;
+        this.playlistMapper = playlistMapper;
+    }
 
     /**
      * Creates and persists a new Playlist. If items are provided, their metadata
      * will be populated based on the referenced Song entities.
      *
-     * @param playlist The Playlist object to create (ID should typically be null).
-     *                 Items should have their `song` field set (at least with an ID)
-     *                 if metadata population is desired.
+     * @param playlistDto The Playlist object to create (ID should typically be null).
+     *                    Items should have their `song` field set (at least with an ID)
+     *                    if metadata population is desired.
      * @return The persisted Playlist with its generated ID and timestamps.
      */
-    public Playlist createPlaylist(Playlist playlist) {
+    public PlaylistDto createPlaylist(PlaylistDto playlistDto) {
+        Playlist playlist = playlistMapper.toPlaylist(playlistDto);
+
         // Ensure items list is initialized if null to prevent NullPointerException
         if (playlist.getItems() == null) {
             playlist.setItems(new ArrayList<>());
@@ -49,7 +53,8 @@ public class PlaylistService {
         }
 
         // Save the playlist; CascadeType.ALL will save associated items
-        return playlistRepository.save(playlist);
+        Playlist createdPlaylist = playlistRepository.save(playlist);
+        return playlistMapper.toPlaylistDto(createdPlaylist);
     }
 
     /**
@@ -58,8 +63,8 @@ public class PlaylistService {
      * @return A list of all Playlists.
      */
     @Transactional(Transactional.TxType.SUPPORTS) // Read-only operation, can join existing tx or run without one
-    public List<Playlist> getAllPlaylists() {
-        return playlistRepository.findAll();
+    public List<PlaylistDto> getAllPlaylists() {
+        return playlistMapper.toPlaylistDto(playlistRepository.findAll());
     }
 
     /**
@@ -69,8 +74,9 @@ public class PlaylistService {
      * @return An Optional containing the found Playlist, or empty if not found.
      */
     @Transactional(Transactional.TxType.SUPPORTS) // Read-only
-    public Optional<Playlist> getPlaylistById(Integer id) {
-        return playlistRepository.findById(id);
+    public PlaylistDto getPlaylistById(Integer id) {
+        Playlist playlist = playlistRepository.findById(id).orElseThrow(() -> new PlaylistNotFoundException(id));
+        return playlistMapper.toPlaylistDto(playlist);
     }
 
     /**
@@ -81,14 +87,16 @@ public class PlaylistService {
      * - Updates existing items (primarily their position).
      * - Reorders items according to the new list's order.
      *
-     * @param id          The ID of the Playlist to update.
-     * @param newPlaylist An object containing the new details for the playlist (name, description, items).
-     *                    The `items` list should contain the desired state of the playlist items,
-     *                    including their intended order. New items should not have an id yet.
+     * @param id             The ID of the Playlist to update.
+     * @param newPlaylistDto An object containing the new details for the playlist (name, description, items).
+     *                       The `items` list should contain the desired state of the playlist items,
+     *                       including their intended order. New items should not have an id yet.
      * @return The updated Playlist.
      * @throws EntityNotFoundException if no Playlist with the given ID exists.
      */
-    public Playlist updatePlaylist(Integer id, Playlist newPlaylist) {
+    public PlaylistDto updatePlaylist(Integer id, PlaylistDto newPlaylistDto) {
+        Playlist newPlaylist = playlistMapper.toPlaylist(newPlaylistDto);
+
         // 1. Find the existing playlist or throw an exception if not found
         Playlist existingPlaylist = playlistRepository.findById(id)
                 .orElseThrow(() -> new PlaylistNotFoundException(id));
@@ -139,7 +147,9 @@ public class PlaylistService {
         // - Deleting PlaylistItem records that were removed from the collection (orphanRemoval).
         // - Inserting new PlaylistItem records that were added.
         // - Updating existing PlaylistItem records (e.g., their position).
-        return playlistRepository.save(existingPlaylist);
+        Playlist updatedPlaylist = playlistRepository.save(existingPlaylist);
+
+        return playlistMapper.toPlaylistDto(updatedPlaylist);
     }
 
 
