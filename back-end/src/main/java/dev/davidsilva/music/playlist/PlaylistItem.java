@@ -83,5 +83,4 @@ public class PlaylistItem {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "song_id", nullable = true)
     private Song song;
-
 }
