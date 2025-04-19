@@ -195,11 +195,8 @@ public class PlaylistService {
                 // So, again, we take the item from the db, update its position, and return it
                 return getExistingPlaylistItemFromDbWithUpdatedPosition(item);
             } else {
-                // TODO not sure if it would be beneficial to try and find the item here from the db.
-                //  This would be for the case where we are handling updates to an existing item.
-                // TODO related: test POSTing a PlaylistItem with cached properties that don't match those
-                //  in the database. Should we update the item in the db? Or should we throw an error?
                 // --- Song Found ---
+                // This is the path that will always be followed if there have never been song deletions from the database
                 Song fullSong = songOpt.get();
                 item.setSong(fullSong);
 
@@ -208,11 +205,11 @@ public class PlaylistService {
                 item.setMbTrackId(fullSong.getMbTrackId());
 
                 // Populate album info if available
-                // TODO test this, in case the lazy loading of Album does not work correctly
                 if (fullSong.getAlbum() != null) {
                     item.setAlbumTitle(fullSong.getAlbum().getAlbum());
                     item.setMbAlbumId(fullSong.getAlbum().getMbAlbumId());
                 } else {
+                    // TODO think if this can be tested
                     throw new RuntimeException("Song " + fullSong.getId() + " has no album");
                 }
 
@@ -222,11 +219,9 @@ public class PlaylistService {
     }
 
     private PlaylistItem getExistingPlaylistItemFromDbWithUpdatedPosition(PlaylistItem item) {
-        Optional<PlaylistItem> existingPlaylistItemOpt = playlistItemRepository.findById(item.getId());
-        if (existingPlaylistItemOpt.isEmpty()) {
-            throw new PlaylistItemNotFoundException(item.getId());
-        }
-        PlaylistItem existingPlaylistItem = existingPlaylistItemOpt.get();
+        PlaylistItem existingPlaylistItem = playlistItemRepository.findById(item.getId()).orElseThrow(
+                () -> new PlaylistItemNotFoundException(item.getId())
+        );
         existingPlaylistItem.setPosition(item.getPosition());
         return existingPlaylistItem;
     }
