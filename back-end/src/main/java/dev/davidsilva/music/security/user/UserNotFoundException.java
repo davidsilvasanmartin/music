@@ -4,6 +4,6 @@ import dev.davidsilva.music.exception.AbstractNotFoundException;
 
 public class UserNotFoundException extends AbstractNotFoundException {
     public UserNotFoundException(String username) {
-        super("User with username " + username + " was not found");
+        super("User with username " + username);
     }
 }
