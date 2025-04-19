@@ -104,8 +104,8 @@ if __name__ == "__main__":
             dir_total_files += files
             dir_total_lines += lines
 
-        print(f"  ------------------------------------")
-        print(f"  Subtotal:   {dir_total_files:>6} files, {dir_total_lines:>8} lines")
+        # print(f"  ------------------------------------")
+        # print(f"  Subtotal:   {dir_total_files:>6} files, {dir_total_lines:>8} lines")
 
 
     print("\n" + "="*40)
