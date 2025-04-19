@@ -187,6 +187,8 @@ public class PlaylistService {
             } else {
                 // TODO not sure if it would be beneficial to try and find the item here from the db.
                 //  This would be for the case where we are handling updates to an existing item.
+                // TODO related: test POSTing a PlaylistItem with cached properties that don't match those
+                //  in the database. Should we update the item in the db? Or should we throw an error?
                 // --- Song Found ---
                 Song fullSong = songOpt.get();
                 item.setSong(fullSong);
