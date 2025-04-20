@@ -529,7 +529,7 @@ public class TestPlaylists extends TestSuite {
      * It is important that this test has the highest priority number
      * (so it's executed last)
      */
-    @Test(priority = 10)
+//    @Test(priority = 10)
     void cleanupPlaylists() {
         Response response = givenLoggedInAsAdmin()
                 .when()

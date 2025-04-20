@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { PaginatedSortedSearchableListComponent } from '../../ui/pagination-sort-search';
 import { SortDirection } from '../../ui/sort';
 import type { Artist } from '../artist';
-import * as artistsActions from './store/actions';
+import { loadArtists, reset } from './store/actions';
 import { selectArtists, selectTotalElements } from './store/selectors';
 
 @UntilDestroy()
@@ -32,13 +32,11 @@ export class ArtistsListComponent
     this.params$
       .pipe(takeUntilDestroyed())
       .subscribe((paginationParams) =>
-        this._store.dispatch(
-          artistsActions.loadArtists({ params: paginationParams }),
-        ),
+        this._store.dispatch(loadArtists({ params: paginationParams })),
       );
   }
 
   ngOnDestroy() {
-    this._store.dispatch(artistsActions.reset());
+    this._store.dispatch(reset());
   }
 }

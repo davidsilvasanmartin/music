@@ -1,4 +1,4 @@
-import { ApiRequest } from '../../../api/api-request';
+import type { ApiRequest } from '../../../api/api-request';
 import type { Artist } from '../../artist';
 
 export interface ArtistsViewState {

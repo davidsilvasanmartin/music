@@ -1,44 +1,37 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
-import * as artistsActions from './actions';
+import {
+  loadArtist,
+  loadArtistFail,
+  loadArtistSuccess,
+  reset,
+} from './actions';
 import { artistsViewInitialState, type ArtistsViewState } from './state';
 
 const reducer = createReducer(
   artistsViewInitialState,
   on(
-    artistsActions.loadArtist,
+    loadArtist,
     (state): ArtistsViewState => ({
       ...state,
-      artist: {
-        data: null,
-        loading: true,
-        error: null,
-      },
+      artist: { data: null, loading: true, error: null },
     }),
   ),
   on(
-    artistsActions.loadArtistSuccess,
+    loadArtistSuccess,
     (state, { artist }): ArtistsViewState => ({
       ...state,
-      artist: {
-        data: artist,
-        loading: false,
-        error: null,
-      },
+      artist: { data: artist, loading: false, error: null },
     }),
   ),
   on(
-    artistsActions.loadArtistFail,
+    loadArtistFail,
     (state, { error }): ArtistsViewState => ({
       ...state,
-      artist: {
-        data: null,
-        loading: false,
-        error,
-      },
+      artist: { data: null, loading: false, error },
     }),
   ),
-  on(artistsActions.reset, (): ArtistsViewState => artistsViewInitialState),
+  on(reset, (): ArtistsViewState => artistsViewInitialState),
 );
 
 export const artistsViewReducer = (

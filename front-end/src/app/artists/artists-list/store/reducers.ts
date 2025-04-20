@@ -1,35 +1,28 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
-import * as artistsActions from './actions';
+import {
+  loadArtists,
+  loadArtistsFail,
+  loadArtistsSuccess,
+  reset,
+} from './actions';
 import { artistsListInitialState, type ArtistsListState } from './state';
 
 const reducer = createReducer(
   artistsListInitialState,
-  on(artistsActions.loadArtists, (state) => ({
+  on(loadArtists, (state) => ({
     ...state,
-    artists: {
-      data: null,
-      loading: true,
-      error: null,
-    },
+    artists: { data: null, loading: true, error: null },
   })),
-  on(artistsActions.loadArtistsSuccess, (state, { artists }) => ({
+  on(loadArtistsSuccess, (state, { artists }) => ({
     ...state,
-    artists: {
-      data: artists,
-      loading: false,
-      error: null,
-    },
+    artists: { data: artists, loading: false, error: null },
   })),
-  on(artistsActions.loadArtistsFail, (state, { error }) => ({
+  on(loadArtistsFail, (state, { error }) => ({
     ...state,
-    artists: {
-      data: null,
-      loading: false,
-      error,
-    },
+    artists: { data: null, loading: false, error },
   })),
-  on(artistsActions.reset, () => artistsListInitialState),
+  on(reset, () => artistsListInitialState),
 );
 
 export const artistsListReducer = (

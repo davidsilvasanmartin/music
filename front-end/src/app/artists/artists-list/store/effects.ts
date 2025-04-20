@@ -2,26 +2,26 @@ import { Injectable } from '@angular/core';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import { map, switchMap } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 
 import type { PageableResource } from '../../../api/api-pageable-resource-request';
 import type { Artist } from '../../artist';
 import { ArtistsService } from '../../artists.service';
-import * as artistsActions from './actions';
+import { loadArtists, loadArtistsFail, loadArtistsSuccess } from './actions';
 
 @Injectable()
 export class ArtistsListEffects {
   loadArtists$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(artistsActions.loadArtists),
+      ofType(loadArtists),
       switchMap(({ params }) =>
-        this._artistsService
-          .getArtists(params)
-          .pipe(
-            map((artists: PageableResource<Artist[]>) =>
-              artistsActions.loadArtistsSuccess({ artists }),
-            ),
+        this._artistsService.getArtists(params).pipe(
+          map((artists: PageableResource<Artist[]>) =>
+            loadArtistsSuccess({ artists }),
           ),
+          catchError((error) => of(loadArtistsFail({ error }))),
+        ),
       ),
     ),
   );

@@ -24,6 +24,12 @@ const routes: Routes = [
       import('./artists/artists.module').then((m) => m.ArtistsModule),
     canActivate: [authenticationGuard],
   },
+  {
+    path: 'playlists',
+    loadChildren: () =>
+      import('./playlists/playlists.module').then((m) => m.PlaylistsModule),
+    canActivate: [authenticationGuard],
+  },
   { path: '**', redirectTo: '/' },
 ];
 
