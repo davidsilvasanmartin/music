@@ -1,6 +1,7 @@
 package dev.davidsilva.music.playlist;
 
 import dev.davidsilva.music.song.Song;
+import dev.davidsilva.music.song.SongNotFoundException;
 import dev.davidsilva.music.song.SongRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -44,12 +45,9 @@ public class PlaylistService {
 
         int position = 0;
         for (PlaylistItem item : playlist.getItems()) {
-            // Set bidirectional relationship
+            item = populateMetadataFromSongThrowIfSongNotFound(item);
             item.setPlaylist(playlist);
-            // Assign position
             item.setPosition(position++);
-            // Populate metadata (songTitle, mbTrackId, etc.) from the linked Song
-            populateMetadataFromSong(item);
         }
 
         // Save the playlist; CascadeType.ALL will save associated items
@@ -124,13 +122,11 @@ public class PlaylistService {
         for (int i = 0; i < newItems.size(); i++) {
             // NOTE: any newItem we are updating should have come with its ID present in the newItems list.
             // If not, well it does not matter a lot, because it will be removed and recreated.
-            // TODO TEST THE ABOVE
-            // TODO One problem that could happen is if the item in DB contains metadata and the newItem does not???
             PlaylistItem newItem = newItems.get(i);
+            // Populate metadata (songTitle, etc.) from the referenced Song, before adding to the collection.
+            newItem = populateMetadataFromSongOrGetExistingPlaylistItem(newItem);
             // Set the position based on the order in the incoming list
             newItem.setPosition(i);
-            // Populate metadata (songTitle, etc.) from the referenced Song, before adding to the collection.
-            newItem = populateMetadataFromSong(newItem);
 
             // Ensure the item is correctly linked to the parent playlist
             newItem.setPlaylist(existingPlaylist);
@@ -170,59 +166,64 @@ public class PlaylistService {
 
     /**
      * Populates or updates the metadata fields (songTitle, mbTrackId, albumTitle, mbAlbumId)
-     * of a PlaylistItem *only if* its referenced Song can be found in the database.
+     * of a PlaylistItem. Throws an error if the song is not found
      *
      * @param item The PlaylistItem to process.
      */
-    private PlaylistItem populateMetadataFromSong(PlaylistItem item) {
+    private PlaylistItem populateMetadataFromSongThrowIfSongNotFound(PlaylistItem item) {
         Song songRef = item.getSong();
-
         if (songRef == null) {
-            // --- No Valid Song Reference Provided ---
-            // The input item didn't have a song reference
-            // In this case, the input item should already be in the database.
-            // We just need to fetch it and update its position
-            return getExistingPlaylistItemFromDbWithUpdatedPosition(item);
-        } else {
-            // At this point, we have a song, but we don't know if it has a valid id (as in, if it exists in the db)
-            Optional<Song> songOpt = songRepository.findById(songRef.getId());
-
-            if (songOpt.isEmpty()) {
-                // --- Song Not Found ---
-                // The Song ID referenced by the item does not exist in the database.
-                // This means we are updating the item and NOT creating a new item,
-                // because new items should always be created with a valid Song ID.
-                // So, again, we take the item from the db, update its position, and return it
-                return getExistingPlaylistItemFromDbWithUpdatedPosition(item);
-            } else {
-                // --- Song Found ---
-                // This is the path that will always be followed if there have never been song deletions from the database
-                Song fullSong = songOpt.get();
-                item.setSong(fullSong);
-
-                // Overwrite metadata from the authoritative source (the found Song entity)
-                item.setSongTitle(fullSong.getTitle());
-                item.setMbTrackId(fullSong.getMbTrackId());
-
-                // Populate album info if available
-                if (fullSong.getAlbum() != null) {
-                    item.setAlbumTitle(fullSong.getAlbum().getAlbum());
-                    item.setMbAlbumId(fullSong.getAlbum().getMbAlbumId());
-                } else {
-                    // TODO think if this can be tested
-                    throw new RuntimeException("Song " + fullSong.getId() + " has no album");
-                }
-
-                return item;
-            }
+            throw new PlaylistItemNullSongOnCreationException();
         }
+        Song song = songRepository.findById(songRef.getId()).orElseThrow(
+                () -> new SongNotFoundException(songRef.getId())
+        );
+        return populateMetadataFromSong(item, song);
     }
 
-    private PlaylistItem getExistingPlaylistItemFromDbWithUpdatedPosition(PlaylistItem item) {
-        PlaylistItem existingPlaylistItem = playlistItemRepository.findById(item.getId()).orElseThrow(
-                () -> new PlaylistItemNotFoundException(item.getId())
-        );
-        existingPlaylistItem.setPosition(item.getPosition());
-        return existingPlaylistItem;
+    /**
+     * Populates or updates the metadata fields (songTitle, mbTrackId, albumTitle, mbAlbumId)
+     * of a PlaylistItem *only if* its referenced Song can be found in the database.
+     * <p>
+     * NOTE: this function may return a DIFFERENT PlaylistItem than the one that was passed in
+     *
+     * @param item The PlaylistItem to process.
+     */
+    private PlaylistItem populateMetadataFromSongOrGetExistingPlaylistItem(PlaylistItem item) {
+        Song song;
+        try {
+            song = songRepository.findById(item.getSong().getId()).get();
+        } catch (Exception e) {
+            // In this case, the input item should already be in the database.
+            // We can get here if the song has been removed from the db while there
+            // is a PlaylistItem associated with that song, and we edit a Playlist
+            // with that PlaylistItem.
+            // The `song` field of that PlaylistItem would have been set to null
+            // because of the ON DELETE SET NULL.
+            // We just need to fetch the PlaylistItem in db and update its position
+            if (item.getId() == null) {
+                // As discussed, the item should exist in the db at this point,
+                // so we throw if it has no id
+                throw new PlaylistItemNotFoundException("null");
+            }
+            PlaylistItem existingPlaylistItem = playlistItemRepository.findById(item.getId()).orElseThrow(
+                    () -> new PlaylistItemNotFoundException(item.getId().toString())
+            );
+            existingPlaylistItem.setPosition(item.getPosition());
+            return existingPlaylistItem;
+        }
+
+        // --- Song Found ---
+        // This is the path that will always be followed if there have never been song deletions from the database
+        return populateMetadataFromSong(item, song);
+    }
+
+    private PlaylistItem populateMetadataFromSong(PlaylistItem item, Song song) {
+        item.setSong(song);
+        item.setSongTitle(song.getTitle());
+        item.setMbTrackId(song.getMbTrackId());
+        item.setAlbumTitle(song.getAlbum().getAlbum());
+        item.setMbAlbumId(song.getAlbum().getMbAlbumId());
+        return item;
     }
 }

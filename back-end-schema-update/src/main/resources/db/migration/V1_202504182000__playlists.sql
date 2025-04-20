@@ -42,10 +42,14 @@ CREATE TABLE playlist_items
 
     CONSTRAINT fk_playlist_items_song
         FOREIGN KEY (song_id) REFERENCES songs (id)
-            ON DELETE SET NULL,        -- Crucial part for persistence!
+            ON DELETE SET NULL         -- Crucial part for persistence!
 
-    -- Ensure position is unique within a playlist
-    UNIQUE (playlist_id, position)
+    -- Having the unique key below would be desirable, but we have to remove it, due to the way Hibernate
+    -- handles the transactions. Hibernate seems to be updating PlaylistItems one by one. It updates item 1 with
+    -- position 2, and that causes the app to crash, even when later on the item that was on position
+    -- 2 would have its own position updated too. If we want to add this back, we would have to change
+    -- the application logic. For now, we have to enforce the correct positions via application code.
+    -- UNIQUE (playlist_id, position)
 );
 
 CREATE INDEX idx_playlist_items_playlist_id ON playlist_items (playlist_id);
