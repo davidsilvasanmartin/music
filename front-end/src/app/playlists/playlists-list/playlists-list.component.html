@@ -1,1 +1,47 @@
-TODO :)
+<div class="flex w-full flex-col flex-nowrap gap-4 p-3 lg:p-5">
+  @for (playlist of playlists$ | async; track playlist.id) {
+    <app-card>
+      <div
+        class="sticky top-0 z-10 mb-2 flex flex-wrap items-center justify-between gap-x-4 gap-y-1 border-b border-slate-100 bg-white pb-2"
+      >
+        <h2 class="m-0 text-lg font-semibold text-red-600 hover:text-red-400">
+          <a [routerLink]="[playlist.id]" class="hover:underline">{{
+            playlist.name
+          }}</a>
+        </h2>
+        <div
+          class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-500"
+        >
+          <span class="flex items-center gap-1.5">
+            <app-icon-eighth-note class="size-4" />
+            {{ playlist.items.length }} songs
+          </span>
+        </div>
+      </div>
+
+      @if (playlist.description) {
+        <p class="mb-4 text-sm text-slate-600">{{ playlist.description }}</p>
+      }
+
+      @if (playlist.items && playlist.items.length > 0) {
+        <div class="flex flex-col flex-nowrap gap-2">
+          @for (item of playlist.items; track item.id) {
+            <div
+              class="flex items-center justify-between rounded bg-slate-50 p-2 hover:bg-slate-100"
+            >
+              <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-400">{{ item.position }}</span>
+                <span class="font-medium">{{ item.songTitle }}</span>
+              </div>
+              <span class="text-sm text-slate-500">{{ item.albumTitle }}</span>
+            </div>
+          }
+        </div>
+      } @else {
+        <div class="py-4 text-center text-sm italic text-slate-500">
+          No songs in this playlist.
+        </div>
+      }
+    </app-card>
+  }
+</div>

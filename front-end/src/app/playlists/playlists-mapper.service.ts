@@ -25,6 +25,10 @@ export class PlaylistsMapper {
       id: playlistItemDto.id,
       position: playlistItemDto.position,
       song: this.fromSongDto(playlistItemDto.song),
+      songTitle: playlistItemDto.songTitle,
+      mbTrackId: playlistItemDto.mbTrackId,
+      albumTitle: playlistItemDto.albumTitle,
+      mbAlbumId: playlistItemDto.mbAlbumId,
     };
   }
 

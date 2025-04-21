@@ -8,6 +8,12 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * TODO
+ *  - Link with Album and Artist entities
+ *  - Cache artist info
+ */
+
 @Entity
 @Table(name = "playlist_items", uniqueConstraints = {
         // Matches the UNIQUE (playlist_id, position) constraint in SQL
