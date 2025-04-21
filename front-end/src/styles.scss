@@ -68,3 +68,9 @@ body {
     @apply my-2;
   }
 }
+
+// We are using native dialog elements for modals. The following style
+// adds a backdrop to the dialog
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+}
