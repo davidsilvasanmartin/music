@@ -1,0 +1,138 @@
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+>
+  <div class="w-full max-w-md rounded-lg bg-white p-6 shadow-lg">
+    <div class="mb-4 flex items-center justify-between">
+      <h2 class="text-xl font-bold text-slate-800">Add to Playlist</h2>
+      <button
+        (click)="closeModal()"
+        aria-label="Close"
+        class="rounded-full p-1 text-slate-600 hover:bg-slate-100 hover:text-slate-800"
+      >
+        <svg
+          class="h-6 w-6"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M6 18L18 6M6 6l12 12"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <p class="text-slate-600">
+        Add <span class="font-semibold">{{ song.title }}</span> to a playlist
+      </p>
+    </div>
+
+    @if (!showNewPlaylistForm) {
+      <div class="mb-4">
+        <h3 class="mb-2 font-medium text-slate-700">Select a playlist</h3>
+
+        @if (playlists.length === 0) {
+          <p class="text-slate-500">You don't have any playlists yet.</p>
+        } @else {
+          <div class="max-h-60 overflow-y-auto">
+            @for (playlist of playlists; track playlist.id) {
+              <div
+                class="mb-2 flex cursor-pointer items-center rounded-md p-2 hover:bg-slate-100"
+                [class.bg-slate-100]="selectedPlaylistId === playlist.id"
+                (click)="selectedPlaylistId = playlist.id"
+                (keydown.enter)="selectedPlaylistId = playlist.id"
+                (keydown.space)="
+                  selectedPlaylistId = playlist.id; $event.preventDefault()
+                "
+                tabindex="0"
+                role="button"
+              >
+                <div class="flex-1">
+                  <div class="font-medium">{{ playlist.name }}</div>
+                  <div class="text-sm text-slate-500">
+                    {{ playlist.items.length }} songs
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <button
+          class="btn w-full rounded-md bg-slate-800 px-4 py-2 font-medium text-white hover:bg-slate-700"
+          [disabled]="selectedPlaylistId === null"
+          [class.opacity-50]="selectedPlaylistId === null"
+          (click)="addToExistingPlaylist()"
+        >
+          Add to Selected Playlist
+        </button>
+
+        <button
+          class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
+          (click)="showCreateNewPlaylist()"
+        >
+          Create New Playlist
+        </button>
+      </div>
+    } @else {
+      <div class="mb-4">
+        <h3 class="mb-2 font-medium text-slate-700">Create a new playlist</h3>
+
+        <div class="mb-3">
+          <label
+            for="playlist-name"
+            class="mb-1 block text-sm font-medium text-slate-700"
+            >Playlist Name</label
+          >
+          <input
+            type="text"
+            id="playlist-name"
+            class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
+            [(ngModel)]="newPlaylistName"
+            placeholder="Enter playlist name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="playlist-description"
+            class="mb-1 block text-sm font-medium text-slate-700"
+            >Description (optional)</label
+          >
+          <textarea
+            id="playlist-description"
+            class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
+            [(ngModel)]="newPlaylistDescription"
+            placeholder="Enter description"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <button
+          class="btn w-full rounded-md bg-slate-800 px-4 py-2 font-medium text-white hover:bg-slate-700"
+          [disabled]="!newPlaylistName.trim()"
+          [class.opacity-50]="!newPlaylistName.trim()"
+          (click)="createNewPlaylist()"
+        >
+          Create Playlist
+        </button>
+
+        <button
+          class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
+          (click)="hideCreateNewPlaylist()"
+        >
+          Cancel
+        </button>
+      </div>
+    }
+  </div>
+</div>
