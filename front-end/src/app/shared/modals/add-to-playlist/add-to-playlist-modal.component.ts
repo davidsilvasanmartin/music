@@ -5,7 +5,6 @@ import {
   Component,
   ElementRef,
   input,
-  OnDestroy,
   output,
   signal,
   ViewChild,
@@ -30,7 +29,7 @@ import { UiModule } from '../../../ui/ui.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ReactiveFormsModule, UiModule],
 })
-export class AddToPlaylistModalComponent implements AfterViewInit, OnDestroy {
+export class AddToPlaylistModalComponent implements AfterViewInit {
   song = input.required<Song>();
   playlists = input.required<Playlist[]>();
   modalClosed = output<void>();
@@ -51,9 +50,17 @@ export class AddToPlaylistModalComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     // Open the dialog modally when the view is initialized
     this.dialogRef.nativeElement.showModal();
-    this.dialogRef.nativeElement.addEventListener('close', () => {
-      this.modalClosed.emit();
-    });
+    /**
+     * Here is how closing the modal works
+     * 1. Either the user presses ESC or clicks the close button and `this.closeModal()` is run
+     * 2. Any of these 2 fires the native `dialog.close()` event
+     * 3. The event listener below fires and emits `modalClosed`
+     * 4. The parent component receives this emission
+     * 5. The parent component destroys this component
+     */
+    this.dialogRef.nativeElement.addEventListener('close', () =>
+      this.modalClosed.emit(),
+    );
 
     // Optional: Handle backdrop click to close
     // Note: This is not default behavior for showModal()
@@ -64,17 +71,11 @@ export class AddToPlaylistModalComponent implements AfterViewInit, OnDestroy {
     // });
   }
 
-  ngOnDestroy(): void {
-    // Ensure the dialog is closed when the component is destroyed
-    this.dialogRef.nativeElement?.close();
-  }
-
   /**
    * Closes the modal
    */
   closeModal(): void {
-    this.dialogRef.nativeElement.close(); // Close the native dialog
-    this.modalClosed.emit();
+    this.dialogRef.nativeElement.close();
   }
 
   /**
