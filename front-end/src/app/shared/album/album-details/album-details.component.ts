@@ -14,7 +14,7 @@ import type { Playlist } from '../../../playlists/models';
 import { PlaylistsService } from '../../../playlists/playlists.service';
 import type { Song } from '../../../songs/song';
 import { UiModule } from '../../../ui/ui.module';
-import { AddToPlaylistModalComponent } from '../../modals/add-to-playlist/add-to-playlist-modal.component';
+import { AddToPlaylistModalComponent } from '../../add-to-playlist/add-to-playlist-modal.component';
 
 @Component({
   selector: 'app-album-details',

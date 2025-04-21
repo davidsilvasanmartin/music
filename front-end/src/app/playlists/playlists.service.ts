@@ -31,4 +31,10 @@ export class PlaylistsService {
       .get<PlaylistDto>(this._apiService.createApiUrl(`playlists/${id}`))
       .pipe(map((p: PlaylistDto) => this._playlistsMapper.fromDto(p)));
   }
+
+  createPlaylist(playlist: Playlist): Observable<Playlist> {
+    return this._http
+      .post<PlaylistDto>(this._apiService.createApiUrl('playlists'), playlist)
+      .pipe(map((p: PlaylistDto) => this._playlistsMapper.fromDto(p)));
+  }
 }

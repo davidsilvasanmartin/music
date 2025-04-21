@@ -1,7 +1,7 @@
 import type { PlaylistItemDto } from './playlist-item-dto';
 
 export interface PlaylistDto {
-  id: number;
+  id?: number;
   name: string;
   description: string;
   items: PlaylistItemDto[];

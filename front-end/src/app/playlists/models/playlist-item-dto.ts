@@ -1,8 +1,8 @@
 import type { SongDto } from '../../songs/song-dto';
 
 export interface PlaylistItemDto {
-  id: number;
-  position: number;
+  id?: number;
+  position?: number;
   song: SongDto;
   // I think for now I'm not going to use
   // the cached properties in the front-end,

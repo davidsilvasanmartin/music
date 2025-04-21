@@ -29,7 +29,7 @@
             @for (playlist of playlists(); track playlist.id) {
               <button
                 class="mb-2 flex w-full cursor-pointer flex-col flex-nowrap items-start rounded-md p-2 text-start hover:bg-slate-100"
-                (click)="addToExistingPlaylist(playlist.id)"
+                (click)="addToExistingPlaylist(playlist.id!)"
                 role="button"
               >
                 <div class="font-medium text-red-600">{{ playlist.name }}</div>
