@@ -10,6 +10,7 @@ import { MbLinkComponent } from '../shared/mb-link/mb-link.component';
 import { SearchModule } from '../ui/search';
 import { SortModule } from '../ui/sort';
 import { UiModule } from '../ui/ui.module';
+import { ExtractSongsPipe } from './extract-songs.pipe';
 import { PlaylistsListComponent } from './playlists-list/playlists-list.component';
 import { PlaylistsListEffects } from './playlists-list/store/effects';
 import { PlaylistsRoutingModule } from './playlists-routing.module';
@@ -18,7 +19,11 @@ import { PlaylistsViewEffects } from './playlists-view/store/effects';
 import { playlistsReducer } from './store/reducers';
 
 @NgModule({
-  declarations: [PlaylistsListComponent, PlaylistsViewComponent],
+  declarations: [
+    PlaylistsListComponent,
+    PlaylistsViewComponent,
+    ExtractSongsPipe,
+  ],
   imports: [
     CommonModule,
     PlaylistsRoutingModule,
