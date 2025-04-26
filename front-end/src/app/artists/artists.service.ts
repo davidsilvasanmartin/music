@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from '../api/api.service';
-import type { PageableResource } from '../api/api-pageable-resource-request';
+import { ApiService } from '../shared/api/api.service';
+import type { PageableResource } from '../shared/api/api-pageable-resource-request';
 import type { PaginationSortSearchParams } from '../ui/pagination-sort-search';
 import { SearchMapperService } from '../ui/search';
 import { SortMapperService } from '../ui/sort';

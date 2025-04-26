@@ -1,7 +1,7 @@
 import { Component, input } from '@angular/core';
 
-import { ModalService } from '../../modal/modal-service';
 import type { Song } from '../../songs/song';
+import { ModalService } from '../../ui/modal/modal-service';
 import { AddToPlaylistModalComponent } from './add-to-playlist-modal.component';
 
 @Component({

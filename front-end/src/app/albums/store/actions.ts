@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import type { PageableResource } from '../../api/api-pageable-resource-request';
+import type { PageableResource } from '../../shared/api/api-pageable-resource-request';
 import type { PaginationSortSearchParams } from '../../ui/pagination-sort-search';
 import type { Album } from '../album';
 

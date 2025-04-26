@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 
-import type { PageableResource } from '../../../api/api-pageable-resource-request';
+import type { PageableResource } from '../../../shared/api/api-pageable-resource-request';
 import type { Artist } from '../../artist';
 import { ArtistsService } from '../../artists.service';
 import { loadArtists, loadArtistsFail, loadArtistsSuccess } from './actions';

@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiService } from '../api/api.service';
+import { ApiService } from '../shared/api/api.service';
 import type { Playlist, PlaylistDto } from './models';
 import { PlaylistsMapper } from './playlists-mapper.service';
 

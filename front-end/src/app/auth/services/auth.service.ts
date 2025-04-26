@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 
-import { ApiService } from '../../api/api.service';
+import { ApiService } from '../../shared/api/api.service';
 import type { User } from '../models';
 
 @Injectable({ providedIn: 'root' })

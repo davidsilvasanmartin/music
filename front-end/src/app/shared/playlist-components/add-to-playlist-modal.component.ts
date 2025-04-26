@@ -12,11 +12,11 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { take } from 'rxjs';
 
-import { MODAL_DATA } from '../../modal/modal-data';
-import { ModalWrapperComponent } from '../../modal/modal-wrapper.component';
 import type { Playlist } from '../../playlists/models';
 import { PlaylistsService } from '../../playlists/playlists.service';
 import type { Song } from '../../songs/song';
+import { MODAL_DATA } from '../../ui/modal/modal-data';
+import { ModalWrapperComponent } from '../../ui/modal/modal-wrapper.component';
 
 @Component({
   selector: 'app-add-to-playlist-modal',

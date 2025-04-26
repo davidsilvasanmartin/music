@@ -1,4 +1,4 @@
-import type { ApiPageableResourceRequest } from '../../api/api-pageable-resource-request';
+import type { ApiPageableResourceRequest } from '../../shared/api/api-pageable-resource-request';
 import type { AppState } from '../../store/state';
 import type { Album } from '../album';
 

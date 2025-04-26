@@ -16,7 +16,7 @@ import { filter, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
 import type { Album } from '../albums/album';
-import { ApiService } from '../api/api.service';
+import { ApiService } from '../shared/api/api.service';
 import type { Song } from '../songs/song';
 import { SongsService } from '../songs/songs.service';
 import * as queueActions from './store/actions';

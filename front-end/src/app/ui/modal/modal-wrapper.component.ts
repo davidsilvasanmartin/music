@@ -11,7 +11,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 
-import { IconsModule } from '../ui/icons/icons.module';
+import { IconsModule } from '../icons/icons.module';
 import { MODAL_CONFIG, ModalConfig } from './modal-config';
 import { MODAL_DATA } from './modal-data';
 

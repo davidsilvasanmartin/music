@@ -1,4 +1,4 @@
-import type { ApiRequest } from '../../../api/api-request';
+import type { ApiRequest } from '../../../shared/api/api-request';
 import type { Playlist } from '../../models';
 
 export interface PlaylistsListState {

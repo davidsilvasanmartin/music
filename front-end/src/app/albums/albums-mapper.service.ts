@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
-import { ApiService } from '../api/api.service';
 import type { Artist } from '../artists/artist';
 import type { ArtistDto } from '../artists/artist-dto';
 import type { Genre } from '../genres/genre';
 import type { GenreDto } from '../genres/genre-dto';
+import { ApiService } from '../shared/api/api.service';
 import type { Song } from '../songs/song';
 import type { SongDto } from '../songs/song-dto';
 import type { Album } from './album';

@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 import type { Album } from '../albums/album';
 import type { AlbumDto } from '../albums/album-dto';
 import { AlbumsMapperService } from '../albums/albums-mapper.service';
-import { ApiService } from '../api/api.service';
+import { ApiService } from '../shared/api/api.service';
 import type { Song } from './song';
 import type { SongDto } from './song-dto';
 

@@ -1,6 +1,6 @@
 import { Component, input, output } from '@angular/core';
 
-import { ApiService } from '../api/api.service';
+import { ApiService } from '../shared/api/api.service';
 import type { Song } from '../songs/song';
 
 @Component({
