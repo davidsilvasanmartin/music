@@ -20,9 +20,9 @@ import { IconPlayComponent } from './icon-play.component';
 import { IconPlayNextComponent } from './icon-play-next.component';
 import { IconPlayPreviousComponent } from './icon-play-previous.component';
 import { IconPlaylistAddComponent } from './icon-playlist-add.component';
+import { IconQueueAddComponent } from './icon-queue-add.component';
 import { IconSearchComponent } from './icon-search.component';
 import { IconUserComponent } from './icon-user.component.';
-import { IconUserPlaylistAddComponent } from './icon-user-playlist-add.component';
 import { IconVolume0Component } from './icon-volume-0.component';
 import { IconVolume1Component } from './icon-volume-1.component';
 import { IconVolume2Component } from './icon-volume-2.component';
@@ -34,8 +34,8 @@ import { IconVynilComponent } from './icon-vynil.component';
   declarations: [
     IconEyeComponent,
     IconPlayComponent,
+    IconQueueAddComponent,
     IconPlaylistAddComponent,
-    IconUserPlaylistAddComponent,
     IconCancelComponent,
     IconChevronDoubleLeftComponent,
     IconChevronDoubleRightComponent,
@@ -64,8 +64,8 @@ import { IconVynilComponent } from './icon-vynil.component';
   exports: [
     IconEyeComponent,
     IconPlayComponent,
+    IconQueueAddComponent,
     IconPlaylistAddComponent,
-    IconUserPlaylistAddComponent,
     IconCancelComponent,
     IconChevronDoubleLeftComponent,
     IconChevronDoubleRightComponent,

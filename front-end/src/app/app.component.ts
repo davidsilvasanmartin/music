@@ -26,7 +26,7 @@ import { AuthRootState } from './auth/store/state';
           <router-outlet></router-outlet>
         </div>
       </div>
-      <app-player />
+      <app-queue-player />
     } @else {
       <router-outlet></router-outlet>
     }

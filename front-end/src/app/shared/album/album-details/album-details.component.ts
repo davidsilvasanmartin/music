@@ -5,14 +5,11 @@ import {
   signal,
 } from '@angular/core';
 
-import { Store } from '@ngrx/store';
-
 import type { Album } from '../../../albums/album';
-import * as playlistActions from '../../../player/store/actions';
-import type { PlaylistRootState } from '../../../player/store/state';
 import type { Playlist } from '../../../playlists/models';
 import { PlaylistsService } from '../../../playlists/playlists.service';
 import type { Song } from '../../../songs/song';
+import { PlaylistComponentsModule } from '../../../ui/playlist-components/playlist-components.module';
 import { UiModule } from '../../../ui/ui.module';
 import { AddToPlaylistModalComponent } from '../../add-to-playlist/add-to-playlist-modal.component';
 
@@ -21,7 +18,7 @@ import { AddToPlaylistModalComponent } from '../../add-to-playlist/add-to-playli
   templateUrl: './album-details.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiModule, AddToPlaylistModalComponent],
+  imports: [UiModule, AddToPlaylistModalComponent, PlaylistComponentsModule],
 })
 export class AlbumDetailsComponent {
   album = input.required<Album>();
@@ -30,22 +27,16 @@ export class AlbumDetailsComponent {
   currentSong = signal<Song | null>(null);
   playlists = signal<Playlist[]>([]);
 
-  constructor(
-    private readonly _store: Store<PlaylistRootState>,
-    private readonly _playlistsService: PlaylistsService,
-  ) {}
-
-  addSongToPlaylist(songId: number) {
-    this._store.dispatch(playlistActions.addToPlaylist({ songIds: [songId] }));
-  }
+  constructor(private readonly _playlistsService: PlaylistsService) {}
 
   /**
    * Opens the modal to add a song to a playlist
+   *
+   * TODO write this functionality in the specific component !
    */
   openAddToPlaylistModal(song: Song) {
     this.currentSong.set(song);
 
-    // Load playlists
     this._playlistsService.getPlaylists().subscribe((playlists) => {
       this.playlists.set(playlists);
       this.showAddToPlaylistModal.set(true);

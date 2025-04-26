@@ -1,10 +1,10 @@
 import { Component, input, output } from '@angular/core';
 
-import { ApiService } from '../../api/api.service';
-import type { Song } from '../../songs/song';
+import { ApiService } from '../api/api.service';
+import type { Song } from '../songs/song';
 
 @Component({
-  selector: 'app-player-playlist',
+  selector: 'app-queue-list',
   template: `
     <div
       class="pointer-events-none absolute bottom-24 left-0 right-0 z-10 flex flex-row flex-nowrap justify-center"
@@ -15,20 +15,20 @@ import type { Song } from '../../songs/song';
         <div class="flex h-full flex-col flex-nowrap">
           <div class="sticky top-0 z-10 border-b bg-slate-50 px-4 py-1">
             <div class="flex flex-row flex-nowrap items-center">
-              <span class="flex-grow">Playlist</span>
+              <span class="flex-grow">Play Queue</span>
               <div class="flex gap-2">
                 <button
                   *ngIf="nextSongs() && nextSongs().length > 0"
                   class="btn rounded-full p-1 text-slate-600 hover:text-slate-400"
-                  (click)="clearPlaylist.emit()"
-                  aria-label="Clear playlist"
+                  (click)="clearQueue.emit()"
+                  aria-label="Clear play queue"
                 >
                   Clear All
                 </button>
                 <button
                   class="btn rounded-full text-slate-600 hover:text-slate-400"
-                  (click)="closePlaylist.emit()"
-                  aria-label="Close playlist"
+                  (click)="closeQueue.emit()"
+                  aria-label="Close play queue"
                 >
                   <app-icon-chevron-down class="size-5" />
                 </button>
@@ -77,10 +77,8 @@ import type { Song } from '../../songs/song';
                       </div>
                     </div>
                     <div class="flex flex-row gap-2">
-                      <app-player-user-playlist-add-no-bg [song]="song" />
-                      <app-player-playlist-remove-no-bg
-                        [songIndex]="songIndex + 1"
-                      />
+                      <app-playlist-add [song]="song" />
+                      <app-queue-remove-no-bg [songIndex]="songIndex + 1" />
                     </div>
                   </div>
                 }
@@ -91,7 +89,7 @@ import type { Song } from '../../songs/song';
               >
                 <app-icon-eighth-note class="mb-4 size-16" />
                 <p class="text-lg font-medium text-slate-600">
-                  No songs in playlist
+                  No songs in play queue
                 </p>
                 <p class="mt-2 text-sm">Add songs to start playing</p>
               </div>
@@ -103,10 +101,10 @@ import type { Song } from '../../songs/song';
   `,
   styles: [':host { display: contents; }'],
 })
-export class PlayerPlaylistComponent {
+export class QueueListComponent {
   nextSongs = input.required<Song[]>();
-  closePlaylist = output<void>();
-  clearPlaylist = output<void>();
+  closeQueue = output<void>();
+  clearQueue = output<void>();
 
   constructor(private readonly apiService: ApiService) {}
   getSongImgUrl(songId: number) {

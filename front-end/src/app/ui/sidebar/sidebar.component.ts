@@ -96,7 +96,7 @@ import { UiModule } from '../ui.module';
           role="menuitem"
           aria-label="Playlists"
         >
-          <app-icon-user-playlist-add class="size-6" aria-hidden="true" />
+          <app-icon-playlist-add class="size-6" aria-hidden="true" />
           <span class="ml-3 hidden text-sm font-medium lg:block"
             >Playlists</span
           >

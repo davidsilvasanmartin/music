@@ -15,20 +15,20 @@ import { select, Store } from '@ngrx/store';
 import { filter, Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
-import { Album } from '../albums/album';
+import type { Album } from '../albums/album';
 import { ApiService } from '../api/api.service';
-import { Song } from '../songs/song';
+import type { Song } from '../songs/song';
 import { SongsService } from '../songs/songs.service';
-import * as playlistActions from './store/actions';
-import * as playlistSelectors from './store/selectors';
-import { PlaylistRootState } from './store/state';
+import * as queueActions from './store/actions';
+import * as queueSelectors from './store/selectors';
+import type { QueueRootState } from './store/state';
 
 @Component({
-  selector: 'app-player',
-  templateUrl: './player.component.html',
+  selector: 'app-queue-player',
+  templateUrl: './queue-player.component.html',
   styles: ':host { display: contents; }',
 })
-export class PlayerComponent implements OnDestroy, AfterViewInit {
+export class QueuePlayerComponent implements OnDestroy, AfterViewInit {
   @ViewChild('audioElement', { static: false })
   audioElement: ElementRef | undefined;
 
@@ -42,7 +42,7 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   currentSongAlbum$: Observable<Album>;
   nextSongs: Signal<Song[]>;
 
-  isPlaylistOpen = signal(false);
+  isQueueOpen = signal(false);
   @ViewChild('progressContainer') progressContainer!: ElementRef;
 
   isPlaying = signal(false);
@@ -54,16 +54,16 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   volume = signal(1);
 
   constructor(
-    private readonly _store: Store<PlaylistRootState>,
+    private readonly _store: Store<QueueRootState>,
     private readonly _apiService: ApiService,
     private readonly _songsService: SongsService,
   ) {
     this.currentSong = toSignal(
-      this._store.pipe(select(playlistSelectors.getCurrentSong)),
+      this._store.pipe(select(queueSelectors.getCurrentSong)),
       { requireSync: true },
     );
     this.nextSongs = toSignal(
-      this._store.pipe(select(playlistSelectors.getNextSongs)),
+      this._store.pipe(select(queueSelectors.getNextSongs)),
       { requireSync: true },
     );
     this.currentSongAlbum$ = toObservable(this.currentSong).pipe(
@@ -73,19 +73,19 @@ export class PlayerComponent implements OnDestroy, AfterViewInit {
   }
 
   goToNextSong() {
-    this._store.dispatch(playlistActions.next());
+    this._store.dispatch(queueActions.next());
   }
 
   ngOnDestroy() {
-    this._store.dispatch(playlistActions.reset());
+    this._store.dispatch(queueActions.reset());
   }
 
-  togglePlaylist() {
-    this.isPlaylistOpen.set(!this.isPlaylistOpen());
+  toggleQueue() {
+    this.isQueueOpen.set(!this.isQueueOpen());
   }
 
-  closePlaylist() {
-    this.isPlaylistOpen.set(false);
+  closeQueue() {
+    this.isQueueOpen.set(false);
   }
 
   ngAfterViewInit(): void {

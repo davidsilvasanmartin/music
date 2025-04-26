@@ -9,22 +9,12 @@
         {{ song.title }}
       </div>
       <div class="flex flex-row gap-2">
-        <!-- TODO functionality -->
-        <button
-          class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
-          aria-label="Add to saved playlist"
-          title="Add to saved playlist"
+        <!-- TODO REMOVE CLICK and put functionality inside component -->
+        <app-playlist-add
           (click)="openAddToPlaylistModal(song)"
-        >
-          <app-icon-user-playlist-add class="size-5" />
-        </button>
-        <button
-          class="btn rounded-full font-bold text-slate-600 hover:text-slate-400"
-          aria-label="Add to playlist"
-          (click)="addSongToPlaylist(song.id)"
-        >
-          <app-icon-playlist-add class="size-5" />
-        </button>
+          [song]="song"
+        />
+        <app-queue-add [songs]="[song]" />
       </div>
     </div>
   }

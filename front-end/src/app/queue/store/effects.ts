@@ -6,17 +6,17 @@ import { forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
 import { SongsService } from '../../songs/songs.service';
-import * as playerActions from './actions';
+import { addToQueue, addToQueueSuccess } from './actions';
 
 @Injectable()
-export class PlayerEffects {
+export class QueueEffects {
   loadAlbums$ = createEffect(() =>
     this._actions$.pipe(
-      ofType(playerActions.addToPlaylist),
+      ofType(addToQueue),
       switchMap(({ songIds }) =>
         forkJoin(
           songIds.map((songId) => this._songsService.getSong(songId)),
-        ).pipe(map((songs) => playerActions.addToPlaylistSuccess({ songs }))),
+        ).pipe(map((songs) => addToQueueSuccess({ songs }))),
       ),
     ),
   );

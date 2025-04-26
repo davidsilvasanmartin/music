@@ -11,7 +11,7 @@ import { Component } from '@angular/core';
       stroke="currentColor"
     >
       <path
-        d="M120-320v-80h320v80H120Zm0-160v-80h480v80H120Zm0-160v-80h480v80H120Zm520 520v-320l240 160-240 160Z"
+        d="M120-320v-80h280v80H120Zm0-160v-80h440v80H120Zm0-160v-80h440v80H120Zm520 480v-160H480v-80h160v-160h80v160h160v80H720v160h-80Z"
       />
     </svg>
   `,

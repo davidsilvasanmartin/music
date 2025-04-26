@@ -1,8 +1,5 @@
-@if (isPlaylistOpen()) {
-  <app-player-playlist
-    [nextSongs]="nextSongs()"
-    (closePlaylist)="closePlaylist()"
-  />
+@if (isQueueOpen()) {
+  <app-queue-list [nextSongs]="nextSongs()" (closeQueue)="closeQueue()" />
 }
 <div
   class="z-10 flex h-24 w-full flex-row flex-nowrap justify-center border-t border-slate-200 bg-white shadow-lg"
@@ -55,7 +52,7 @@
       </div>
 
       <div
-        class="audio-player-controls flex items-center gap-4 rounded-lg border border-slate-200 bg-slate-50 px-5 py-3 shadow-md"
+        class="flex items-center gap-4 rounded-lg border border-slate-200 bg-slate-50 px-5 py-3 shadow-md"
       >
         <div class="flex items-center gap-3">
           <button
@@ -170,11 +167,11 @@
 
       <button
         class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
-        aria-label="Toggle playlist"
-        title="Toggle playlist"
-        (click)="togglePlaylist()"
+        aria-label="Toggle queue"
+        title="Toggle queue"
+        (click)="toggleQueue()"
       >
-        @if (isPlaylistOpen()) {
+        @if (isQueueOpen()) {
           <app-icon-chevron-down class="size-6" />
         } @else {
           <app-icon-chevron-up class="size-6" />
@@ -182,7 +179,7 @@
       </button>
     } @else {
       <div class="grow self-center text-center italic text-slate-500">
-        &lt;No songs in playlist&gt;
+        &lt;No songs in queue&gt;
       </div>
     }
   </div>

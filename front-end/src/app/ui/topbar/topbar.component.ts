@@ -37,7 +37,6 @@ import { IconsModule } from '../icons/icons.module';
         aria-label="User Profile"
         title="Profile"
       >
-        <!-- TODO user icon instead of eye -->
         <app-icon-user class="size-6" aria-hidden="true" />
       </a>
     </div>
