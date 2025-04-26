@@ -7,9 +7,11 @@ import { StoreModule } from '@ngrx/store';
 import { AlbumComponent } from '../shared/album/album.component';
 import { AlbumCountComponent } from '../shared/album-count/album-count.component';
 import { MbLinkComponent } from '../shared/mb-link/mb-link.component';
+import { QueueComponentsModule } from '../shared/queue-components/queue-components.module';
+import { CardModule } from '../ui/card/card.module';
+import { IconsModule } from '../ui/icons/icons.module';
 import { SearchModule } from '../ui/search';
 import { SortModule } from '../ui/sort';
-import { UiModule } from '../ui/ui.module';
 import { ExtractSongsPipe } from './extract-songs.pipe';
 import { PlaylistsListComponent } from './playlists-list/playlists-list.component';
 import { PlaylistsListEffects } from './playlists-list/store/effects';
@@ -27,7 +29,6 @@ import { playlistsReducer } from './store/reducers';
   imports: [
     CommonModule,
     PlaylistsRoutingModule,
-    UiModule,
     StoreModule.forFeature('playlists', playlistsReducer),
     EffectsModule.forFeature([PlaylistsListEffects, PlaylistsViewEffects]),
     SortModule,
@@ -35,6 +36,9 @@ import { playlistsReducer } from './store/reducers';
     AlbumComponent,
     AlbumCountComponent,
     MbLinkComponent,
+    IconsModule,
+    QueueComponentsModule,
+    CardModule,
   ],
 })
 export class PlaylistsModule {}

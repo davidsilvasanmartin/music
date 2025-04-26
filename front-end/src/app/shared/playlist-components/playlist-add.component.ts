@@ -1,8 +1,8 @@
 import { Component, input } from '@angular/core';
 
 import { ModalService } from '../../modal/modal-service';
-import { AddToPlaylistModalComponent } from '../../shared/add-to-playlist/add-to-playlist-modal.component';
 import type { Song } from '../../songs/song';
+import { AddToPlaylistModalComponent } from './add-to-playlist-modal.component';
 
 @Component({
   selector: 'app-playlist-add',

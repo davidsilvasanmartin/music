@@ -16,7 +16,6 @@ import { ErrorHandlerService } from './error-handler.service';
 import { QueueModule } from './queue';
 import { SidebarComponent } from './ui/sidebar/sidebar.component';
 import { TopbarComponent } from './ui/topbar/topbar.component';
-import { UiModule } from './ui/ui.module';
 
 /**
  * TODO: There are some errors logged by Spring when the front-end is fetching images.
@@ -28,7 +27,6 @@ import { UiModule } from './ui/ui.module';
     AppRoutingModule,
     BrowserAnimationsModule,
     QueueModule,
-    UiModule,
     TopbarComponent,
     SidebarComponent,
     StoreModule.forRoot({ auth: authReducer }),

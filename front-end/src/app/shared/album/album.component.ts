@@ -8,9 +8,10 @@ import { Params, RouterModule } from '@angular/router';
 
 import type { Album } from '../../albums/album';
 import type { Artist } from '../../artists/artist';
+import { IconsModule } from '../../ui/icons/icons.module';
 import { SearchMapperService } from '../../ui/search';
-import { UiModule } from '../../ui/ui.module';
 import { BadgesModule } from '../badges/badges.module';
+import { QueueComponentsModule } from '../queue-components/queue-components.module';
 import { AlbumDetailsComponent } from './album-details/album-details.component';
 
 /**
@@ -25,7 +26,13 @@ import { AlbumDetailsComponent } from './album-details/album-details.component';
   templateUrl: './album.component.html',
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UiModule, AlbumDetailsComponent, BadgesModule],
+  imports: [
+    RouterModule,
+    AlbumDetailsComponent,
+    BadgesModule,
+    QueueComponentsModule,
+    IconsModule,
+  ],
 })
 export class AlbumComponent {
   album = input.required<Album>();

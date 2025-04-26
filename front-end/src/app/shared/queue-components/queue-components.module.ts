@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { IconsModule } from '../icons/icons.module';
+import { IconsModule } from '../../ui/icons/icons.module';
 import { QueueAddComponent } from './queue-add.component';
 import { QueueRemoveComponent } from './queue-remove.component';
 import { QueueRemoveNoBgComponent } from './queue-remove-no-bg.component';

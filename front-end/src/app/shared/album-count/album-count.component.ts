@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { UiModule } from '../../ui/ui.module';
+import { IconsModule } from '../../ui/icons/icons.module';
 
 @Component({
   selector: 'app-album-count',
@@ -11,7 +11,7 @@ import { UiModule } from '../../ui/ui.module';
   </div>`,
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UiModule],
+  imports: [RouterModule, IconsModule],
 })
 export class AlbumCountComponent {
   albumCount = input.required<number | null | undefined>();

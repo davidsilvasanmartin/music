@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
-import { UiModule } from '../ui.module';
+import { IconsModule } from '../icons/icons.module';
 
 /**
  * Possible further improvements:
@@ -25,7 +25,7 @@ import { UiModule } from '../ui.module';
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [CommonModule, RouterLink, RouterLinkActive, UiModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive, IconsModule],
   // Width is calculated so that the icons look more or less centered when the sidebar is collapsed
   template: `<nav
     class="z-10 h-full w-[60px] shrink-0 overflow-y-auto bg-white shadow-md lg:w-40"

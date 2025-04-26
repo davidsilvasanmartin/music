@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
-import { UiModule } from '../../ui/ui.module';
+import { IconsModule } from '../../ui/icons/icons.module';
 
 @Component({
   selector: 'app-mb-link',
@@ -22,7 +22,7 @@ import { UiModule } from '../../ui/ui.module';
   }`,
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterModule, UiModule],
+  imports: [RouterModule, IconsModule],
 })
 export class MbLinkComponent {
   mbId = input.required<string | null | undefined>();

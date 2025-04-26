@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,27 +8,20 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import {
-  FormBuilder,
-  FormControl,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 
 import { take } from 'rxjs';
 
 import { MODAL_DATA } from '../../modal/modal-data';
+import { ModalWrapperComponent } from '../../modal/modal-wrapper.component';
 import type { Playlist } from '../../playlists/models';
 import { PlaylistsService } from '../../playlists/playlists.service';
 import type { Song } from '../../songs/song';
-import { UiModule } from '../../ui/ui.module';
 
 @Component({
   selector: 'app-add-to-playlist-modal',
   templateUrl: './add-to-playlist-modal.component.html',
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, ReactiveFormsModule, UiModule],
 })
 export class AddToPlaylistModalComponent implements OnInit {
   song: Signal<Song>;
@@ -50,6 +42,7 @@ export class AddToPlaylistModalComponent implements OnInit {
     private readonly _playlistsService: PlaylistsService,
     private readonly _destroyRef: DestroyRef,
     @Inject(MODAL_DATA) private readonly _modalData: { song: Song },
+    private readonly _modalWrapperComponent: ModalWrapperComponent,
   ) {
     this.song = signal(this._modalData.song).asReadonly();
   }
@@ -64,7 +57,7 @@ export class AddToPlaylistModalComponent implements OnInit {
    * Closes the modal
    */
   closeModal(): void {
-    // TODO NEED TO CALL THIS AFTER SUCCESSFULLY ADDING TO PLAYLIST
+    this._modalWrapperComponent.closeDialog();
   }
 
   /**
