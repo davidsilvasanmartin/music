@@ -1,5 +1,7 @@
 import { Component, input } from '@angular/core';
 
+import { ModalService } from '../../modal/modal-service';
+import { AddToPlaylistModalComponent } from '../../shared/add-to-playlist/add-to-playlist-modal.component';
 import type { Song } from '../../songs/song';
 
 @Component({
@@ -9,7 +11,7 @@ import type { Song } from '../../songs/song';
       class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
       aria-label="Add to playlist"
       title="Add to playlist"
-      (click)="addToPlaylist()"
+      (click)="openAddToPlaylistModal()"
     >
       <app-icon-playlist-add class="size-6" />
     </button>
@@ -18,7 +20,12 @@ import type { Song } from '../../songs/song';
 export class PlaylistAddComponent {
   song = input.required<Song>();
 
-  addToPlaylist() {
-    // TODO
+  constructor(private readonly _modalService: ModalService) {}
+
+  openAddToPlaylistModal() {
+    this._modalService.open({
+      component: AddToPlaylistModalComponent,
+      data: { song: this.song() },
+    });
   }
 }

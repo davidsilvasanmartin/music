@@ -9,21 +9,9 @@
         {{ song.title }}
       </div>
       <div class="flex flex-row gap-2">
-        <!-- TODO REMOVE CLICK and put functionality inside component -->
-        <app-playlist-add
-          (click)="openAddToPlaylistModal(song)"
-          [song]="song"
-        />
+        <app-playlist-add [song]="song" />
         <app-queue-add [songs]="[song]" />
       </div>
     </div>
   }
 </div>
-
-@if (showAddToPlaylistModal()) {
-  <app-add-to-playlist-modal
-    [song]="currentSong()!"
-    [playlists]="playlists()"
-    (modalClosed)="closeAddToPlaylistModal()"
-  ></app-add-to-playlist-modal>
-}

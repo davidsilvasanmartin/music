@@ -1,15 +1,12 @@
 import { CommonModule } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  ElementRef,
-  input,
-  OnDestroy,
-  output,
+  Inject,
+  OnInit,
+  Signal,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -19,10 +16,9 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { Store } from '@ngrx/store';
-
 import { take } from 'rxjs';
 
+import { MODAL_DATA } from '../../modal/modal-data';
 import type { Playlist } from '../../playlists/models';
 import { PlaylistsService } from '../../playlists/playlists.service';
 import type { Song } from '../../songs/song';
@@ -35,58 +31,40 @@ import { UiModule } from '../../ui/ui.module';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ReactiveFormsModule, UiModule],
 })
-export class AddToPlaylistModalComponent implements AfterViewInit, OnDestroy {
-  song = input.required<Song>();
-  playlists = input.required<Playlist[]>();
-  modalClosed = output<void>();
-
-  @ViewChild('dialog') dialogRef!: ElementRef<HTMLDialogElement>;
-
+export class AddToPlaylistModalComponent implements OnInit {
+  song: Signal<Song>;
+  playlists = signal<Playlist[]>([]);
   showNewPlaylistForm = signal<boolean>(false);
   readonly newPlaylistForm = this._formBuilder.group({
     name: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
   });
 
+  /**
+   * TODO !!!!
+   *  Think about moving this component into a different directory
+   *
+   */
   constructor(
-    private readonly _store: Store,
     private readonly _formBuilder: FormBuilder,
     private readonly _playlistsService: PlaylistsService,
     private readonly _destroyRef: DestroyRef,
-  ) {}
+    @Inject(MODAL_DATA) private readonly _modalData: { song: Song },
+  ) {
+    this.song = signal(this._modalData.song).asReadonly();
+  }
 
-  readonly modalCloseListener = () => this.modalClosed.emit();
-
-  ngAfterViewInit(): void {
-    // Open the dialog modally when the view is initialized
-    this.dialogRef.nativeElement.showModal();
-    /**
-     * Here is how closing the modal works
-     * 1. Either the user presses ESC or clicks the close button and `this.closeModal()` is run
-     * 2. Any of these 2 fires the native `dialog.close()` event
-     * 3. The event listener below fires and emits `modalClosed`
-     * 4. The parent component receives this emission
-     * 5. The parent component destroys this component
-     */
-    this.dialogRef.nativeElement.addEventListener(
-      'close',
-      this.modalCloseListener,
-    );
-
-    // Optional: Handle backdrop click to close
-    // Note: This is not default behavior for showModal()
-    // this.dialogRef.nativeElement.addEventListener('click', (event) => {
-    //   if (event.target === this.dialogRef.nativeElement) {
-    //     this.closeModal();
-    //   }
-    // });
+  ngOnInit() {
+    this._playlistsService.getPlaylists().subscribe((playlists) => {
+      this.playlists.set(playlists);
+    });
   }
 
   /**
    * Closes the modal
    */
   closeModal(): void {
-    this.dialogRef.nativeElement.close();
+    // TODO NEED TO CALL THIS AFTER SUCCESSFULLY ADDING TO PLAYLIST
   }
 
   /**
@@ -140,17 +118,5 @@ export class AddToPlaylistModalComponent implements AfterViewInit, OnDestroy {
         console.log('Created playlist', JSON.stringify(playlist, null, 2));
         this.closeModal();
       });
-  }
-
-  ngOnDestroy() {
-    if (this.dialogRef?.nativeElement) {
-      this.dialogRef.nativeElement.removeEventListener(
-        'close',
-        this.modalCloseListener,
-      );
-      if (this.dialogRef.nativeElement.open) {
-        this.dialogRef.nativeElement.close();
-      }
-    }
   }
 }

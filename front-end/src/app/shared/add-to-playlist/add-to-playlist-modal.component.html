@@ -1,106 +1,96 @@
-<dialog #dialog>
-  <div class="w-[32rem] rounded-lg bg-white p-6 shadow-lg">
-    <div class="mb-4 flex items-center justify-between">
-      <h2 class="m-0 text-xl font-bold text-slate-800">Add to Playlist</h2>
+<div class="w-[32rem] rounded-lg bg-white px-6 pb-6 shadow-lg">
+  <div class="mb-4 flex items-center justify-between">
+    <h2 class="m-0 text-xl font-bold text-slate-800">Add to Playlist</h2>
+  </div>
+
+  <div class="mb-4">
+    <p class="text-slate-600">
+      Add <span class="font-semibold">{{ song().title }}</span> to a playlist
+    </p>
+  </div>
+
+  @if (!showNewPlaylistForm()) {
+    <div class="mb-4">
+      <h3 class="mb-2 font-medium text-slate-700">Select a playlist</h3>
+
+      @if (playlists().length === 0) {
+        <p class="text-slate-500">You don't have any playlists yet.</p>
+      } @else {
+        <div class="max-h-60 overflow-y-auto">
+          @for (playlist of playlists(); track playlist.id) {
+            <button
+              class="mb-2 flex w-full cursor-pointer flex-col flex-nowrap items-start rounded-md p-2 text-start hover:bg-slate-100"
+              (click)="addToExistingPlaylist(playlist.id!)"
+              role="button"
+            >
+              <div class="font-medium text-red-600">{{ playlist.name }}</div>
+              <div class="text-sm text-slate-500">
+                {{ playlist.items.length }} songs
+              </div>
+            </button>
+          }
+        </div>
+      }
+    </div>
+
+    <div class="flex flex-col gap-2">
       <button
-        (click)="closeModal()"
-        aria-label="Close"
-        class="btn rounded-full p-1 font-bold text-slate-600 hover:text-slate-400"
-        title="Close"
+        class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
+        (click)="showCreateNewPlaylist()"
       >
-        <app-icon-cancel class="size-5" />
+        Create New Playlist
       </button>
     </div>
-
+  } @else {
     <div class="mb-4">
-      <p class="text-slate-600">
-        Add <span class="font-semibold">{{ song().title }}</span> to a playlist
-      </p>
+      <h3 class="mb-2 font-medium text-slate-700">Create a new playlist</h3>
+      <form [formGroup]="newPlaylistForm">
+        <div class="mb-3">
+          <label
+            for="playlist-name"
+            class="mb-1 block text-sm font-medium text-slate-700"
+            >Playlist Name</label
+          >
+          <input
+            type="text"
+            id="playlist-name"
+            class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
+            formControlName="name"
+            placeholder="Enter playlist name"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label
+            for="playlist-description"
+            class="mb-1 block text-sm font-medium text-slate-700"
+            >Description (optional)</label
+          >
+          <textarea
+            id="playlist-description"
+            class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
+            formControlName="description"
+            placeholder="Enter description"
+            rows="3"
+          ></textarea>
+        </div>
+      </form>
     </div>
 
-    @if (!showNewPlaylistForm()) {
-      <div class="mb-4">
-        <h3 class="mb-2 font-medium text-slate-700">Select a playlist</h3>
+    <div class="flex flex-col gap-2">
+      <button
+        class="btn w-full rounded-md bg-slate-800 px-4 py-2 font-medium text-white hover:bg-slate-700"
+        (click)="createNewPlaylist()"
+      >
+        Create Playlist
+      </button>
 
-        @if (playlists().length === 0) {
-          <p class="text-slate-500">You don't have any playlists yet.</p>
-        } @else {
-          <div class="max-h-60 overflow-y-auto">
-            @for (playlist of playlists(); track playlist.id) {
-              <button
-                class="mb-2 flex w-full cursor-pointer flex-col flex-nowrap items-start rounded-md p-2 text-start hover:bg-slate-100"
-                (click)="addToExistingPlaylist(playlist.id!)"
-                role="button"
-              >
-                <div class="font-medium text-red-600">{{ playlist.name }}</div>
-                <div class="text-sm text-slate-500">
-                  {{ playlist.items.length }} songs
-                </div>
-              </button>
-            }
-          </div>
-        }
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <button
-          class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
-          (click)="showCreateNewPlaylist()"
-        >
-          Create New Playlist
-        </button>
-      </div>
-    } @else {
-      <div class="mb-4">
-        <h3 class="mb-2 font-medium text-slate-700">Create a new playlist</h3>
-        <form [formGroup]="newPlaylistForm">
-          <div class="mb-3">
-            <label
-              for="playlist-name"
-              class="mb-1 block text-sm font-medium text-slate-700"
-              >Playlist Name</label
-            >
-            <input
-              type="text"
-              id="playlist-name"
-              class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
-              formControlName="name"
-              placeholder="Enter playlist name"
-            />
-          </div>
-
-          <div class="mb-3">
-            <label
-              for="playlist-description"
-              class="mb-1 block text-sm font-medium text-slate-700"
-              >Description (optional)</label
-            >
-            <textarea
-              id="playlist-description"
-              class="w-full rounded-md border border-slate-300 p-2 focus:border-slate-500 focus:outline-none"
-              formControlName="description"
-              placeholder="Enter description"
-              rows="3"
-            ></textarea>
-          </div>
-        </form>
-      </div>
-
-      <div class="flex flex-col gap-2">
-        <button
-          class="btn w-full rounded-md bg-slate-800 px-4 py-2 font-medium text-white hover:bg-slate-700"
-          (click)="createNewPlaylist()"
-        >
-          Create Playlist
-        </button>
-
-        <button
-          class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
-          (click)="hideCreateNewPlaylist()"
-        >
-          Cancel
-        </button>
-      </div>
-    }
-  </div>
-</dialog>
+      <button
+        class="btn w-full rounded-md border border-slate-300 px-4 py-2 font-medium text-slate-700 hover:bg-slate-50"
+        (click)="hideCreateNewPlaylist()"
+      >
+        Cancel
+      </button>
+    </div>
+  }
+</div>
