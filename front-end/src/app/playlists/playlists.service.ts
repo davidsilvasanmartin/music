@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Observable } from 'rxjs';
@@ -11,14 +10,13 @@ import { PlaylistsMapper } from './playlists-mapper.service';
 @Injectable({ providedIn: 'root' })
 export class PlaylistsService {
   constructor(
-    private readonly _http: HttpClient,
     private readonly _playlistsMapper: PlaylistsMapper,
     private readonly _apiService: ApiService,
   ) {}
 
   getPlaylists(): Observable<Playlist[]> {
-    return this._http
-      .get<PlaylistDto[]>(this._apiService.createApiUrl('playlists'))
+    return this._apiService
+      .get<PlaylistDto[]>('playlists')
       .pipe(
         map((playlistDtos: PlaylistDto[]) =>
           playlistDtos.map((p) => this._playlistsMapper.fromDto(p)),
@@ -27,14 +25,14 @@ export class PlaylistsService {
   }
 
   getPlaylist(id: number) {
-    return this._http
-      .get<PlaylistDto>(this._apiService.createApiUrl(`playlists/${id}`))
+    return this._apiService
+      .get<PlaylistDto>(`playlists/${id}`)
       .pipe(map((p: PlaylistDto) => this._playlistsMapper.fromDto(p)));
   }
 
   createPlaylist(playlist: Playlist): Observable<Playlist> {
-    return this._http
-      .post<PlaylistDto>(this._apiService.createApiUrl('playlists'), playlist)
+    return this._apiService
+      .post<PlaylistDto>('playlists', playlist)
       .pipe(map((p: PlaylistDto) => this._playlistsMapper.fromDto(p)));
   }
 }
