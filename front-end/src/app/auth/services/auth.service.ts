@@ -27,7 +27,7 @@ export class AuthService {
   }
 
   isLoggedIn(): Observable<User | null> {
-    return this._apiService.get<User | null>('/auth/user').pipe(
+    return this._apiService.getAndThrowError<User | null>('/auth/user').pipe(
       map((u) => (u ? this._userMapperService.fromDto(u) : null)),
       catchError((err) => {
         console.error(err);

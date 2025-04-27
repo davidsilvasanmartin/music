@@ -13,31 +13,36 @@
         @if (album().artist) {
           <a
             [routerLink]="['/artists', album().artist?.id]"
-            class="text-xl text-blue-600 hover:text-blue-400 hover:underline"
+            class="text-artist text-xl hover:underline"
             queryParamsHandling="merge"
             >{{ album().artist?.name }}</a
           >
           <a
             [queryParams]="getSearchQueryParamsForAlbumArtist(album().artist)"
             [routerLink]="['.']"
-            class="ml-1 inline-flex items-center text-blue-600 hover:text-blue-400"
+            class="text-artist ml-1 inline-flex items-center"
             title="Filter albums by {{ album().artist?.name }}"
             queryParamsHandling="merge"
             ><app-icon-filter class="size-4 align-middle"
           /></a>
           <span class="text-xl">/</span>
         }
-        <a
-          [routerLink]="['.']"
-          class="text-xl text-emerald-700 hover:text-emerald-500 hover:underline"
-        >
+        <a [routerLink]="['.']" class="text-album text-xl hover:underline">
           {{ album().album }}</a
         >
       </div>
       <div class="flex flex-row flex-wrap items-center gap-2">
-        <app-year-badge [year]="album().year" />
+        <app-year-badge
+          [showFilter]="true"
+          [year]="album().year"
+          class="text-sm"
+        />
         @for (genre of album().genres; track genre) {
-          <app-genre-badge [genre]="genre" />
+          <app-genre-badge
+            class="text-sm"
+            [genre]="genre"
+            [showFilter]="true"
+          />
         }
       </div>
     </div>

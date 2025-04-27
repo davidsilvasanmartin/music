@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { EMPTY, Observable } from 'rxjs';
+import { EMPTY, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '../../../environments/environment';
@@ -41,6 +41,23 @@ export class ApiService {
       );
   }
 
+  getAndThrowError<T>(
+    url: string,
+    params: Partial<PaginationSortSearchParams> | Record<string, unknown> = {},
+  ): Observable<T> {
+    return this._http
+      .get<T>(this.createApiUrl(url), {
+        params: this._createHttpParams(params),
+      })
+      .pipe(
+        catchError((err) => {
+          // TODO display error message in popup
+          console.error(err);
+          return throwError(() => err);
+        }),
+      );
+  }
+
   post<T>(url: string, body: unknown): Observable<T> {
     return this._http.post<T>(this.createApiUrl(url), body);
   }
@@ -51,6 +68,7 @@ export class ApiService {
     const { page, size, sort, search, ...restOfParams } = params;
     const queryParams: Record<string, string | number | boolean> = {};
 
+    // We assume the PaginationSortSearchParams have the correct types
     if (page) {
       queryParams['page'] = page;
     }

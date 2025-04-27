@@ -23,7 +23,9 @@
               (click)="addToExistingPlaylist(playlist.id!)"
               role="button"
             >
-              <div class="font-medium text-red-600">{{ playlist.name }}</div>
+              <div class="text-playlist--no-hover font-medium">
+                {{ playlist.name }}
+              </div>
               <div class="text-sm text-slate-500">
                 {{ playlist.items.length }} songs
               </div>

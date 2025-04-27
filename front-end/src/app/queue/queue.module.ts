@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
+import { BadgesModule } from '../shared/badges/badges.module';
 import { PlaylistComponentsModule } from '../shared/playlist-components/playlist-components.module';
 import { QueueComponentsModule } from '../shared/queue-components/queue-components.module';
 import { IconsModule } from '../ui/icons/icons.module';
@@ -23,6 +24,7 @@ import { queueReducer } from './store/reducers';
     EffectsModule.forFeature([QueueEffects]),
     IconsModule,
     QueueComponentsModule,
+    BadgesModule,
   ],
   exports: [QueuePlayerComponent],
 })

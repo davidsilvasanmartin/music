@@ -69,8 +69,39 @@ body {
   }
 }
 
-// We are using native dialog elements for modals. The following style
-// adds a backdrop to the dialog
-dialog::backdrop {
-  background-color: rgba(0, 0, 0, 0.5);
+@layer utilities {
+  .text-playlist {
+    @apply text-red-600 hover:text-red-400;
+  }
+  .text-playlist--no-hover {
+    @apply text-red-600;
+  }
+
+  .text-artist {
+    @apply text-blue-600 hover:text-blue-400;
+  }
+  .text-artist--no-hover {
+    @apply text-blue-600;
+  }
+
+  .text-album {
+    @apply text-emerald-700 hover:text-emerald-500;
+  }
+  .text-album--no-hover {
+    @apply text-emerald-700;
+  }
+
+  .text-genre {
+    @apply text-amber-700 hover:text-amber-400;
+  }
+  .text-genre--no-hover {
+    @apply text-amber-700;
+  }
+
+  .text-neutral {
+    @apply text-slate-600 hover:text-slate-400;
+  }
+  .text-neutral--no-hover {
+    @apply text-slate-600;
+  }
 }

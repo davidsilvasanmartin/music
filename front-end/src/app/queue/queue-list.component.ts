@@ -64,14 +64,14 @@ import type { Song } from '../songs/song';
                         <!-- TODO links (have a look at album.component.html !! -->
                         <a
                           [routerLink]="['.']"
-                          class="text-blue-600 hover:text-blue-400 hover:underline"
+                          class="text-artist hover:underline"
                         >
                           {{ song.album?.artist?.name }}</a
                         >
                         <span>/</span>
                         <a
                           [routerLink]="['.']"
-                          class="text-emerald-700 hover:text-emerald-500 hover:underline"
+                          class="text-album hover:underline"
                           >{{ song.album?.album }}</a
                         >
                       </div>
