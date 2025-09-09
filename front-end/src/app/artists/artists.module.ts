@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
-import { AlbumComponent } from '../shared/album/album.component';
-import { AlbumCountComponent } from '../shared/album-count/album-count.component';
+import { AlbumComponent } from '../shared/album-components/album.component';
+import { AlbumCountComponent } from '../shared/album-components/album-count.component';
 import { MbLinkComponent } from '../shared/mb-link/mb-link.component';
 import { CardModule } from '../ui/card/card.module';
 import { PaginationModule } from '../ui/pagination';

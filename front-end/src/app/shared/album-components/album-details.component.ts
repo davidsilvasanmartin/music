@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
-import type { Album } from '../../../albums/album';
-import { PlaylistComponentsModule } from '../../playlist-components/playlist-components.module';
-import { QueueComponentsModule } from '../../queue-components/queue-components.module';
+import type { Album } from '../../albums/album';
+import { PlaylistComponentsModule } from '../playlist-components/playlist-components.module';
+import { QueueComponentsModule } from '../queue-components/queue-components.module';
 
 @Component({
   selector: 'app-album-details',

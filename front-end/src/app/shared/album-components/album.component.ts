@@ -12,7 +12,7 @@ import { IconsModule } from '../../ui/icons/icons.module';
 import { SearchMapperService } from '../../ui/search';
 import { BadgesModule } from '../badges/badges.module';
 import { QueueComponentsModule } from '../queue-components/queue-components.module';
-import { AlbumDetailsComponent } from './album-details/album-details.component';
+import { AlbumDetailsComponent } from './album-details.component';
 
 /**
  * This component is used in different modules.
