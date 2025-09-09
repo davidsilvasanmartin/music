@@ -62,6 +62,8 @@ public class PlaylistItem {
     @Column(name = "album_title", length = 255)
     private String albumTitle;
 
+    // TODO ARTIST ID/NAME
+
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

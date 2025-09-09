@@ -1,5 +1,7 @@
 CREATE TABLE log_audit
 (
+    -- TODO add fields: outcome (SUCCESS/FAILURE), reason/error_code, trace_id/span_id, request_id, tenant_id (if multi-tenant), source_ip/user_agent, resource_owner (if distinct from actor)
+    -- The request metadata can be stored in a JSONB field I guess
     id          SERIAL PRIMARY KEY,
     action      VARCHAR(255) NOT NULL,
     entity_type VARCHAR(255),
@@ -7,6 +9,7 @@ CREATE TABLE log_audit
     -- We have to allow user_id to be null if we want to log authentication attempts (where there is no user logged in)
     -- TODO see if such attempts can/should be logged in a different table
     user_id     INTEGER,
+    -- TODO JSONB for old/new values
     old_value   TEXT,
     new_value   TEXT,
     created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -68,7 +68,7 @@ public class ImportAlbumsJob {
                 .build();
     }
 
-    private ItemProcessor<BeetsAlbum, Album> processor() {
+    ItemProcessor<BeetsAlbum, Album> processor() {
         return beetsAlbum -> {
             log.info("Processing album: {} (MB: {})", beetsAlbum.getAlbum(), beetsAlbum.getMbAlbumId());
             if (albumRepository.existsByBeetsId(beetsAlbum.getId())) {
@@ -145,7 +145,7 @@ public class ImportAlbumsJob {
         };
     }
 
-    private ItemWriter<Album> writer() {
+    ItemWriter<Album> writer() {
         return albums -> {
             for (Album album : albums) {
                 TransactionTemplate transactionTemplate = new TransactionTemplate(appDbTransactionManager);

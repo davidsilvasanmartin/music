@@ -154,16 +154,33 @@ public class TestAlbums extends TestSuite {
                 .body("content.size()", equalTo(11))
                 // The first album has 4 songs...
                 .body("content[0].album", equalTo(album))
+                .body("content[0].genres.size()", equalTo(1))
+                .body("content[0].genres[0].name", equalTo(albumGenre))
+                .body("content[0].artist.name", equalTo(albumArtist))
                 .body("content[0].songs.size()", equalTo(albumNumberOfSongs))
                 // ... And its songs are sorted by title
                 .body("content[0].songs[0].title", equalTo("Song flac"))
                 .body("content[0].songs[1].title", equalTo("Song m4a"))
                 .body("content[0].songs[2].title", equalTo("Song mp3"))
                 .body("content[0].songs[3].title", equalTo("Song ogg"))
-                // This other album has a single song titled "Song for...", which gets sorted after "Song flac"
-                .body("content[1].album", equalTo("Album 10 NoAlbumArt"))
+                // The next album has 2 genres and a single song titled "Song for album with multi genre",
+                // which is sorted after "Song flac"
+                .body("content[1].album", equalTo("Album 3"))
+                .body("content[1].genres.size()", equalTo(2))
+                // Verifying the 2 genres are present, regardless of the order
+                // (The below notation creates a List with all the "name" properties of all genres)
+                .body("content[1].genres.name", hasItems("MultiHouse 2", "MultiHouse 3"))
+                .body("content[1].songs.size()", equalTo(1))
+                // TODO SERIOUS ISSUE: this song is duplicated
+                .body("content[1].songs[0].title", equalTo("Song for album with multi genre"))
+                // This other album has a single song titled "Song for album without AlbumArt"
+                .body("content[2].album", equalTo("Album 10 NoAlbumArt"))
+                .body("content[2].genres.size()", equalTo(1))
+                .body("content[2].genres[0].name", equalTo("House 10"))
+                .body("content[2].songs.size()", equalTo(1))
+                .body("content[2].songs[0].title", equalTo("Song for album without AlbumArt"))
                 // The rest of the albums, I'm not sure how they are sorted
-                .body("content[2].album", equalTo("Album 2"));
+                .body("content[3].album", equalTo("Album 2"));
     }
 
     @Test

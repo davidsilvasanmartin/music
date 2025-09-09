@@ -93,12 +93,25 @@ public class AlbumSpecification extends AbstractSpecification<Album> {
             // For select queries, use fetch joins for performance and to fix the bug explained above
             root.fetch("artist", JoinType.LEFT);
             root.fetch("genres", JoinType.LEFT);
-            root.fetch("songs", JoinType.LEFT);
+
+            // TODO REVIEW !
+            // For sorting by songs.title, we need to include songs in the query
+            // But we need to use a regular join (not fetch) to avoid duplication when an album has multiple genres
+            // This allows sorting by song properties while preventing song duplication
+            if (query.getOrderList() != null && !query.getOrderList().isEmpty()) {
+                boolean sortBySongProperty = query.getOrderList().stream()
+                        .anyMatch(order -> order.getExpression().toString().startsWith("songs."));
+
+                if (sortBySongProperty) {
+                    // Use a regular join for songs when sorting by song properties
+                    root.join("songs", JoinType.LEFT);
+                }
+            }
         } else {
             // For count queries or projections, use regular joins
             root.join("artist", JoinType.LEFT);
             root.join("genres", JoinType.LEFT);
-            root.join("songs", JoinType.LEFT);
+            // Don't join songs here to maintain consistency
         }
 
         return super.toPredicate(root, query, builder);

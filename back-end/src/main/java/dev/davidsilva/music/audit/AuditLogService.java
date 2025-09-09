@@ -37,7 +37,7 @@ public class AuditLogService {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             authenticatedUserId = ((DbUserDetails) authentication.getPrincipal()).getId();
-        } catch (Exception _) {
+        } catch (Exception e) {
         }
 
         AuditLog log = new AuditLog();
