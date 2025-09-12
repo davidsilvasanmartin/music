@@ -67,7 +67,7 @@
         <dependency>
             <groupId>org.xerial</groupId>
             <artifactId>sqlite-jdbc</artifactId>
-            <version>3.41.2.2</version>
+            <version>3.50.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -130,7 +130,15 @@
                             <artifactId>lombok</artifactId>
                             <version>${lombok.version}</version>
                         </path>
+                        <!-- Add MapStruct's annotation processor so implementations are generated -->
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>1.6.3</version>
+                        </path>
                     </annotationProcessorPaths>
+                    <!-- Optional but good practice to align with Java 21 -->
+                    <release>21</release>
                 </configuration>
             </plugin>
         </plugins>

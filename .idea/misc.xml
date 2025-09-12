@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="Black">
-    <option name="sdkName" value="Python 3.12 (music)" />
-  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/back-end/pom.xml" />
-        <option value="$PROJECT_DIR$/tests/pom.xml" />
-        <option value="$PROJECT_DIR$/back-end-schema-update/pom.xml" />
       </list>
     </option>
   </component>

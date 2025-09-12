@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module version="4">
+<module type="JAVA_MODULE" version="4">
   <component name="AdditionalModuleElements">
     <content url="file://$MODULE_DIR$">
-      <excludeFolder url="file://$MODULE_DIR$/.venv" />
-      <excludeFolder url="file://$MODULE_DIR$/music/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/httpRequests" />
+      <excludeFolder url="file://$MODULE_DIR$/back-end-schema-update/target" />
+      <excludeFolder url="file://$MODULE_DIR$/music/export/2011 - Jazz Magnetism" />
+      <excludeFolder url="file://$MODULE_DIR$/tests/target" />
     </content>
-  </component>
-  <component name="FacetManager">
-    <facet type="Python" name="Python">
-      <configuration sdkName="Python 3.12 (music)" />
-    </facet>
   </component>
 </module>

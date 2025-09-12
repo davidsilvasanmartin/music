@@ -1,4 +1,3 @@
-version: "3.9"
 name: "dev-davidsilva-music"
 
 networks:
@@ -11,7 +10,7 @@ volumes:
 
 services:
   database:
-    image: "postgres:17.4-bookworm"
+    image: "postgres:17.6-trixie"
     container_name: dev-davidsilva-music-database
     ports:
       - "5432:5432"
