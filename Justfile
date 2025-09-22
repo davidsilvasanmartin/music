@@ -48,10 +48,14 @@ bdbstart_test:
 
 # [TESTING MODE] Runs the backend schema update
 bschema_test: bdbstart_test
-    mvn -f ./back-end-schema-update/pom.xml spring-boot:run
+    #!/bin/sh
+    abs_file=`./scripts/get_abs_path.sh {{ tests_beets_db_file_rel_path }}`
+    BEETS_DB_FILE="$abs_file" mvn -f ./back-end-schema-update/pom.xml spring-boot:run
+
 
 # [TESTING MODE] Starts the backend
 bstart_test: bdbstart
+    #!/bin/sh
     abs_file=`./scripts/get_abs_path.sh {{ tests_beets_db_file_rel_path }}`
     BEETS_DB_FILE="$abs_file" mvn -f ./back-end/pom.xml spring-boot:run
 

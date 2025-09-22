@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.0-M2</version>
+        <version>3.5.6</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>dev.davidsilva</groupId>
@@ -27,7 +27,7 @@
         <url/>
     </scm>
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
     </properties>
     <dependencies>
         <dependency>
@@ -137,8 +137,8 @@
                             <version>1.6.3</version>
                         </path>
                     </annotationProcessorPaths>
-                    <!-- Optional but good practice to align with Java 21 -->
-                    <release>21</release>
+                    <!-- Optional but good practice to align with Java version -->
+                    <release>25</release>
                 </configuration>
             </plugin>
         </plugins>
