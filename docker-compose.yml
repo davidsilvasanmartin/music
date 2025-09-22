@@ -7,6 +7,8 @@ networks:
 volumes:
   database-data:
     name: dev-davidsilva-music-database-data
+  database-data-test:
+    name: dev-davidsilva-music-database-data-test
 
 services:
   database:
@@ -21,5 +23,19 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - database-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+  database-test:
+    image: "postgres:17.6-trixie"
+    container_name: dev-davidsilva-music-database-test
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=music
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - database-data-test:/var/lib/postgresql/data
     networks:
       - app-network

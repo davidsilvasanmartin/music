@@ -20,7 +20,7 @@ binstall:
 # Starts the app database if not already started
 bdbstart:
     if [ -z "$({{ docker }} compose ps --status=running -q database)" ]; then \
-      {{ docker }} compose start database; \
+      {{ docker }} compose up -d database; \
       sleep 10; \
     fi
 
@@ -36,13 +36,10 @@ bstart: bdbstart
     abs_file="$(./scripts/get_abs_path.sh {{ beets_db_file_rel_path }})"
     BEETS_DB_FILE="$abs_file" mvn -f ./back-end/pom.xml spring-boot:run
 
-# TODO review below (not finished)
-
 # [TESTING MODE] Starts the app database if not already started
 bdbstart_test:
-    # TODO run a testing database, not the developing one
-    if [ -z "$({{ docker }} compose ps --status=running -q database)" ]; then \
-      {{ docker }} compose start database; \
+    if [ -z "$({{ docker }} compose ps --status=running -q database-test)" ]; then \
+      {{ docker }} compose up -d database-test; \
       sleep 10; \
     fi
 
@@ -54,14 +51,14 @@ bschema_test: bdbstart_test
 
 
 # [TESTING MODE] Starts the backend
-bstart_test: bdbstart
+bstart_test: bdbstart_test
     #!/bin/sh
     abs_file=`./scripts/get_abs_path.sh {{ tests_beets_db_file_rel_path }}`
     BEETS_DB_FILE="$abs_file" mvn -f ./back-end/pom.xml spring-boot:run
 
 # [TESTING MODE] Runs API integration tests. Needs the backend to be running in testing mode
 btest:
-    mvn -f ./tests/pom.xml spring-boot:run
+    mvn -f ./tests/pom.xml test
 
 # Cleans front-end cache and builds and reinstalls the libraries
 finstall:
