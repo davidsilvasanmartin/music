@@ -103,6 +103,20 @@
             <version>1.6.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <!--
+            This dependency should not be necessary, but I'm adding it because I'm running into this bug:
+             https://github.com/flyway/flyway/issues/4145
+            -->
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>11.13.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-database-postgresql</artifactId>
+            <version>11.13.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -112,6 +126,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <excludes>
+                        <!-- TODO figure out what these excludes are and see if we have to include MapStruct -->
                         <exclude>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
@@ -141,9 +156,15 @@
                     <release>25</release>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-maven-plugin</artifactId>
+                <version>11.13.1</version>
+            </plugin>
         </plugins>
     </build>
     <repositories>
+        <!-- TODO what are these? -->
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>

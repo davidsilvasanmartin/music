@@ -1,4 +1,4 @@
-package dev.davidsilva.music;
+package dev.davidsilva.music.database;
 
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
