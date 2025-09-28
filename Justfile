@@ -14,7 +14,6 @@ default:
 # Runs clean install in all backend projects
 binstall:
     mvn -DskipTests -f ./tests/pom.xml clean install
-    mvn -DskipTests -f ./back-end-schema-update/pom.xml clean install
     mvn -DskipTests -f ./back-end/pom.xml clean install
 
 # Starts the app database if not already started

@@ -62,18 +62,6 @@ CREATE INDEX idx_user_roles_role_id ON auth_user_roles (role_id);
 CREATE INDEX idx_role_permissions_role_id ON auth_role_permissions (role_id);
 CREATE INDEX idx_role_permissions_permission_id ON auth_role_permissions (permission_id);
 
-/**
-    I'm adding the first admin user and its permissions here because I can't get the CommandLineRunner to work.
-    Ideally this would be done in the application, so as to not duplicate permission names in this file as
-    well as in application code
- */
-INSERT INTO auth_users
-    (username, email, password, is_enabled)
-VALUES ('admin',
-        'admin@email.test',
-        '{bcrypt}$2a$10$xb7bRNhQ8ihvpMUiA5uzKOOakmd0YT7z/cQgCQ0bP7VKpu/.AxSTW',
-        TRUE);
-
 INSERT INTO auth_roles(role_name, description)
 VALUES ('ADMIN', 'Administrator role with full system access');
 
@@ -95,11 +83,3 @@ WHERE NOT EXISTS (SELECT 1
                   FROM auth_role_permissions rp
                   WHERE rp.role_id = (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN')
                     AND rp.permission_id = ap.permission_id);
-
-INSERT INTO auth_user_roles(user_id, role_id)
-SELECT (SELECT user_id FROM auth_users WHERE username = 'admin'),
-       (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN')
-WHERE NOT EXISTS (SELECT 1
-                  FROM auth_user_roles ur
-                  WHERE ur.user_id = (SELECT user_id FROM auth_users WHERE username = 'admin')
-                    AND ur.role_id = (SELECT role_id FROM auth_roles WHERE role_name = 'ADMIN'));
