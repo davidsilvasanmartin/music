@@ -32,6 +32,9 @@ public class SongController {
         return new ResponseEntity<>(album, HttpStatus.OK);
     }
 
+    // TODO we need to remove this endpoint. Having urls like /songs/12345/albumArt makes the browser think the albumArt
+    //  is different per song (when it's not, it's really different per album). And this prevents us from caching
+    //  album images efficiently
     @CrossOrigin
     @GetMapping("{id}/albumArt")
     @ResponseBody
